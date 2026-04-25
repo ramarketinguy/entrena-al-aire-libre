@@ -152,18 +152,6 @@ module.exports = async function handler(req, res) {
   };
   if (TEST_CODE) metaPayload.test_event_code = TEST_CODE;
 
-  // No bloqueamos la respuesta por el fetch a Meta — respondemos primero y dispatcheamos en paralelo
-  const capiPromise = (PIXEL_ID && TOKEN)
-    ? fetch(`https://graph.facebook.com/${GRAPH_VERSION}/${PIXEL_ID}/events?access_token=${encodeURIComponent(TOKEN)}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(metaPayload)
-      }).then(r => r.text()).catch(err => {
-        console.error('[LEAD][CAPI] error:', err.message);
-        return null;
-      })
-    : Promise.resolve(null);
-
   // ---------- Webhook PRIORITARIO (Google Sheets) ----------
   const webhookUrl = process.env.LEAD_WEBHOOK_URL;
   console.log('[LEAD] Iniciando proceso de envío. Webhook URL configurada:', !!webhookUrl);
