@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Env — NUNCA commitear tokens
+.env
+.env.local
+.env.*.local
+
+# Vercel
+.vercel/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Source assets (los originales con espacios/tildes, no los renombrados en /videos/)
+Fotos y videos/

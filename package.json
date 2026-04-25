@@ -1,0 +1,14 @@
+{
+  "name": "entrenate-en-movimiento-landing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Landing de Entrenáte en Movimiento — entrenamientos grupales al aire libre en Montevideo",
+  "engines": {
+    "node": ">=18.x"
+  },
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {}
+}
