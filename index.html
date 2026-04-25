@@ -2017,18 +2017,25 @@
         </a>
     </div>
 
-    <!-- Exit Intent Modal -->
-    <div class="exit-modal-backdrop" id="exitModal" role="dialog" aria-modal="true" aria-labelledby="exitModalTitle" aria-hidden="true">
+    <!-- Success Modal -->
+    <div class="exit-modal-backdrop" id="successModal" role="dialog" aria-modal="true" aria-hidden="true">
         <div class="exit-modal">
-            <button type="button" class="exit-modal-close" id="exitModalClose" aria-label="Cerrar">&times;</button>
-            <span class="exit-modal-badge">No te vayas todavía</span>
-            <h3 id="exitModalTitle">¿Y si probás una clase gratis?</h3>
-            <p>La primera clase es 100% gratis, sin compromiso. 60 minutos al aire libre con profesores de ISEF/IUACJ. Te va a encantar.</p>
-            <a href="#reservar" class="btn-primary" id="exitModalCta" data-track="Schedule" data-track-source="exit_modal">
-                Sí, quiero mi clase gratis
-            </a>
+            <div class="success-check">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+            </div>
+            <span class="exit-modal-badge" style="background: #E8F5E9; color: #2E7D32;">¡Solicitud recibida!</span>
+            <h3 style="color: var(--primary);">¡Felicitaciones por elegir tu bienestar!</h3>
+            <p>Tu mensaje fue recibido con éxito. En breve nos estaremos comunicando con vos vía WhatsApp para coordinar tu clase gratuita.</p>
+            <button type="button" class="btn-primary" style="width: 100%;" onclick="document.getElementById('successModal').classList.remove('is-open')">
+                Entendido
+            </button>
         </div>
     </div>
+
+    <!-- Exit Intent Modal -->
+    <div class="exit-modal-backdrop" id="exitModal" role="dialog" aria-modal="true" aria-labelledby="exitModalTitle" aria-hidden="true">
 
     <script>
         // ============================================================
@@ -2241,12 +2248,15 @@
                 var originalText = submitBtn.textContent;
                 submitBtn.textContent = 'Enviando...';
 
-                function renderSuccess(redirectTo) {
-                    var checkSvg = '<div class="success-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>';
-                    setStatus('success', checkSvg + '<strong>¡Listo!</strong> Te vamos a contactar. Abrimos WhatsApp por las dudas...', true);
-                    if (redirectTo) {
-                        setTimeout(function(){ window.open(redirectTo, '_blank', 'noopener'); }, 900);
+                function renderSuccess() {
+                    // Abrir el modal de éxito
+                    var successModal = document.getElementById('successModal');
+                    if (successModal) {
+                        successModal.classList.add('is-open');
                     }
+                    
+                    // Mensaje corto en el formulario por si cierran el modal
+                    setStatus('success', '<strong>¡Listo!</strong> Ya recibimos tus datos. Te contactaremos pronto.', true);
                     form.reset();
                 }
 
@@ -2271,19 +2281,15 @@
                         if (data && data.errors) {
                             Object.keys(data.errors).forEach(function(k){ setError(k, data.errors[k]); });
                         }
-                        // Progressive enhancement: si el API falla, igual dejamos avanzar por WhatsApp
-                        var fbUrl = whatsappFallback(name, schedule, park);
-                        setStatus('error', 'Tuvimos un problema guardando tus datos, pero podés escribirnos directo por WhatsApp.');
-                        setTimeout(function(){ window.open(fbUrl, '_blank', 'noopener'); }, 1200);
+                        // Si el API falla, mostramos error pero no redirigimos
+                        setStatus('error', 'Tuvimos un problema guardando tus datos. Por favor, reintentá o escribinos por WhatsApp.');
                         return;
                     }
 
-                    renderSuccess(data.redirect_to || whatsappFallback(name, schedule, park));
+                    renderSuccess();
                 } catch (err) {
-                    // Sin red / server caído: fallback total a WhatsApp
-                    var fbUrl = whatsappFallback(name, schedule, park);
-                    setStatus('error', 'Sin conexión al servidor. Abrimos WhatsApp para que puedas escribirnos.');
-                    setTimeout(function(){ window.open(fbUrl, '_blank', 'noopener'); }, 800);
+                    // Sin red / server caído
+                    setStatus('error', 'Sin conexión al servidor. Por favor, revisá tu internet y reintentá.');
                 } finally {
                     submitBtn.disabled = false;
                     submitBtn.textContent = originalText;
