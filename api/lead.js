@@ -153,13 +153,18 @@ module.exports = async function handler(req, res) {
   if (TEST_CODE) metaPayload.test_event_code = TEST_CODE;
 
   // ---------- Webhook PRIORITARIO (Google Sheets) ----------
-  const webhookUrl = process.env.LEAD_WEBHOOK_URL;
-  console.log('[LEAD] Iniciando proceso de envío. Webhook URL configurada:', !!webhookUrl);
+  // Intentamos leer en mayúsculas y minúsculas por las dudas
+  const webhookUrl = process.env.LEAD_WEBHOOK_URL || process.env.lead_webhook_url;
+  
+  console.log('[LEAD] Diagnóstico de variables:', {
+    has_webhook: !!webhookUrl,
+    env_keys: Object.keys(process.env).filter(k => k.toLowerCase().includes('webhook') || k.toLowerCase().includes('meta'))
+  });
 
   if (webhookUrl) {
     try {
       console.log('[LEAD][WEBHOOK] Enviando a Google Sheets...');
-      const whResp = await fetch(webhookUrl, {
+      const whResp = await fetch(webhookUrl.trim(), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
