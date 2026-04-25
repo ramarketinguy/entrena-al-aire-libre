@@ -166,6 +166,10 @@ module.exports = async function handler(req, res) {
 
   // ---------- Webhook opcional (Zapier / Make / Google Sheets) ----------
   const webhookUrl = process.env.LEAD_WEBHOOK_URL;
+  if (!webhookUrl) {
+    console.warn('[LEAD] LEAD_WEBHOOK_URL no definida en variables de entorno.');
+  }
+
   const webhookPromise = webhookUrl
     ? fetch(webhookUrl, {
         method: 'POST',
@@ -182,6 +186,10 @@ module.exports = async function handler(req, res) {
           user_agent: req.headers['user-agent'],
           referer: req.headers.referer
         })
+      }).then(async r => {
+        const text = await r.text();
+        console.log('[LEAD][WEBHOOK] Respuesta:', r.status, text);
+        return { status: r.status, text };
       }).catch(err => {
         console.error('[LEAD][WEBHOOK] error:', err.message);
         return null;
@@ -199,11 +207,16 @@ module.exports = async function handler(req, res) {
   const waMessage = encodeURIComponent(parts.join(' '));
   const redirectTo = `https://wa.me/${waNumber}?text=${waMessage}`;
 
-  // Esperamos a CAPI para devolver info útil pero con timeout corto (no blocker)
-  await Promise.race([
-    Promise.all([capiPromise, webhookPromise]),
-    new Promise(resolve => setTimeout(resolve, 2500))
-  ]);
+  // Esperamos a CAPI y Webhook con un timeout más generoso (6 segundos)
+  // Las funciones de Vercel (Hobby) tienen un timeout de 10s, así que estamos bien.
+  try {
+    await Promise.race([
+      Promise.all([capiPromise, webhookPromise]),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 6000))
+    ]);
+  } catch (err) {
+    console.warn('[LEAD] El envío a Meta o Webhook superó los 6s (o falló), procediendo con respuesta al usuario.');
+  }
 
   res.status(200).json({
     ok: true,
