@@ -164,60 +164,61 @@ module.exports = async function handler(req, res) {
       })
     : Promise.resolve(null);
 
-  // ---------- Webhook opcional (Zapier / Make / Google Sheets) ----------
+  // ---------- Webhook PRIORITARIO (Google Sheets) ----------
   const webhookUrl = process.env.LEAD_WEBHOOK_URL;
-  if (!webhookUrl) {
-    console.warn('[LEAD] LEAD_WEBHOOK_URL no definida en variables de entorno.');
-  }
+  console.log('[LEAD] Iniciando proceso de envío. Webhook URL configurada:', !!webhookUrl);
 
-  const webhookPromise = webhookUrl
-    ? fetch(webhookUrl, {
+  if (webhookUrl) {
+    try {
+      console.log('[LEAD][WEBHOOK] Enviando a Google Sheets...');
+      const whResp = await fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           received_at: new Date().toISOString(),
-          name,
-          email,
-          phone,
-          schedule_preference,
-          park_preference,
+          name, email, phone,
+          schedule_preference, park_preference,
           utm,
           ip: getClientIp(req),
           user_agent: req.headers['user-agent'],
           referer: req.headers.referer
         })
-      }).then(async r => {
-        const text = await r.text();
-        console.log('[LEAD][WEBHOOK] Respuesta:', r.status, text);
-        return { status: r.status, text };
-      }).catch(err => {
-        console.error('[LEAD][WEBHOOK] error:', err.message);
-        return null;
-      })
-    : Promise.resolve(null);
+      });
+      const whText = await whResp.text();
+      console.log('[LEAD][WEBHOOK] Resultado:', whResp.status, whText);
+    } catch (whErr) {
+      console.error('[LEAD][WEBHOOK] ERROR CRÍTICO:', whErr.message);
+    }
+  } else {
+    console.error('[LEAD] ERROR: LEAD_WEBHOOK_URL no encontrada en process.env');
+  }
 
-  // ---------- Construir URL de WhatsApp para redirigir al usuario ----------
+  // ---------- Meta CAPI (en paralelo/segundo plano) ----------
+  const capiPromise = (PIXEL_ID && TOKEN)
+    ? fetch(`https://graph.facebook.com/${GRAPH_VERSION}/${PIXEL_ID}/events?access_token=${encodeURIComponent(TOKEN)}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(metaPayload)
+      }).then(r => r.json()).then(json => {
+        console.log('[LEAD][CAPI] Éxito:', json);
+      }).catch(err => {
+        console.error('[LEAD][CAPI] Error:', err.message);
+      })
+    : Promise.resolve();
+
+  // Esperamos un poquito a Meta por cortesía, pero no bloqueamos si el Webhook ya terminó
+  await Promise.race([
+    capiPromise,
+    new Promise(resolve => setTimeout(resolve, 2000))
+  ]);
+
+  // ---------- Construir URL de WhatsApp (para el log o fallback si fuera necesario) ----------
   const waNumber = process.env.WHATSAPP_NUMBER || DEFAULT_WHATSAPP;
-  const parts = [];
-  parts.push('Hola! Soy ' + String(name).trim() + '.');
-  parts.push('Quiero reservar mi clase gratuita de prueba.');
-  if (schedule_preference) parts.push('Horario preferido: ' + schedule_preference);
-  if (park_preference) parts.push('Parque preferido: ' + park_preference);
-  if (utm && utm.utm_campaign) parts.push('[campaña: ' + String(utm.utm_campaign).slice(0, 60) + ']');
+  const parts = ['Hola! Soy ' + name + '.'];
   const waMessage = encodeURIComponent(parts.join(' '));
   const redirectTo = `https://wa.me/${waNumber}?text=${waMessage}`;
 
-  // Esperamos a CAPI y Webhook con un timeout más generoso (6 segundos)
-  // Las funciones de Vercel (Hobby) tienen un timeout de 10s, así que estamos bien.
-  try {
-    await Promise.race([
-      Promise.all([capiPromise, webhookPromise]),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 6000))
-    ]);
-  } catch (err) {
-    console.warn('[LEAD] El envío a Meta o Webhook superó los 6s (o falló), procediendo con respuesta al usuario.');
-  }
-
+  console.log('[LEAD] Finalizando función. Enviando OK al cliente.');
   res.status(200).json({
     ok: true,
     redirect_to: redirectTo,
