@@ -739,6 +739,10 @@
             box-shadow: var(--shadow-hover);
         }
 
+        .pricing-card.featured:hover {
+            transform: scale(1.05) translateY(-5px);
+        }
+
         .pricing-badge {
             position: absolute;
             top: -12px;
@@ -2028,7 +2032,7 @@
             <span class="exit-modal-badge" style="background: #E8F5E9; color: #2E7D32;">¡Solicitud recibida!</span>
             <h3 style="color: var(--primary);">¡Felicitaciones por elegir tu bienestar!</h3>
             <p>Tu mensaje fue recibido con éxito. En breve nos estaremos comunicando con vos vía WhatsApp para coordinar tu clase gratuita.</p>
-            <button type="button" class="btn-primary" style="width: 100%;" onclick="document.getElementById('successModal').classList.remove('is-open')">
+            <button type="button" class="btn-primary" style="width: 100%;" onclick="var m=document.getElementById('successModal');m.classList.remove('is-open');m.setAttribute('aria-hidden','true')">
                 Entendido
             </button>
         </div>
@@ -2036,6 +2040,16 @@
 
     <!-- Exit Intent Modal -->
     <div class="exit-modal-backdrop" id="exitModal" role="dialog" aria-modal="true" aria-labelledby="exitModalTitle" aria-hidden="true">
+        <div class="exit-modal">
+            <button id="exitModalClose" class="exit-modal-close" aria-label="Cerrar">✕</button>
+            <span class="exit-modal-badge">Sin compromiso</span>
+            <h3 id="exitModalTitle">¿Te vas sin reservar tu clase gratis?</h3>
+            <p>Solo te lleva 30 segundos. La primera clase es totalmente gratis y sin compromiso.</p>
+            <a href="#reservar" id="exitModalCta" class="btn-primary" data-track="Lead" data-track-source="exit_intent">
+                Quiero mi clase gratis
+            </a>
+        </div>
+    </div>
 
     <script>
         // ============================================================
@@ -2152,7 +2166,22 @@
                         }
                         // ViewContent oficial en 50 y 75 (para campañas)
                         if ((key === 's50' || key === 's75') && typeof fbq === 'function') {
-                            fbq('track', 'ViewContent', { content_name: 'scroll_' + Math.round(m*100) }, { eventID: genEventId('viewcontent_' + Math.round(m*100)) });
+                            var vcId = genEventId('viewcontent_' + Math.round(m*100));
+                            var vcName = 'scroll_' + Math.round(m*100);
+                            fbq('track', 'ViewContent', { content_name: vcName }, { eventID: vcId });
+                            if (window.__capiEnabled) {
+                                fetch('/api/capi', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    keepalive: true,
+                                    body: JSON.stringify({
+                                        event_name: 'ViewContent',
+                                        event_id: vcId,
+                                        event_source_url: window.location.href,
+                                        custom_data: { content_name: vcName }
+                                    })
+                                }).catch(function(){});
+                            }
                         }
                     }
                 });
@@ -2240,7 +2269,6 @@
                             utm_source: UTM_DATA.utm_source,
                             utm_campaign: UTM_DATA.utm_campaign
                         }, { eventID: eventId });
-                        fbq('track', 'CompleteRegistration', { content_name: 'Formulario clase gratis' }, { eventID: eventId + '_cr' });
                     } catch(err) {}
                 }
 
@@ -2249,10 +2277,10 @@
                 submitBtn.textContent = 'Enviando...';
 
                 function renderSuccess() {
-                    // Abrir el modal de éxito
                     var successModal = document.getElementById('successModal');
                     if (successModal) {
                         successModal.classList.add('is-open');
+                        successModal.setAttribute('aria-hidden', 'false');
                     }
                     
                     // Mensaje corto en el formulario por si cierran el modal
