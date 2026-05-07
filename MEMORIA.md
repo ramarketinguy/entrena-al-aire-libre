@@ -10,6 +10,8 @@
   - **Micaela Bianchi Luna** — IUACJ, 8 años exp (hidrogimnasia), IG: @micabianchiwellness
 - **WhatsApp:** +598 95 682 168
 - **Planes:** $0 prueba / $1.200/mes (1x) / $2.000/mes (2x popular) / $2.700/mes (3x)
+- **Herramientas Compartidas:**
+  - **FFmpeg:** `D:\2_Agencia\Ramarketing\Antigravity\Tools\ffmpeg\ffmpeg-8.1.1-essentials_build\bin\ffmpeg.exe`
 
 ---
 
@@ -17,15 +19,16 @@
 
 ```
 /
-├── index.html           # ~89 KB, ~2450 líneas (CSS+JS inline)
+├── index.html           # ~105 KB, ~2600 líneas (CSS+JS inline + Performance)
 ├── api/
 │   ├── capi.js          # Meta CAPI server-side
 │   └── lead.js          # Form + webhook + notificaciones
 ├── videos/
-│   ├── hero-web.mp4     # Video hero desktop
-│   ├── hero-mobile.mp4  # Video hero mobile
-│   ├── alvaro.mp4       # Presentación profesor (inline, 1:1)
-│   └── micaela.mp4      # Presentación profesora (inline, 1:1)
+│   ├── hero-web_comp.mp4    # Hero desktop (optimizado ~4MB)
+│   ├── hero-mobile_comp.mp4 # Hero mobile (optimizado ~3MB)
+│   ├── alvaro-v2_comp.mp4   # Presentación Álvaro (optimizado ~1MB)
+│   └── micaela_comp.mp4     # Presentación Micaela (optimizado ~6MB)
+├── og-image.png         # ~537 KB (1200x630)
 ├── robots.txt
 ├── sitemap.xml
 ├── vercel.json
@@ -109,17 +112,11 @@ URL: `https://script.google.com/macros/s/AKfycby-4ksLui_8yl60I5cH2mI57zD7Le1VpuG
 - Requiere cuenta Twilio o similar
 - Una vez que tengas credenciales, agregar al Apps Script arriba
 
-### 4. Pending post-deploy
-- [ ] `og-image.jpg` (1200x630) — para compartir en redes
+- [x] `og-image.png` (1200x630) — unificada y optimizada
 - [ ] Verificar dominio en Business Manager
 - [ ] Confirmar Dataset ID en Events Manager
 - [ ] Material de clienta: fotos reales de clases, testimonio con nombre+foto
-- [ ] Comprimir `videos/micaela.mp4` (25 MB → ~7 MB con FFmpeg)
-
-### 5. Comprimir video Micaela (cuando instales FFmpeg)
-```bash
-ffmpeg -i videos/micaela.mp4 -vf scale=1280:-2 -c:v libx264 -crf 26 -preset slow -c:a aac -b:a 96k -movflags +faststart videos/micaela-compressed.mp4
-```
+- [x] Comprimir videos (Hero y Profes) con FFmpeg
 
 ---
 
@@ -131,15 +128,12 @@ Contexto inicial, plan de 7 fases, Pixel + CAPI Token recibidos.
 ### Sesión 2 — 24/04/2026
 Fases 1-4 completadas: fixes contenido, Pixel+CAPI, SEO, formulario, UX/CRO completo.
 
-### Sesión 3 — 25/04/2026
-- Logo → ENTRENÁ EN LA NATURALEZA
-- Botón WhatsApp header eliminado
-- Copy pivot a público femenino (vos/vosota/llena de energía)
-- Testimonio falso eliminado
-- Videos hero (web + mobile) con overlay oscuro + blur
-- Videos profes inline 1:1 con play overlay
-- Links Instagram en cards de profes
-- Google Sheets webhook preparado (pendiente deploy Apps Script)
+### Sesión 4 — 07/05/2026 (Performance & Cleanup)
+- **Optimización de Videos:** Todos los videos reemplazados por versiones `_comp.mp4` (reducción de ~200MB a ~14MB en total).
+- **Lazy Loading:** Implementado `IntersectionObserver` para videos y carga diferida (1s) para el Hero.
+- **Limpieza de Repo:** Eliminado `ffmpeg.zip`, versiones pesadas de video, scripts de prueba (`test_webhook`, etc.) y `og-image.jpg`.
+- **Unificación SEO:** OG Image unificada a `og-image.png` tanto en meta tags como en JSON-LD.
+- **Herramientas:** FFmpeg movido a carpeta global de `Tools` para no ensuciar proyectos.
 
 ---
 

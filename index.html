@@ -88,7 +88,7 @@
           "url": "https://entrenateenmovimiento.uy/",
           "telephone": "+59895682168",
           "priceRange": "$$",
-          "image": "https://entrenateenmovimiento.uy/og-image.jpg",
+          "image": "https://entrena-al-aire-libre.vercel.app/og-image.png",
           "address": {
             "@type": "PostalAddress",
             "addressLocality": "Montevideo",
@@ -209,8 +209,12 @@
     }
     </script>
 
+    <!-- Performance Optimization -->
+    <link rel="preconnect" href="https://connect.facebook.net">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://connect.facebook.net">
+    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -336,11 +340,12 @@
             overflow: hidden;
         }
 
-        /* Video background */
+        /* Video background optimizado */
         .hero-video-bg {
             position: absolute;
             inset: 0;
             z-index: 0;
+            background: #1B5E20; /* Fallback color */
         }
         .hero-video-bg video {
             position: absolute;
@@ -350,6 +355,11 @@
             object-fit: cover;
             filter: blur(2px);
             transform: scale(1.04);
+            opacity: 0;
+            transition: opacity 1s ease-in;
+        }
+        .hero-video-bg video.loaded {
+            opacity: 1;
         }
         .hero-video-overlay {
             position: absolute;
@@ -1599,11 +1609,11 @@
     <main id="main-content">
     <section class="hero">
         <div class="hero-video-bg" aria-hidden="true">
-            <video class="video-web" autoplay muted loop playsinline preload="auto">
-                <source src="videos/hero-web.mp4" type="video/mp4">
+            <video class="video-web" muted loop playsinline preload="none" data-src="videos/hero-web_comp.mp4">
+                <source type="video/mp4">
             </video>
-            <video class="video-mobile" autoplay muted loop playsinline preload="auto">
-                <source src="videos/hero-mobile.mp4" type="video/mp4">
+            <video class="video-mobile" muted loop playsinline preload="none" data-src="videos/hero-mobile_comp.mp4">
+                <source type="video/mp4">
             </video>
             <div class="hero-video-overlay"></div>
         </div>
@@ -1803,7 +1813,7 @@
                 <div class="about-card">
                     <div class="about-video" data-video>
                         <video preload="metadata" playsinline controls>
-                            <source src="videos/alvaro-v2.mp4" type="video/mp4">
+                            <source src="videos/alvaro-v2_comp.mp4" type="video/mp4">
                             Tu navegador no soporta video HTML5.
                         </video>
                         <button type="button" class="video-play-overlay" aria-label="Reproducir presentación de Álvaro">
@@ -1822,7 +1832,7 @@
                 <div class="about-card">
                     <div class="about-video" data-video>
                         <video preload="metadata" playsinline controls>
-                            <source src="videos/micaela.mp4" type="video/mp4">
+                            <source src="videos/micaela_comp.mp4" type="video/mp4">
                             Tu navegador no soporta video HTML5.
                         </video>
                         <button type="button" class="video-play-overlay" aria-label="Reproducir presentación de Micaela">
@@ -2499,6 +2509,52 @@
             }
             window.addEventListener('scroll', onScroll, { passive: true });
             onScroll();
+        })();
+
+        // ============================================================
+        // Optimización de carga de Videos (Hero + Lazy)
+        // ============================================================
+        (function() {
+            // Hero videos: Cargar después del primer frame de interacción o tras 1s
+            function loadHeroVideos() {
+                document.querySelectorAll('.hero-video-bg video').forEach(function(v) {
+                    if (v.getAttribute('data-src') && !v.src) {
+                        v.src = v.getAttribute('data-src');
+                        v.load();
+                        v.onloadeddata = function() {
+                            v.classList.add('loaded');
+                            v.play().catch(function(){});
+                        };
+                    }
+                });
+            }
+
+            if (document.readyState === 'complete') {
+                setTimeout(loadHeroVideos, 1000);
+            } else {
+                window.addEventListener('load', function() {
+                    setTimeout(loadHeroVideos, 800);
+                });
+            }
+
+            // Lazy load para videos de About
+            if ('IntersectionObserver' in window) {
+                var videoObserver = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            var v = entry.target.querySelector('video');
+                            if (v && v.preload === 'none') {
+                                v.preload = 'metadata';
+                            }
+                            videoObserver.unobserve(entry.target);
+                        }
+                    });
+                }, { rootMargin: '200px' });
+
+                document.querySelectorAll('[data-video]').forEach(function(container) {
+                    videoObserver.observe(container);
+                });
+            }
         })();
     </script>
 </body>
