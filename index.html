@@ -1958,9 +1958,11 @@
                             <label for="lf-schedule">Horario preferido</label>
                             <select id="lf-schedule" name="schedule_preference">
                                 <option value="">Elegí un horario</option>
-                                <option value="Mañana (8-10 hs)">Mañana (8-10 hs)</option>
-                                <option value="Tarde (18-20 hs)">Tarde (18-20 hs)</option>
-                                <option value="Indiferente">Me da igual</option>
+                                <option value="8:00">8:00</option>
+                                <option value="9:00">9:00</option>
+                                <option value="10:00">10:00</option>
+                                <option value="18:15">18:15</option>
+                                <option value="19:15">19:15</option>
                             </select>
                         </div>
                         <div>
@@ -1970,7 +1972,6 @@
                                 <option value="Parque Rodó">Parque Rodó</option>
                                 <option value="Parque Batlle">Parque Batlle</option>
                                 <option value="Prado">Prado (frente a los Charrúas)</option>
-                                <option value="Indiferente">Cualquiera</option>
                             </select>
                         </div>
                     </div>
@@ -2340,7 +2341,7 @@
         })();
 
         // ============================================================
-        // Lógica de filtrado dinámico: Parque según Horario
+        // Lógica de filtrado dinámico: Vinculación Parque <-> Horario
         // ============================================================
         (function() {
             var scheduleSelect = document.getElementById('lf-schedule');
@@ -2348,43 +2349,70 @@
             if (!scheduleSelect || !parkSelect) return;
 
             var parkOptions = Array.from(parkSelect.options);
+            var scheduleOptions = Array.from(scheduleSelect.options);
 
-            function filterParks() {
-                var schedule = scheduleSelect.value;
-                var currentPark = parkSelect.value;
-                var isValid = false;
+            // Mapa de disponibilidad
+            // Batlle: 8, 9, 10
+            // Prado: 10
+            // Rodó: 18:15, 19:15
+            var availability = {
+                'Parque Batlle': ['8:00', '9:00', '10:00'],
+                'Prado': ['10:00'],
+                'Parque Rodó': ['18:15', '19:15']
+            };
 
-                parkOptions.forEach(function(opt) {
-                    var val = opt.value;
-                    if (!val || val === 'Indiferente') {
+            function updateFilters(e) {
+                var selectedPark = parkSelect.value;
+                var selectedTime = scheduleSelect.value;
+
+                // Filtrar Horarios según Parque
+                scheduleOptions.forEach(function(opt) {
+                    if (!opt.value) return; // "Elegí..." siempre visible
+                    if (!selectedPark) {
                         opt.hidden = false;
                         opt.disabled = false;
-                        if (val === currentPark) isValid = true;
-                        return;
+                    } else {
+                        var isAvailable = availability[selectedPark].indexOf(opt.value) !== -1;
+                        opt.hidden = !isAvailable;
+                        opt.disabled = !isAvailable;
                     }
-
-                    var show = true;
-                    if (schedule.indexOf('Mañana') !== -1) {
-                        // Mañana: Batlle o Prado
-                        show = (val === 'Parque Batlle' || val === 'Prado');
-                    } else if (schedule.indexOf('Tarde') !== -1) {
-                        // Tarde: Solo Rodó
-                        show = (val === 'Parque Rodó');
-                    }
-
-                    opt.hidden = !show;
-                    opt.disabled = !show;
-                    if (show && val === currentPark) isValid = true;
                 });
 
-                if (!isValid && currentPark !== '') {
-                    parkSelect.value = '';
+                // Filtrar Parques según Horario
+                parkOptions.forEach(function(opt) {
+                    if (!opt.value) return;
+                    if (!selectedTime) {
+                        opt.hidden = false;
+                        opt.disabled = false;
+                    } else {
+                        var isAvailable = false;
+                        for (var p in availability) {
+                            if (p === opt.value && availability[p].indexOf(selectedTime) !== -1) {
+                                isAvailable = true;
+                                break;
+                            }
+                        }
+                        opt.hidden = !isAvailable;
+                        opt.disabled = !isAvailable;
+                    }
+                });
+
+                // Validar consistencia y resetear si es necesario
+                if (selectedPark && selectedTime) {
+                    if (availability[selectedPark].indexOf(selectedTime) === -1) {
+                        // Si el cambio vino del parque, reseteamos el horario
+                        if (e && e.target === parkSelect) scheduleSelect.value = '';
+                        // Si vino del horario, reseteamos el parque
+                        else if (e && e.target === scheduleSelect) parkSelect.value = '';
+                    }
                 }
             }
 
-            scheduleSelect.addEventListener('change', filterParks);
-            // Ejecutar al inicio por si hay prefill
-            filterParks();
+            parkSelect.addEventListener('change', updateFilters);
+            scheduleSelect.addEventListener('change', updateFilters);
+            
+            // Inicializar
+            updateFilters();
         })();
 
         // ============================================================
