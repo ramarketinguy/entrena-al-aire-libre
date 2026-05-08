@@ -1716,6 +1716,10 @@
                             <span>Parque Batlle</span>
                             <span class="time">9:00</span>
                         </li>
+                        <li>
+                            <span>Parque Batlle</span>
+                            <span class="time">10:00</span>
+                        </li>
                     </ul>
                 </div>
                 <div class="schedule-card">
@@ -1728,7 +1732,7 @@
                     </ul>
                 </div>
                 <div class="schedule-card">
-                    <h3>☀️ Tarde <span>Lun - Vie</span></h3>
+                    <h3>☀️ Tarde <span>Lunes a viernes</span></h3>
                     <ul class="schedule-list">
                         <li>
                             <span>Parque Rodó</span>
@@ -2333,6 +2337,54 @@
                     submitBtn.textContent = originalText;
                 }
             });
+        })();
+
+        // ============================================================
+        // Lógica de filtrado dinámico: Parque según Horario
+        // ============================================================
+        (function() {
+            var scheduleSelect = document.getElementById('lf-schedule');
+            var parkSelect = document.getElementById('lf-park');
+            if (!scheduleSelect || !parkSelect) return;
+
+            var parkOptions = Array.from(parkSelect.options);
+
+            function filterParks() {
+                var schedule = scheduleSelect.value;
+                var currentPark = parkSelect.value;
+                var isValid = false;
+
+                parkOptions.forEach(function(opt) {
+                    var val = opt.value;
+                    if (!val || val === 'Indiferente') {
+                        opt.hidden = false;
+                        opt.disabled = false;
+                        if (val === currentPark) isValid = true;
+                        return;
+                    }
+
+                    var show = true;
+                    if (schedule.indexOf('Mañana') !== -1) {
+                        // Mañana: Batlle o Prado
+                        show = (val === 'Parque Batlle' || val === 'Prado');
+                    } else if (schedule.indexOf('Tarde') !== -1) {
+                        // Tarde: Solo Rodó
+                        show = (val === 'Parque Rodó');
+                    }
+
+                    opt.hidden = !show;
+                    opt.disabled = !show;
+                    if (show && val === currentPark) isValid = true;
+                });
+
+                if (!isValid && currentPark !== '') {
+                    parkSelect.value = '';
+                }
+            }
+
+            scheduleSelect.addEventListener('change', filterParks);
+            // Ejecutar al inicio por si hay prefill
+            filterParks();
         })();
 
         // ============================================================
