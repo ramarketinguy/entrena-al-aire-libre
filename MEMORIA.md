@@ -98,7 +98,7 @@ vercel --prod
 ```
 **Importante:** configurar env vars ANTES de deployar:
 - `META_PIXEL_ID=1283219893317159`
-- `META_CAPI_TOKEN=EAALkmorQINQBRWhv7EX1OUojuo5i6n1FE7yILcn4KMS7GogJZC3p1cPkdx6LurZCTzgLlzeZB6kqLKOxgujXxaxhwdm1OCzirB94GVOp2g6nBeeLmDE0ROxy45P4mDvKwpawyHUy7CZALCBYHZCyvSGncW7YEjZBCGJlKhoDyYbNGkcadZCnCuiLykIpF45szpD8wZDZD` (Sensitive)
+- `META_CAPI_TOKEN` configurado como variable sensible en Vercel. No guardar el valor en el repo.
 - `META_TEST_EVENT_CODE=TEST96231` (SOLO Preview, vacío en Production)
 
 ### 2. Google Sheets — recibir leads (COMPLETADO ✅)
