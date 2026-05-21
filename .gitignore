@@ -30,3 +30,7 @@ Fotos y videos/
 
 # Raw edited testimonials (not optimized for web)
 videos/Testimonios Editados/
+
+# Local Claude settings
+.claude/
+
