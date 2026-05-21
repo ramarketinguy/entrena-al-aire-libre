@@ -81,7 +81,7 @@ module.exports = async function handler(req, res) {
   // ---------- Honeypot ----------
   if (company && String(company).trim() !== '') {
     // fingimos éxito para no dar señales al bot
-    res.status(200).json({ ok: true, redirect_to: null });
+    res.status(200).json({ ok: true, redirect_to: null, tracked: false });
     return;
   }
 
@@ -89,7 +89,7 @@ module.exports = async function handler(req, res) {
   if (rendered_at && Number.isFinite(Number(rendered_at))) {
     const elapsed = Date.now() - Number(rendered_at);
     if (elapsed < 2000) {
-      res.status(200).json({ ok: true, redirect_to: null });
+      res.status(200).json({ ok: true, redirect_to: null, tracked: false });
       return;
     }
   }
@@ -215,6 +215,8 @@ module.exports = async function handler(req, res) {
   res.status(200).json({
     ok: true,
     redirect_to: redirectTo,
-    event_id
+    event_id,
+    tracked: true,
+    capi_enabled: Boolean(PIXEL_ID && TOKEN)
   });
 };

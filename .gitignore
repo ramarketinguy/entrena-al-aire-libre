@@ -25,3 +25,8 @@ npm-debug.log*
 
 # Source assets (los originales con espacios/tildes, no los renombrados en /videos/)
 Fotos y videos/
+
+.vercel
+
+# Raw edited testimonials (not optimized for web)
+videos/Testimonios Editados/

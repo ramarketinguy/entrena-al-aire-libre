@@ -892,33 +892,297 @@
         }
 
         /* Testimonials */
+        .proof-interlude {
+            padding: 70px 0;
+            background: var(--white);
+            scroll-margin-top: 110px;
+        }
+
+        .proof-interlude--dark {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: var(--white);
+        }
+
+        .proof-interlude--soft {
+            background: var(--off-white);
+        }
+
+        .proof-split {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+            gap: 42px;
+            align-items: center;
+        }
+
+        .proof-interlude--dark .proof-split {
+            grid-template-columns: minmax(280px, 460px) minmax(0, 1fr);
+        }
+
+        .proof-copy h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--gray-900);
+            margin-bottom: 18px;
+        }
+
+        .proof-copy h2 span {
+            color: var(--primary);
+        }
+
+        .proof-interlude--dark .proof-copy h2,
+        .proof-interlude--dark .proof-copy h2 span,
+        .proof-interlude--dark .proof-copy p,
+        .proof-interlude--dark .proof-points li {
+            color: var(--white);
+        }
+
+        .proof-copy p {
+            color: var(--gray-700);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .proof-points {
+            list-style: none;
+            display: grid;
+            gap: 12px;
+            margin-bottom: 26px;
+        }
+
+        .proof-points li {
+            display: flex;
+            gap: 10px;
+            color: var(--gray-700);
+            font-weight: 600;
+        }
+
+        .proof-points li::before {
+            content: '✓';
+            color: var(--accent);
+            font-weight: 800;
+        }
+
+        .proof-media {
+            overflow: hidden;
+            border-radius: 24px;
+            box-shadow: var(--shadow-hover);
+            background: var(--gray-900);
+        }
+
+        .proof-media img,
+        .proof-media video {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .proof-image {
+            aspect-ratio: 4 / 5;
+        }
+
+        .proof-video {
+            aspect-ratio: 16 / 9;
+        }
+
         .testimonials {
             padding: 80px 0;
             background: linear-gradient(135deg, var(--gray-100) 0%, var(--off-white) 100%);
+            scroll-margin-top: 110px;
         }
 
-        .testimonial-card {
+        #proof-image-title,
+        #proof-video-title,
+        #testimonials-title {
+            scroll-margin-top: 120px;
+        }
+
+        .testimonials-lede {
+            max-width: 940px;
+            margin: 0 auto 42px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .testimonials-proof-card {
             background: var(--white);
-            padding: 35px;
-            border-radius: 20px;
+            border-radius: 16px;
+            padding: 24px;
             box-shadow: var(--shadow);
-            max-width: 800px;
-            margin: 0 auto;
+            border-top: 4px solid var(--accent);
+        }
+
+        .testimonials-proof-card strong {
+            display: block;
+            color: var(--gray-900);
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+        }
+
+        .testimonials-proof-card p {
+            color: var(--gray-500);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+            align-items: start;
+        }
+
+        .testimonial-carousel-shell + .testimonial-carousel-shell {
+            margin-top: 28px;
+        }
+
+        .testimonial-carousel-head {
+            display: none;
+        }
+
+        .testimonial-carousel-actions {
+            display: none;
+        }
+
+        .testimonial-media-card {
+            background: var(--white);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .testimonial-media-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .testimonial-media-card img,
+        .testimonial-media-card video {
+            width: 100%;
+            display: block;
+            background: var(--gray-900);
+            object-fit: contain;
+        }
+
+        .testimonial-media-card img {
+            height: auto;
+            background: #F4F7F2;
+        }
+
+        .testimonial-media-card video {
+            aspect-ratio: 16 / 9;
+            height: auto;
+            background: #000;
+        }
+
+        .testimonial-video-shell {
+            position: relative;
+            width: 100%;
+            background: #000;
+        }
+
+        .testimonial-play {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28));
+            color: var(--white);
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .testimonial-play::before {
+            content: '';
+            width: 82px;
+            height: 82px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.45), 0 14px 34px rgba(0, 0, 0, 0.32);
+            animation: playPulse 1.8s ease-out infinite;
+            position: absolute;
+        }
+
+        .testimonial-play svg {
+            width: 38px;
+            height: 38px;
+            margin-left: 5px;
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
+        }
+
+        .testimonial-video-shell.is-playing .testimonial-play {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        @keyframes playPulse {
+            0% {
+                transform: scale(0.94);
+                box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.45), 0 14px 34px rgba(0, 0, 0, 0.32);
+            }
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 20px rgba(76, 175, 80, 0), 0 14px 34px rgba(0, 0, 0, 0.32);
+            }
+            100% {
+                transform: scale(0.94);
+                box-shadow: 0 0 0 0 rgba(76, 175, 80, 0), 0 14px 34px rgba(0, 0, 0, 0.32);
+            }
+        }
+
+        .testimonial-cta {
             text-align: center;
+            margin-top: 38px;
         }
 
-        .testimonial-card p {
-            font-size: 1.15rem;
+        .testimonial-cta p {
             color: var(--gray-700);
-            font-style: italic;
-            line-height: 1.8;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
+            font-weight: 600;
         }
 
-        .testimonial-card .author {
-            font-weight: 700;
-            color: var(--primary);
-            font-size: 1.1rem;
+        .testimonials-hint {
+            display: none;
+        }
+
+        .testimonial-carousel-button {
+            width: 42px;
+            height: 42px;
+            border: 0;
+            border-radius: 50%;
+            background: var(--primary);
+            color: var(--white);
+            box-shadow: 0 10px 24px rgba(46, 125, 50, 0.22);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.18s ease, background 0.18s ease, opacity 0.18s ease;
+        }
+
+        .testimonial-carousel-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .testimonial-carousel-button:disabled {
+            opacity: 0.35;
+            cursor: default;
+            transform: none;
+        }
+
+        .testimonial-carousel-button svg {
+            width: 22px;
+            height: 22px;
         }
 
         /* Objections Section */
@@ -1035,6 +1299,25 @@
         }
 
         /* Mobile Responsive */
+        @media (max-width: 980px) {
+            .proof-split,
+            .proof-interlude--dark .proof-split {
+                grid-template-columns: 1fr;
+            }
+
+            .proof-interlude--dark .proof-media {
+                order: 2;
+            }
+
+            .testimonials-lede {
+                grid-template-columns: 1fr;
+            }
+
+            .testimonial-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2.2rem;
@@ -1067,6 +1350,122 @@
 
             .btn-primary, .btn-secondary {
                 justify-content: center;
+            }
+
+            .proof-interlude,
+            .testimonials {
+                padding: 58px 0;
+            }
+
+            .testimonials .container {
+                padding: 0;
+            }
+
+            .testimonials .section-header,
+            .testimonials-lede,
+            .testimonial-cta {
+                padding: 0 20px;
+            }
+
+            .testimonials-hint {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                margin: 0 20px 18px;
+                padding: 10px 14px;
+                border-radius: 12px;
+                background: #E8F5E9;
+                color: var(--primary-dark);
+                font-weight: 700;
+                font-size: 0.9rem;
+            }
+
+            .testimonials-hint span:last-child {
+                color: var(--accent);
+                white-space: nowrap;
+            }
+
+            .testimonial-carousel-shell {
+                margin-top: 18px;
+            }
+
+            .testimonial-carousel-shell + .testimonial-carousel-shell {
+                margin-top: 34px;
+            }
+
+            .testimonial-carousel-head {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 14px;
+                padding: 0 20px;
+                margin: 0 0 12px;
+            }
+
+            .testimonial-carousel-head h3 {
+                color: var(--gray-900);
+                font-size: 1.05rem;
+                line-height: 1.2;
+                margin: 0;
+            }
+
+            .testimonial-carousel-actions {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                flex: 0 0 auto;
+            }
+
+            .testimonial-grid {
+                display: flex;
+                overflow-x: auto;
+                gap: 14px;
+                padding: 0 20px 18px;
+                scroll-snap-type: x mandatory;
+                scroll-padding-left: 20px;
+                -webkit-overflow-scrolling: touch;
+                align-items: flex-start;
+                overscroll-behavior-x: contain;
+                scrollbar-width: none;
+            }
+
+            .testimonial-grid::-webkit-scrollbar {
+                display: none;
+            }
+
+            .testimonial-grid::after {
+                content: '';
+                flex: 0 0 20px;
+            }
+
+            .testimonial-media-card {
+                flex: 0 0 84%;
+                max-width: 84%;
+                scroll-snap-align: start;
+            }
+
+            .testimonial-media-card:hover {
+                transform: none;
+            }
+
+            .testimonial-media-card img,
+            .testimonial-media-card video {
+                height: auto;
+            }
+
+            .testimonial-media-card img {
+                width: 100%;
+            }
+
+            .testimonial-play::before {
+                width: 70px;
+                height: 70px;
+            }
+
+            .testimonial-play svg {
+                width: 32px;
+                height: 32px;
             }
         }
 
@@ -1633,7 +2032,7 @@
                         </svg>
                         Reserva tu clase gratis
                     </a>
-                    <a href="#reservar" class="btn-secondary" data-track="ViewContent" data-track-source="hero_form_scroll" data-content-name="hero_to_form">
+                    <a href="#reservar" class="btn-secondary" data-track="Lead" data-track-source="hero_form_scroll" data-content-name="Formulario clase gratis">
                         Prefiero dejar mis datos
                     </a>
                 </div>
@@ -1749,6 +2148,26 @@
         </div>
     </section>
 
+    <section class="proof-interlude proof-interlude--soft" aria-labelledby="proof-image-title">
+        <div class="container">
+            <div class="proof-split">
+                <div class="proof-copy reveal">
+                    <h2 id="proof-image-title">No tenés que estar lista. <span>Tenés que empezar acompañada.</span></h2>
+                    <p>Muchas personas llegan con dudas: si van a poder seguir la clase, si el grupo será para su nivel o si realmente se van a sentir cómodas. La experiencia de quienes ya probaron ayuda a responder eso mejor que cualquier promesa.</p>
+                    <ul class="proof-points">
+                        <li>Primera clase gratis para probar sin presión.</li>
+                        <li>Ejercicios adaptados según tu condición actual.</li>
+                        <li>Grupos reducidos, seguimiento y corrección real.</li>
+                    </ul>
+                    <a href="#reservar" class="btn-primary" data-track="Lead" data-track-source="testimonial_image_interlude" data-content-name="Formulario clase gratis">Quiero probar la clase gratis</a>
+                </div>
+                <figure class="proof-media proof-image reveal">
+                    <img src="videos/testimonios-optimizados/testimonio-8.webp" alt="Testimonio de una alumna sobre Entrenáte en Movimiento" loading="lazy" decoding="async" width="720" height="900">
+                </figure>
+            </div>
+        </div>
+    </section>
+
     <!-- Pricing Section -->
     <section class="pricing" id="pricing">
         <div class="container">
@@ -1856,6 +2275,32 @@
         </div>
     </section>
 
+    <section class="proof-interlude proof-interlude--dark" aria-labelledby="proof-video-title">
+        <div class="container">
+            <div class="proof-split">
+                <div class="proof-media proof-video testimonial-video-shell reveal" data-testimonial-video>
+                    <video playsinline preload="none" poster="videos/testimonios-optimizados/testimonio4-poster.webp">
+                        <source src="videos/testimonios-optimizados/testimonio4-720p.mp4" type="video/mp4">
+                        Tu navegador no soporta video HTML5.
+                    </video>
+                    <button type="button" class="testimonial-play" aria-label="Reproducir testimonio">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                </div>
+                <div class="proof-copy reveal">
+                    <h2 id="proof-video-title">Escuchalo de alguien que ya se animó.</h2>
+                    <p>Cuando una persona cuenta su experiencia, baja la barrera más importante: la duda de si este espacio también puede ser para vos. Probá una clase, conocé el grupo y decidí después.</p>
+                    <ul class="proof-points">
+                        <li>Sin compromiso de inscripción.</li>
+                        <li>Profes atentos a tu técnica y a tu ritmo.</li>
+                        <li>Ambiente cercano, al aire libre y con buena energía.</li>
+                    </ul>
+                    <a href="https://wa.me/59895682168?text=Hola!%20Quiero%20reservar%20mi%20clase%20gratuita%20de%20prueba" class="btn-primary" data-track="Lead" data-track-source="testimonial_video_interlude">Reservar por WhatsApp</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Equipment Section -->
     <section class="equipment" id="equipment">
         <div class="container">
@@ -1890,6 +2335,167 @@
                 </div>
             </div>
             <p style="text-align:center;margin-top:30px;color:var(--gray-500);">Además, necesitás traer: agua, colchoneta y ropa deportiva adecuada</p>
+        </div>
+    </section>
+
+    <section class="testimonials" id="testimonios" aria-labelledby="testimonials-title">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2 id="testimonials-title">Personas reales, <span>dudas reales</span>, cambios reales</h2>
+                <p>Antes de agendar es normal preguntarte si vas a poder, si te van a cuidar y si el grupo te va a resultar cómodo. Estos testimonios responden eso desde la experiencia.</p>
+            </div>
+
+            <div class="testimonials-lede reveal">
+                <div class="testimonials-proof-card">
+                    <strong>Si hace tiempo no entrenás</strong>
+                    <p>No necesitás llegar en forma. La clase se adapta a tu punto de partida para que puedas avanzar sin exigirte de más.</p>
+                </div>
+                <div class="testimonials-proof-card">
+                    <strong>Si te preocupa lesionarte</strong>
+                    <p>Los profes miran la técnica, corrigen y ajustan ejercicios. No es una clase masiva donde quedás sola.</p>
+                </div>
+                <div class="testimonials-proof-card">
+                    <strong>Si te cuesta sostener la constancia</strong>
+                    <p>El grupo y el acompañamiento hacen que sea más fácil volver, mantener el hábito y sentirte parte.</p>
+                </div>
+            </div>
+
+            <div class="testimonial-carousel-shell testimonial-carousel-shell--videos">
+                <div class="testimonial-carousel-head">
+                    <h3>Testimonios en video</h3>
+                    <div class="testimonial-carousel-actions" aria-label="Controles del carrusel de videos">
+                        <button type="button" class="testimonial-carousel-button" data-carousel-prev="videos" aria-label="Video anterior">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+                        </button>
+                        <button type="button" class="testimonial-carousel-button" data-carousel-next="videos" aria-label="Video siguiente">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="testimonial-grid testimonial-grid--videos" data-testimonial-carousel="videos">
+                <article class="testimonial-media-card reveal">
+                    <div class="testimonial-video-shell" data-testimonial-video>
+                    <video playsinline preload="none" poster="videos/testimonios-optimizados/testimonio1-poster.webp">
+                        <source src="videos/testimonios-optimizados/testimonio1-720p.mp4" type="video/mp4">
+                        Tu navegador no soporta video HTML5.
+                    </video>
+                    <button type="button" class="testimonial-play" aria-label="Reproducir testimonio de Javier Martínez">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    </div>
+                </article>
+                <article class="testimonial-media-card reveal">
+                    <div class="testimonial-video-shell" data-testimonial-video>
+                    <video playsinline preload="none" poster="videos/testimonios-optimizados/testimonio2-poster.webp">
+                        <source src="videos/testimonios-optimizados/testimonio2-720p.mp4" type="video/mp4">
+                        Tu navegador no soporta video HTML5.
+                    </video>
+                    <button type="button" class="testimonial-play" aria-label="Reproducir testimonio de Andrea">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    </div>
+                </article>
+                <article class="testimonial-media-card reveal">
+                    <div class="testimonial-video-shell" data-testimonial-video>
+                    <video playsinline preload="none" poster="videos/testimonios-optimizados/testimonio3-poster.webp">
+                        <source src="videos/testimonios-optimizados/testimonio3-720p.mp4" type="video/mp4">
+                        Tu navegador no soporta video HTML5.
+                    </video>
+                    <button type="button" class="testimonial-play" aria-label="Reproducir testimonio de Gabriela">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    </div>
+                </article>
+                <article class="testimonial-media-card reveal">
+                    <div class="testimonial-video-shell" data-testimonial-video>
+                    <video playsinline preload="none" poster="videos/testimonios-optimizados/testimonio4-poster.webp">
+                        <source src="videos/testimonios-optimizados/testimonio4-720p.mp4" type="video/mp4">
+                        Tu navegador no soporta video HTML5.
+                    </video>
+                    <button type="button" class="testimonial-play" aria-label="Reproducir testimonio">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    </div>
+                </article>
+                <article class="testimonial-media-card reveal">
+                    <div class="testimonial-video-shell" data-testimonial-video>
+                    <video playsinline preload="none" poster="videos/testimonios-optimizados/testimonio5-poster.webp">
+                        <source src="videos/testimonios-optimizados/testimonio5-720p.mp4" type="video/mp4">
+                        Tu navegador no soporta video HTML5.
+                    </video>
+                    <button type="button" class="testimonial-play" aria-label="Reproducir testimonio de Margarita">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    </div>
+                </article>
+                <article class="testimonial-media-card reveal">
+                    <div class="testimonial-video-shell" data-testimonial-video>
+                    <video playsinline preload="none" poster="videos/testimonios-optimizados/testimonio6-poster.webp">
+                        <source src="videos/testimonios-optimizados/testimonio6-720p.mp4" type="video/mp4">
+                        Tu navegador no soporta video HTML5.
+                    </video>
+                    <button type="button" class="testimonial-play" aria-label="Reproducir testimonio">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    </div>
+                </article>
+                <article class="testimonial-media-card reveal">
+                    <div class="testimonial-video-shell" data-testimonial-video>
+                    <video playsinline preload="none" poster="videos/testimonios-optimizados/testimonio7-poster.webp">
+                        <source src="videos/testimonios-optimizados/testimonio7-720p.mp4" type="video/mp4">
+                        Tu navegador no soporta video HTML5.
+                    </video>
+                    <button type="button" class="testimonial-play" aria-label="Reproducir testimonio de Rosario">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    </div>
+                </article>
+                </div>
+            </div>
+
+            <div class="testimonial-carousel-shell testimonial-carousel-shell--images">
+                <div class="testimonial-carousel-head">
+                    <h3>Testimonios escritos</h3>
+                    <div class="testimonial-carousel-actions" aria-label="Controles del carrusel de testimonios escritos">
+                        <button type="button" class="testimonial-carousel-button" data-carousel-prev="images" aria-label="Testimonio escrito anterior">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+                        </button>
+                        <button type="button" class="testimonial-carousel-button" data-carousel-next="images" aria-label="Testimonio escrito siguiente">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="testimonial-grid testimonial-grid--images" data-testimonial-carousel="images">
+                <article class="testimonial-media-card reveal">
+                    <img src="videos/testimonios-optimizados/testimonio-8.webp" alt="Testimonio de una alumna sobre Entrenáte en Movimiento" loading="lazy" decoding="async" width="720" height="900">
+                </article>
+                <article class="testimonial-media-card reveal">
+                    <img src="videos/testimonios-optimizados/testimonio-9.webp" alt="Testimonio escrito de una alumna" loading="lazy" decoding="async" width="720" height="900">
+                </article>
+                <article class="testimonial-media-card reveal">
+                    <img src="videos/testimonios-optimizados/testimonio-10.webp" alt="Testimonio escrito sobre las clases al aire libre" loading="lazy" decoding="async" width="720" height="900">
+                </article>
+                <article class="testimonial-media-card reveal">
+                    <img src="videos/testimonios-optimizados/testimonio-11.webp" alt="Testimonio escrito de entrenamiento grupal" loading="lazy" decoding="async" width="720" height="900">
+                </article>
+                <article class="testimonial-media-card reveal">
+                    <img src="videos/testimonios-optimizados/testimonio-12.webp" alt="Testimonio escrito de progreso y constancia" loading="lazy" decoding="async" width="720" height="900">
+                </article>
+                <article class="testimonial-media-card reveal">
+                    <img src="videos/testimonios-optimizados/testimonio-13.webp" alt="Testimonio escrito sobre el acompañamiento de los profesores" loading="lazy" decoding="async" width="720" height="900">
+                </article>
+                <article class="testimonial-media-card reveal">
+                    <img src="videos/testimonios-optimizados/testimonio-14.webp" alt="Testimonio escrito sobre la experiencia de entrenar en grupo" loading="lazy" decoding="async" width="720" height="900">
+                </article>
+                </div>
+            </div>
+
+            <div class="testimonial-cta reveal">
+                <p>Si te reconocés en alguna de estas dudas, el siguiente paso no es inscribirte: es probar una clase gratis.</p>
+                <a href="#reservar" class="btn-primary" data-track="Lead" data-track-source="testimonials_section" data-content-name="Formulario clase gratis">Agendar mi clase gratuita</a>
+            </div>
         </div>
     </section>
 
@@ -2060,7 +2666,7 @@
             <span class="exit-modal-badge">Sin compromiso</span>
             <h3 id="exitModalTitle">¿Te vas sin reservar tu clase gratis?</h3>
             <p>Solo te lleva 30 segundos. La primera clase es totalmente gratis y sin compromiso.</p>
-            <a href="#reservar" id="exitModalCta" class="btn-primary" data-track="Lead" data-track-source="exit_intent">
+            <a href="#reservar" id="exitModalCta" class="btn-primary" data-track="Lead" data-track-source="exit_intent" data-content-name="Formulario clase gratis">
                 Quiero mi clase gratis
             </a>
         </div>
@@ -2276,17 +2882,6 @@
 
                 var eventId = genEventId('lead');
 
-                if (typeof fbq === 'function') {
-                    try {
-                        fbq('track', 'Lead', {
-                            content_name: 'Formulario clase gratis',
-                            source_button: 'form_lead',
-                            utm_source: UTM_DATA.utm_source,
-                            utm_campaign: UTM_DATA.utm_campaign
-                        }, { eventID: eventId });
-                    } catch(err) {}
-                }
-
                 submitBtn.disabled = true;
                 var originalText = submitBtn.textContent;
                 submitBtn.textContent = 'Enviando...';
@@ -2327,6 +2922,17 @@
                         // Si el API falla, mostramos error pero no redirigimos
                         setStatus('error', 'Tuvimos un problema guardando tus datos. Por favor, reintentá o escribinos por WhatsApp.');
                         return;
+                    }
+
+                    if (data.tracked !== false && typeof fbq === 'function') {
+                        try {
+                            fbq('track', 'Lead', {
+                                content_name: 'Formulario clase gratis',
+                                source_button: 'form_lead',
+                                utm_source: UTM_DATA.utm_source,
+                                utm_campaign: UTM_DATA.utm_campaign
+                            }, { eventID: eventId });
+                        } catch(err) {}
                     }
 
                     renderSuccess();
@@ -2451,6 +3057,183 @@
                         toggle();
                     }
                 });
+            });
+        })();
+
+        // ============================================================
+        // Play verde para videos testimoniales
+        // ============================================================
+        (function() {
+            var shells = document.querySelectorAll('[data-testimonial-video]');
+            shells.forEach(function(shell) {
+                var video = shell.querySelector('video');
+                var button = shell.querySelector('.testimonial-play');
+                if (!video || !button) return;
+
+                function playVideo() {
+                    document.querySelectorAll('[data-testimonial-video] video').forEach(function(other) {
+                        if (other !== video) other.pause();
+                    });
+                    video.controls = true;
+                    video.play().then(function() {
+                        shell.classList.add('is-playing');
+                        if (typeof fbq === 'function') {
+                            try { fbq('trackCustom', 'VideoPlay', { content_name: button.getAttribute('aria-label') || 'testimonio' }); } catch(_){}
+                        }
+                    }).catch(function(err) {
+                        console.warn('[testimonial video] play blocked:', err);
+                    });
+                }
+
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    playVideo();
+                });
+
+                video.addEventListener('pause', function() {
+                    if (video.currentTime === 0 || video.ended) {
+                        shell.classList.remove('is-playing');
+                        video.controls = false;
+                    }
+                });
+
+                video.addEventListener('ended', function() {
+                    shell.classList.remove('is-playing');
+                    video.controls = false;
+                    video.currentTime = 0;
+                });
+            });
+        })();
+
+        // ============================================================
+        // Filtrado y ordenación dinámica de testimonios (Deduplicación)
+        // ============================================================
+        (function() {
+            // Auxiliar para extraer el número de testimonio desde un src
+            function getTestimonialNum(src) {
+                if (!src) return null;
+                var parts = src.split('/');
+                var filename = parts[parts.length - 1];
+                var match = filename.match(/testimonio-?(\d+)/i);
+                return match ? parseInt(match[1], 10) : null;
+            }
+
+            // 1. Detectar testimonios mostrados en la landing
+            var landingImgEl = document.querySelector('.proof-interlude--soft img');
+            var landingVideoEl = document.querySelector('.proof-interlude--dark video source');
+
+            var landingImgNum = landingImgEl ? getTestimonialNum(landingImgEl.getAttribute('src')) : null;
+            var landingVideoNum = landingVideoEl ? getTestimonialNum(landingVideoEl.getAttribute('src')) : null;
+
+            // 2. Filtrar y ordenar carrusel de imágenes
+            var imageCarousel = document.querySelector('[data-testimonial-carousel="images"]');
+            if (imageCarousel) {
+                var imageItems = Array.prototype.slice.call(imageCarousel.children);
+                var filteredImageItems = [];
+
+                imageItems.forEach(function(item) {
+                    var img = item.querySelector('img');
+                    if (!img) return;
+                    var num = getTestimonialNum(img.getAttribute('src'));
+                    if (num !== null && num === landingImgNum) {
+                        item.parentNode.removeChild(item);
+                    } else {
+                        filteredImageItems.push({ el: item, num: num });
+                    }
+                });
+
+                // Ordenar de menor a mayor
+                filteredImageItems.sort(function(a, b) {
+                    return (a.num || 0) - (b.num || 0);
+                });
+
+                // Re-apendizar en el orden correcto
+                filteredImageItems.forEach(function(itemObj) {
+                    imageCarousel.appendChild(itemObj.el);
+                });
+            }
+
+            // 3. Filtrar y ordenar carrusel de videos
+            var videoCarousel = document.querySelector('[data-testimonial-carousel="videos"]');
+            if (videoCarousel) {
+                var videoItems = Array.prototype.slice.call(videoCarousel.children);
+                var filteredVideoItems = [];
+
+                videoItems.forEach(function(item) {
+                    var videoSource = item.querySelector('video source');
+                    if (!videoSource) return;
+                    var num = getTestimonialNum(videoSource.getAttribute('src'));
+                    if (num !== null && num === landingVideoNum) {
+                        item.parentNode.removeChild(item);
+                    } else {
+                        filteredVideoItems.push({ el: item, num: num });
+                    }
+                });
+
+                // Ordenar de menor a mayor
+                filteredVideoItems.sort(function(a, b) {
+                    return (a.num || 0) - (b.num || 0);
+                });
+
+                // Re-apendizar en el orden correcto
+                filteredVideoItems.forEach(function(itemObj) {
+                    videoCarousel.appendChild(itemObj.el);
+                });
+            }
+        })();
+
+        // ============================================================
+        // Carruseles mobile de testimonios
+        // ============================================================
+        (function() {
+            var carousels = document.querySelectorAll('[data-testimonial-carousel]');
+            if (!carousels.length) return;
+
+            function getStep(carousel) {
+                var card = carousel.querySelector('.testimonial-media-card');
+                if (!card) return carousel.clientWidth * 0.86;
+                var styles = window.getComputedStyle(carousel);
+                var gap = parseFloat(styles.columnGap || styles.gap || '0') || 0;
+                return card.getBoundingClientRect().width + gap;
+            }
+
+            function updateButtons(carousel) {
+                var key = carousel.getAttribute('data-testimonial-carousel');
+                var prev = document.querySelector('[data-carousel-prev="' + key + '"]');
+                var next = document.querySelector('[data-carousel-next="' + key + '"]');
+                if (!prev || !next) return;
+                var maxScroll = Math.max(0, carousel.scrollWidth - carousel.clientWidth);
+                prev.disabled = carousel.scrollLeft <= 4;
+                next.disabled = carousel.scrollLeft >= maxScroll - 4;
+            }
+
+            function moveCarousel(key, direction) {
+                var carousel = document.querySelector('[data-testimonial-carousel="' + key + '"]');
+                if (!carousel) return;
+                carousel.scrollBy({ left: getStep(carousel) * direction, behavior: 'smooth' });
+                window.setTimeout(function() { updateButtons(carousel); }, 360);
+            }
+
+            carousels.forEach(function(carousel) {
+                var key = carousel.getAttribute('data-testimonial-carousel');
+                var prev = document.querySelector('[data-carousel-prev="' + key + '"]');
+                var next = document.querySelector('[data-carousel-next="' + key + '"]');
+
+                carousel.addEventListener('scroll', function() { updateButtons(carousel); }, { passive: true });
+                window.addEventListener('resize', function() { updateButtons(carousel); });
+                carousel.querySelectorAll('img, video').forEach(function(media) {
+                    media.addEventListener('load', function() { updateButtons(carousel); });
+                    media.addEventListener('loadedmetadata', function() { updateButtons(carousel); });
+                });
+
+                if (prev) {
+                    prev.addEventListener('click', function() { moveCarousel(key, -1); });
+                }
+                if (next) {
+                    next.addEventListener('click', function() { moveCarousel(key, 1); });
+                }
+
+                updateButtons(carousel);
             });
         })();
 

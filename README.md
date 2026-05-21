@@ -51,11 +51,8 @@ vercel --prod  # deploy a Production
 | Evento | Dónde dispara | Canales |
 |--------|---------------|---------|
 | `PageView` | Carga de página | Pixel + CAPI |
-| `ViewContent` | Scroll 50% y 75% | Pixel |
-| `Contact` | Click WhatsApp (header, footer) | Pixel + CAPI* |
-| `Schedule` | Click "Reservar clase gratis" (hero, pricing free, CTA final) | Pixel + CAPI* |
-| `Lead` | Click planes pagos + submit del formulario | Pixel + CAPI |
-| `CompleteRegistration` | Submit del formulario | Pixel |
+| `ViewContent` | Scroll 50% y 75% | Pixel + CAPI* |
+| `Lead` | Click en WhatsApp, CTAs de reserva/planes, scroll intencional al formulario y submit valido del formulario | Pixel + CAPI* |
 
 *CAPI se dispara cuando `window.__capiEnabled` está activo (por defecto, sí).
 

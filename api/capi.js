@@ -11,7 +11,7 @@
 //
 // Body esperado del cliente (POST JSON):
 //   {
-//     event_name: "Contact" | "Schedule" | "Lead" | "ViewContent" | "PageView" | "CompleteRegistration",
+//     event_name: "Lead" | "ViewContent" | "PageView",
 //     event_id:   string (UUID/slug generado en el front),
 //     event_source_url: string (window.location.href),
 //     custom_data: object (value, currency, content_name, source_button, etc.),
@@ -122,12 +122,7 @@ module.exports = async function handler(req, res) {
   const ALLOWED = new Set([
     'PageView',
     'ViewContent',
-    'Contact',
-    'Schedule',
-    'Lead',
-    'CompleteRegistration',
-    'InitiateCheckout',
-    'Purchase'
+    'Lead'
   ]);
   if (!ALLOWED.has(event_name)) {
     res.status(400).json({ error: 'Unsupported event_name' });
