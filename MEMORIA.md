@@ -4,7 +4,7 @@
 
 - **Nombre:** ENTRENÁ EN LA NATURALEZA
 - **Servicio:** Entrenamientos grupales al aire libre en Montevideo (Parque Rodó, Parque Batlle, Prado)
-- **Target:** Mujeres (público principal)
+- **Target:** Público general: hombres y mujeres que quieren entrenar al aire libre en grupos reducidos
 - **Profesores:**
   - **Álvaro Gustavo Pérez Rodríguez** — ISEF, 43 años exp, IG: @profesor_alvaro_perez
   - **Micaela Bianchi Luna** — IUACJ, 8 años exp (hidrogimnasia), IG: @micabianchiwellness
@@ -46,11 +46,11 @@
 
 ### Copy
 - Logo: **ENTRENÁ EN LA NATURALEZA**
-- Título hero: **Llena de energía y sentite más fuerte que nunca**
+- Título hero: **Llenate de energía y sentite más fuerte que nunca**
 - CTA WhatsApp header: **ELIMINADO**
 - Testimonio falso: **ELIMINADO** (sección completa removida)
 - Comunidad: *Conecta con personas que comparten tus mismos objetivos*
-- Mejor versión: *ser la mejor versión de vos misma*
+- Mejor versión: *construir tu mejor versión*
 
 ### Video hero
 - Web: `videos/hero-web.mp4` (autoplay, muted, loop)
