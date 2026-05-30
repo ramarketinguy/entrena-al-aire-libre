@@ -10,12 +10,12 @@
 // Variables de entorno:
 //   META_PIXEL_ID, META_CAPI_TOKEN, META_TEST_EVENT_CODE (hereda de /api/capi)
 //   LEAD_WEBHOOK_URL (opcional) - endpoint que reciba el lead (Zapier, Make, Google Sheets, etc.)
-//   WHATSAPP_NUMBER (opcional) - por defecto 59895682168
+//   WHATSAPP_NUMBER (opcional) - por defecto 59897922856
 
 const crypto = require('crypto');
 
 const GRAPH_VERSION = 'v21.0';
-const DEFAULT_WHATSAPP = '59895682168';
+const DEFAULT_WHATSAPP = '59897922856';
 
 function sha256(value) {
   if (value === undefined || value === null) return undefined;
@@ -68,6 +68,10 @@ module.exports = async function handler(req, res) {
     phone = '',
     schedule_preference = '',
     park_preference = '',
+    // Nuevos campos de calificación
+    goal = '',
+    physical_condition = '',
+    start_when = '',
     event_id,
     event_source_url,
     // honeypot — si viene con valor, es un bot
@@ -146,7 +150,10 @@ module.exports = async function handler(req, res) {
         content_category: 'clase_prueba',
         source_button: 'form_lead',
         schedule_preference: schedule_preference || undefined,
-        park_preference: park_preference || undefined
+        park_preference: park_preference || undefined,
+        goal: goal || undefined,
+        physical_condition: physical_condition || undefined,
+        start_when: start_when || undefined
       }, utm && typeof utm === 'object' ? utm : {})
     }]
   };
@@ -171,6 +178,7 @@ module.exports = async function handler(req, res) {
           received_at: new Date().toISOString(),
           name, email, phone,
           schedule_preference, park_preference,
+          goal, physical_condition, start_when,
           utm,
           ip: getClientIp(req),
           user_agent: req.headers['user-agent'],

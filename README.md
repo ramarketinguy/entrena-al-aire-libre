@@ -28,7 +28,7 @@ Configurar en el dashboard del proyecto en Vercel (Settings → Environment Vari
 | `META_CAPI_TOKEN` | System User token (marcar **Sensitive**) | Production + Preview |
 | `META_TEST_EVENT_CODE` | `TEST96231` | **Solo Preview** — dejar vacío en Production |
 | `LEAD_WEBHOOK_URL` | (opcional) URL de Zapier/Make | Production |
-| `WHATSAPP_NUMBER` | (opcional) `59895682168` por defecto | Production |
+| `WHATSAPP_NUMBER` | (opcional) `59897922856` por defecto | Production |
 
 ## Deploy
 

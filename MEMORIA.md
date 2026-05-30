@@ -8,7 +8,7 @@
 - **Profesores:**
   - **Álvaro Gustavo Pérez Rodríguez** — ISEF, 43 años exp, IG: @profesor_alvaro_perez
   - **Micaela Bianchi Luna** — IUACJ, 8 años exp (hidrogimnasia), IG: @micabianchiwellness
-- **WhatsApp:** +598 95 682 168
+- **WhatsApp:** +598 97 922 856
 - **Planes:** $0 prueba / $1.200/mes (1x) / $2.000/mes (2x popular) / $2.700/mes (3x)
 - **Herramientas Compartidas:**
   - **FFmpeg:** `D:\2_Agencia\Ramarketing\Antigravity\Tools\ffmpeg\ffmpeg-8.1.1-essentials_build\bin\ffmpeg.exe`

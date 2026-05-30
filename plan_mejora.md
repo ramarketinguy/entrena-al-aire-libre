@@ -24,7 +24,7 @@ Plan ejecutable por fases para llevar la landing de un estado funcional a uno op
   - `Schedule` (click en "Reservar clase gratis")
 
 ### Contacto
-- **WhatsApp:** +598 95 682 168
+- **WhatsApp:** +598 97 922 856
 - **Formas de pago actuales:** efectivo y transferencia
 
 ---
