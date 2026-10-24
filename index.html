@@ -416,35 +416,6 @@
             .hero-video-bg .video-mobile { display: none; }
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 80%;
-            height: 200%;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cpath fill='rgba(255,255,255,0.05)' d='M45,-58C58,-48 69,-35 75,-19C81,-3 82 17 73 34C64 51 45 65 23 76C1 87 -25 95 -48 89C-71 83 -90 63 -100 38C-110 13 -111 -17 -100,-42C-89,-67 -66,-87 -40,-98C-14,-109 14,-111 38,-101C62,-91 77,-69 85,-44C93,-19 93,10 85,36C77,62 59,85 37,98C15,111 -11,114 -35,105C-59,96 -77,75 -88,51C-99,27 -98,0 -93,-27L-93,-27Z' transform='translate(100 100)'/%3E%3C/svg%3E") no-repeat center center;
-            background-size: contain;
-            animation: float 20s ease-in-out infinite;
-        }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            bottom: -30%;
-            left: -10%;
-            width: 60%;
-            height: 100%;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cpath fill='rgba(255,255,255,0.03)' d='M40,-55C53,-44 65,-31 71,-15C77,1 77,21 68,37C59,53 41,65 20,73C-1,81 -25,85 -46,78C-67,71 -85,53 -95,30C-105,7 -105,-20 -97,-44C-89,-68 -72,-88 -51,-101C-30,-114 -5,-120 18,-115C41,-110 63,-94 80,-71C97,-48 106,-18 107,13C108,44 101,76 83,100C65,124 36,140 4,143C-28,146 -63,136 -88,115C-113,94 -128,62 -133,28C-138,-6 -132,-42 -117,-74L-117,-74Z' transform='translate(100 100)'/%3E%3C/svg%3E") no-repeat center center;
-            background-size: contain;
-            animation: float 25s ease-in-out infinite reverse;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            50% { transform: translate(30px, -20px) rotate(5deg); }
-        }
-
         .hero-content {
             position: relative;
             z-index: 2;
@@ -2098,7 +2069,7 @@
         <div class="container">
             <div class="section-header reveal">
                 <h2>Por qué entrenar <span>con nosotros</span></h2>
-                <p>Clases al aire libre pensadas para tu edad y tu día a día</p>
+                <p>Salud, movilidad e independencia&nbsp;en&nbsp;cada&nbsp;clase</p>
             </div>
             <div class="benefits-grid">
                 <div class="benefit-card">
@@ -2225,7 +2196,7 @@
         <div class="container">
             <div class="section-header reveal">
                 <h2>Planes y&nbsp;<span>precios</span></h2>
-                <p>Planes accesibles para cuidar tu salud, mes a mes</p>
+                <p>Planes accesibles para cuidar tu salud, mes&nbsp;a&nbsp;mes</p>
             </div>
             <div class="pricing-grid">
                 <div class="pricing-card">
@@ -2350,7 +2321,7 @@
         <div class="container">
             <div class="section-header reveal">
                 <h2>Lo que <span>usamos</span> en clases</h2>
-                <p>Equipamiento diverso para entrenamientos completos y entretenidos</p>
+                <p>Equipamiento completo y variado</p>
             </div>
             <div class="equipment-grid">
                 <div class="equipment-item">
@@ -2548,7 +2519,7 @@
         <div class="container">
             <div class="section-header reveal">
                 <h2>¿Tenés&nbsp;<span>dudas</span>?</h2>
-                <p>Respondemos las preguntas más frecuentes</p>
+                <p>Respondemos las preguntas más&nbsp;frecuentes</p>
             </div>
             <div class="objections-grid">
                 <div class="objection-card" data-accordion role="button" tabindex="0" aria-expanded="false">
@@ -3188,7 +3159,7 @@
         // lleve al menos dos palabras (pegándolas con espacio duro).
         // ============================================================
         (function() {
-            var headings = document.querySelectorAll('h1,h2,h3,.schedule-note,.form-legal,.lead-form-sub');
+            var headings = document.querySelectorAll('h1,h2,h3,li,.hero-badge,.schedule-note,.form-legal,.lead-form-sub');
             headings.forEach(function(h) {
                 var nodes = [];
                 (function walk(n) {
