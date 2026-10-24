@@ -27,6 +27,7 @@
 - **Meta Pixel ID:** se define como env var `META_PIXEL_ID` en Vercel (también hardcoded en el snippet del `<head>` de `index.html`)
 - **CAPI:** deduplicación por `event_id` generado en el front; token solo server-side
 - **Anti-huérfanas:** `text-wrap: balance/pretty` + script que pega las 2 últimas palabras de cada título (no dejar palabras sueltas en la última línea)
+- **Push desde esta máquina:** el global config de git usa el helper de gh para github.com (cuenta activa que puede NO ser la del repo). Este repo tiene override local: helper `manager` + `credential.useHttpPath=true` + credencial por-repo de `ramarketinguy` en el Credential Manager. `git push` funciona directo desde esta carpeta.
 
 ## Estado (sesión 24/10/2026 — v2)
 
@@ -41,6 +42,8 @@
 - [x] api/lead.js eliminada (no hay más captura de datos ni webhook)
 - [x] Fixes de seguridad: CORS same-origin, rate limit, docs sensibles fuera del repo
 - [x] Favicon ICO + apple-touch-icon PNG generados; og-image 1200x630 comprimida
+- [x] Mancha del hero eliminada (blobs SVG decorativos)
+- [x] Push a GitHub y deploy a Vercel verificados en producción
 - [ ] Actualizar `META_PIXEL_ID` y `META_CAPI_TOKEN` en Vercel (manual)
 - [ ] Generar Test Event Code nuevo en el pixel nuevo (manual)
 - [ ] Comprar dominio y actualizar los 5 puntos del README (manual)
