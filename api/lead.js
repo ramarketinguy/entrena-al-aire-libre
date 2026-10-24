@@ -2,20 +2,41 @@
 // Vercel Serverless Function — Recibe el formulario de lead.
 //
 // Comportamiento:
-//  1. Valida campos y honeypot
-//  2. Dispara evento Lead a la API de Conversiones de Meta con user_data (email/phone hasheados)
-//  3. (Opcional) Reenvía el lead por email via WEBHOOK_URL si está configurado
-//  4. Devuelve { ok: true, redirect_to: <whatsapp_url> } para que el front abra WhatsApp
+//  1. Valida campos y honeypot (los bots reciben un éxito falso)
+//  2. Envía el lead al webhook (Google Sheets) y dispara el evento Lead a la
+//     API de Conversiones de Meta con user_data (email/phone hasheados)
+//  3. Ambos envíos corren en paralelo con tope de ~3s; el front muestra el
+//     modal de éxito con eso
 //
 // Variables de entorno:
-//   META_PIXEL_ID, META_CAPI_TOKEN, META_TEST_EVENT_CODE (hereda de /api/capi)
+//   META_PIXEL_ID, META_CAPI_TOKEN, META_TEST_EVENT_CODE (solo Preview)
 //   LEAD_WEBHOOK_URL (opcional) - endpoint que reciba el lead (Zapier, Make, Google Sheets, etc.)
-//   WHATSAPP_NUMBER (opcional) - por defecto 59897922856
 
 const crypto = require('crypto');
 
-const GRAPH_VERSION = 'v21.0';
-const DEFAULT_WHATSAPP = '59897922856';
+const GRAPH_VERSION = 'v23.0';
+
+// Rate limit best-effort en memoria por instancia. Máx 5 leads por minuto por IP.
+const RATE_LIMIT = 5;
+const RATE_WINDOW_MS = 60000;
+const rateMap = new Map();
+
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, arr] of rateMap) {
+    const fresh = arr.filter(t => now - t < RATE_WINDOW_MS);
+    if (fresh.length === 0) rateMap.delete(ip); else rateMap.set(ip, fresh);
+  }
+}, RATE_WINDOW_MS).unref();
+
+function isRateLimited(ip) {
+  if (!ip) return false;
+  const now = Date.now();
+  const arr = (rateMap.get(ip) || []).filter(t => now - t < RATE_WINDOW_MS);
+  arr.push(now);
+  rateMap.set(ip, arr);
+  return arr.length > RATE_LIMIT;
+}
 
 function sha256(value) {
   if (value === undefined || value === null) return undefined;
@@ -49,12 +70,28 @@ function getCookie(req, name) {
 }
 
 module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
+  // CORS — solo same-origin (ver api/capi.js para el detalle)
+  const origin = req.headers.origin || '';
+  let sameOrigin = true;
+  if (origin) {
+    try {
+      sameOrigin = new URL(origin).host === req.headers.host;
+    } catch (_) {
+      sameOrigin = false;
+    }
+  }
+  if (sameOrigin) {
+    res.setHeader('Access-Control-Allow-Origin', origin || '*');
+  }
+  res.setHeader('Vary', 'Origin');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') { res.status(204).end(); return; }
   if (req.method !== 'POST') { res.status(405).json({ error: 'Method not allowed' }); return; }
+
+  if (!sameOrigin) { res.status(403).json({ error: 'Forbidden' }); return; }
+  if (isRateLimited(getClientIp(req))) { res.status(429).json({ error: 'Too many requests' }); return; }
 
   let body = req.body;
   if (typeof body === 'string') {
@@ -85,17 +122,17 @@ module.exports = async function handler(req, res) {
   // ---------- Honeypot ----------
   if (company && String(company).trim() !== '') {
     // fingimos éxito para no dar señales al bot
-    res.status(200).json({ ok: true, redirect_to: null, tracked: false });
+    res.status(200).json({ ok: true, tracked: false });
     return;
   }
 
-  // ---------- Time-trap: si completaron el form en <2s, probablemente bot ----------
+  // ---------- Time-trap: completar el form en <2s sugiere bot ----------
+  // Ya NO descartamos el lead (riesgo de perder personas reales con autofill):
+  // lo enviamos igual pero lo marcamos como sospechoso para revisión manual.
+  let flagged = false;
   if (rendered_at && Number.isFinite(Number(rendered_at))) {
     const elapsed = Date.now() - Number(rendered_at);
-    if (elapsed < 2000) {
-      res.status(200).json({ ok: true, redirect_to: null, tracked: false });
-      return;
-    }
+    if (elapsed < 2000) flagged = true;
   }
 
   // ---------- Validación de campos mínimos ----------
@@ -159,42 +196,40 @@ module.exports = async function handler(req, res) {
   };
   if (TEST_CODE) metaPayload.test_event_code = TEST_CODE;
 
-  // ---------- Webhook PRIORITARIO (Google Sheets) ----------
-  // Intentamos leer en mayúsculas y minúsculas por las dudas
-  const webhookUrl = process.env.LEAD_WEBHOOK_URL || process.env.lead_webhook_url;
-  
-  console.log('[LEAD] Diagnóstico de variables:', {
-    has_webhook: !!webhookUrl,
-    env_keys: Object.keys(process.env).filter(k => k.toLowerCase().includes('webhook') || k.toLowerCase().includes('meta'))
+  // ---------- Webhook (Google Sheets) + Meta CAPI, en paralelo con tope de tiempo ----------
+  // No bloqueamos la respuesta más de ~3s: si algún servicio tarda, se responde
+  // igual y el envío termina en background (el resultado queda en los logs).
+  const webhookUrl = process.env.LEAD_WEBHOOK_URL;
+  const webhookBody = JSON.stringify({
+    received_at: new Date().toISOString(),
+    name, email, phone,
+    schedule_preference, park_preference,
+    goal, physical_condition, start_when,
+    flagged,
+    utm,
+    ip: getClientIp(req),
+    user_agent: req.headers['user-agent'],
+    referer: req.headers.referer
   });
 
-  if (webhookUrl) {
-    try {
-      console.log('[LEAD][WEBHOOK] Enviando a Google Sheets...');
-      const whResp = await fetch(webhookUrl.trim(), {
+  const webhookPromise = webhookUrl
+    ? fetch(webhookUrl.trim(), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          received_at: new Date().toISOString(),
-          name, email, phone,
-          schedule_preference, park_preference,
-          goal, physical_condition, start_when,
-          utm,
-          ip: getClientIp(req),
-          user_agent: req.headers['user-agent'],
-          referer: req.headers.referer
-        })
-      });
-      const whText = await whResp.text();
-      console.log('[LEAD][WEBHOOK] Resultado:', whResp.status, whText);
-    } catch (whErr) {
-      console.error('[LEAD][WEBHOOK] ERROR CRÍTICO:', whErr.message);
-    }
-  } else {
-    console.error('[LEAD] ERROR: LEAD_WEBHOOK_URL no encontrada en process.env');
+        body: webhookBody
+      }).then(r => r.text().then(t => {
+        if (!r.ok) console.error('[LEAD][WEBHOOK] Error:', r.status, t.slice(0, 200));
+        else console.log('[LEAD][WEBHOOK] OK:', r.status);
+      })).catch(err => {
+        console.error('[LEAD][WEBHOOK] ERROR:', err.message);
+      })
+    : Promise.resolve();
+
+  if (!webhookUrl) {
+    console.error('[LEAD] LEAD_WEBHOOK_URL no configurada: el lead no se guardó en la planilla');
   }
 
-  // ---------- Meta CAPI (en paralelo/segundo plano) ----------
+  // ---------- Meta CAPI (en paralelo con el webhook) ----------
   const capiPromise = (PIXEL_ID && TOKEN)
     ? fetch(`https://graph.facebook.com/${GRAPH_VERSION}/${PIXEL_ID}/events?access_token=${encodeURIComponent(TOKEN)}`, {
         method: 'POST',
@@ -207,24 +242,18 @@ module.exports = async function handler(req, res) {
       })
     : Promise.resolve();
 
-  // Esperamos un poquito a Meta por cortesía, pero no bloqueamos si el Webhook ya terminó
+  // Tope de espera total: 3s. Lo que no llegue, termina en background.
   await Promise.race([
-    capiPromise,
-    new Promise(resolve => setTimeout(resolve, 2000))
+    Promise.all([webhookPromise, capiPromise]),
+    new Promise(resolve => setTimeout(resolve, 3000))
   ]);
-
-  // ---------- Construir URL de WhatsApp (para el log o fallback si fuera necesario) ----------
-  const waNumber = process.env.WHATSAPP_NUMBER || DEFAULT_WHATSAPP;
-  const parts = ['Hola! Soy ' + name + '.'];
-  const waMessage = encodeURIComponent(parts.join(' '));
-  const redirectTo = `https://wa.me/${waNumber}?text=${waMessage}`;
 
   console.log('[LEAD] Finalizando función. Enviando OK al cliente.');
   res.status(200).json({
     ok: true,
-    redirect_to: redirectTo,
     event_id,
     tracked: true,
+    flagged,
     capi_enabled: Boolean(PIXEL_ID && TOKEN)
   });
 };

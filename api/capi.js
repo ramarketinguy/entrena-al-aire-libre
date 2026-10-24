@@ -20,7 +20,30 @@
 
 const crypto = require('crypto');
 
-const GRAPH_VERSION = 'v21.0';
+const GRAPH_VERSION = 'v23.0';
+
+// Rate limit best-effort en memoria por instancia (los serverless son efímeros,
+// pero filtra el spam básico). Máx 30 eventos por minuto por IP.
+const RATE_LIMIT = 30;
+const RATE_WINDOW_MS = 60000;
+const rateMap = new Map();
+
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, arr] of rateMap) {
+    const fresh = arr.filter(t => now - t < RATE_WINDOW_MS);
+    if (fresh.length === 0) rateMap.delete(ip); else rateMap.set(ip, fresh);
+  }
+}, RATE_WINDOW_MS).unref();
+
+function isRateLimited(ip) {
+  if (!ip) return false;
+  const now = Date.now();
+  const arr = (rateMap.get(ip) || []).filter(t => now - t < RATE_WINDOW_MS);
+  arr.push(now);
+  rateMap.set(ip, arr);
+  return arr.length > RATE_LIMIT;
+}
 
 // ---------- Utils ----------
 
@@ -70,9 +93,22 @@ function safeNumber(n) {
 // ---------- Handler ----------
 
 module.exports = async function handler(req, res) {
-  // CORS — permitir same-origin. Ajustar si la landing corre en otro dominio.
+  // CORS — solo same-origin. Un origen que no coincide con el host del request
+  // no recibe cabeceras CORS (el navegador bloquea la respuesta) y rechazamos
+  // la petición para frenar spam desde otros sitios.
   const origin = req.headers.origin || '';
-  res.setHeader('Access-Control-Allow-Origin', origin || '*');
+  let sameOrigin = true;
+  if (origin) {
+    try {
+      sameOrigin = new URL(origin).host === req.headers.host;
+    } catch (_) {
+      sameOrigin = false;
+    }
+  }
+  if (sameOrigin) {
+    res.setHeader('Access-Control-Allow-Origin', origin || '*');
+  }
+  res.setHeader('Vary', 'Origin');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Access-Control-Max-Age', '600');
@@ -84,6 +120,16 @@ module.exports = async function handler(req, res) {
 
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
+    return;
+  }
+
+  if (!sameOrigin) {
+    res.status(403).json({ error: 'Forbidden' });
+    return;
+  }
+
+  if (isRateLimited(getClientIp(req))) {
+    res.status(429).json({ error: 'Too many requests' });
     return;
   }
 
@@ -162,10 +208,17 @@ module.exports = async function handler(req, res) {
   if (custom_data.currency) cd.currency = String(custom_data.currency).toUpperCase();
   if (custom_data.content_name) cd.content_name = String(custom_data.content_name);
   if (custom_data.content_category) cd.content_category = String(custom_data.content_category);
-  if (custom_data.content_ids) cd.content_ids = custom_data.content_ids;
+  if (custom_data.content_ids) cd.content_ids = Array.isArray(custom_data.content_ids)
+    ? custom_data.content_ids.map(String)
+    : String(custom_data.content_ids);
   if (custom_data.content_type) cd.content_type = String(custom_data.content_type);
   // Campos propios (no estándar) se mandan dentro de custom_data igual
   if (custom_data.source_button) cd.source_button = String(custom_data.source_button);
+
+  // UTMs y click IDs — pasarlos para atribución en Meta
+  ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'fbclid', 'gclid', 'ttclid'].forEach(k => {
+    if (custom_data[k]) cd[k] = String(custom_data[k]);
+  });
 
   // ---------- Payload final ----------
   const eventTime = Math.floor(Date.now() / 1000);

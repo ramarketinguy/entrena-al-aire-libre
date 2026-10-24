@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://entrenateenmovimiento.uy/sitemap.xml
+Sitemap: https://entrena-al-aire-libre.vercel.app/sitemap.xml
