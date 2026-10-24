@@ -208,7 +208,7 @@
               "name": "¿Cómo funcionan las clases online?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Son sesiones en vivo de 45 a 60 minutos para hacer desde tu casa, con guía y corrección en tiempo real. La sesión individual cuesta $800. Si se conectan 2 personas, $500 cada una; si se conectan 3, $400 cada una."
+                "text": "Son sesiones en vivo de 45 a 60 minutos para hacer desde tu casa, con guía y corrección en tiempo real. Podés tomarlas sola o acompañada: si se conectan 2 personas a la misma hora (por ejemplo, amigas que entrenan juntas), cada una paga $500; si se conectan 3, $400 cada una."
               }
             },
             {
@@ -276,6 +276,11 @@
             font-family: 'Poppins', sans-serif;
             font-weight: 700;
             line-height: 1.2;
+            text-wrap: balance;
+        }
+
+        p, li {
+            text-wrap: pretty;
         }
 
         .container {
@@ -1330,6 +1335,19 @@
                 grid-template-columns: 1fr;
             }
 
+            /* Que la captura del testimonio se lea entera sin scroll */
+            .proof-image {
+                aspect-ratio: auto;
+            }
+
+            .proof-media img {
+                width: auto;
+                max-width: 100%;
+                height: auto;
+                max-height: 72vh;
+                margin: 0 auto;
+            }
+
             .proof-interlude--dark .proof-media {
                 order: 2;
             }
@@ -2042,9 +2060,9 @@
                 <div class="hero-badge">
                     <span>🌱</span> Más de 300 personas ya recuperaron su energía con nosotros
                 </div>
-                <h1>Recuperá tu <span>energía</span>, tu movilidad y tu independencia</h1>
+                <h1>Recuperá tu&nbsp;<span>energía</span><br>tu movilidad<br>y tu independencia</h1>
                 <p class="hero-description">
-                    ¿Sentís que el cuerpo ya no responde como antes? Si tenés más de 45, estas clases al aire libre son para vos: ejercicios adaptados a tu edad y condición, en grupos reducidos y con un profesor que te cuida en cada movimiento. Sin gimnasios llenos, sin máquinas intimidantes, sin sentirte perdido.
+                    ¿Sentís que el cuerpo ya no responde como antes? Si tenés más de 45, estas clases al aire libre son para vos: ejercicios adaptados a tu edad y condición, en grupos reducidos y con un profesor que te cuida en cada movimiento. Sin gimnasios llenos ni máquinas intimidantes.
                 </p>
                 <div class="hero-buttons">
                     <a href="https://wa.me/59899253103?text=Hola!%20Quiero%20reservar%20mi%20clase%20gratuita%20de%20prueba" class="btn-primary" data-track="Lead" data-track-source="hero_cta">
@@ -2053,8 +2071,8 @@
                         </svg>
                         Reservá tu clase gratis
                     </a>
-                    <a href="#reservar" class="btn-secondary" data-track="Lead" data-track-source="hero_form_scroll" data-content-name="Formulario clase gratis">
-                        Prefiero dejar mis datos
+                    <a href="#schedule" class="btn-secondary">
+                        Ver horarios y planes
                     </a>
                 </div>
                 <div class="hero-stats">
@@ -2079,8 +2097,8 @@
     <section class="benefits" id="benefits">
         <div class="container">
             <div class="section-header reveal">
-                <h2>Entrenar <span>después de los 45</span>, hecho a tu medida</h2>
-                <p>Más que ejercicio: cuidá tu salud, tu movilidad y tu independencia</p>
+                <h2>Por qué entrenar <span>con nosotros</span></h2>
+                <p>Clases al aire libre pensadas para tu edad y tu día a día</p>
             </div>
             <div class="benefits-grid">
                 <div class="benefit-card">
@@ -2142,7 +2160,7 @@
                     <h3>🌅 Mañana <span>Mar - Jue</span></h3>
                     <ul class="schedule-list">
                         <li>
-                            <span>Prado (Frente a los Charrúas)</span>
+                            <span>Prado (frente al Charrúa)</span>
                             <span class="time">10:00</span>
                         </li>
                     </ul>
@@ -2168,17 +2186,17 @@
                             <span class="time">$800</span>
                         </li>
                         <li>
-                            <span>2 personas conectadas</span>
+                            <span>2 conectadas a la misma hora</span>
                             <span class="time">$500 c/u</span>
                         </li>
                         <li>
-                            <span>3 personas conectadas</span>
+                            <span>3 conectadas a la misma hora</span>
                             <span class="time">$400 c/u</span>
                         </li>
                     </ul>
                 </div>
             </div>
-            <p class="schedule-note">Clases presenciales de 60 minutos | Parque Rodó, Parque Batlle y Prado | Online: horario a coordinar</p>
+            <p class="schedule-note">Presenciales de 60 minutos: Parque Rodó, Parque Batlle y Prado | Online desde tu casa, ideal para entrenar con amigas o en grupo</p>
         </div>
     </section>
 
@@ -2193,7 +2211,7 @@
                         <li>Ejercicios adaptados a tu condición, sin importar cuánto hace que no te movés.</li>
                         <li>Grupos reducidos con corrección personalizada en cada movimiento.</li>
                     </ul>
-                    <a href="#reservar" class="btn-primary" data-track="Lead" data-track-source="testimonial_image_interlude" data-content-name="Formulario clase gratis">Quiero probar la clase gratis</a>
+                    <a href="https://wa.me/59899253103?text=Hola!%20Quiero%20reservar%20mi%20clase%20gratuita%20de%20prueba" class="btn-primary" data-track="Lead" data-track-source="testimonial_image_interlude" data-content-name="WhatsApp">Reservar por WhatsApp</a>
                 </div>
                 <figure class="proof-media proof-image reveal">
                     <img src="videos/testimonios-optimizados/testimonio-8.webp" alt="Testimonio de una persona que entrena en Entrenáte en Movimiento" loading="lazy" decoding="async" width="720" height="900">
@@ -2206,7 +2224,7 @@
     <section class="pricing" id="pricing">
         <div class="container">
             <div class="section-header reveal">
-                <h2>Planes y <span>precios</span></h2>
+                <h2>Planes y&nbsp;<span>precios</span></h2>
                 <p>Planes accesibles para cuidar tu salud, mes a mes</p>
             </div>
             <div class="pricing-grid">
@@ -2260,9 +2278,9 @@
                     <div class="price">$800</div>
                     <div class="price-period">por sesión de 45 a 60 min</div>
                     <ul class="pricing-features">
-                        <li>Entrená desde donde estés</li>
-                        <li>2 personas conectadas: $500 c/u</li>
-                        <li>3 personas conectadas: $400 c/u</li>
+                        <li>Desde tu casa, sola o acompañada</li>
+                        <li>Si se conectan 2: $500 cada una</li>
+                        <li>Si se conectan 3: $400 cada una</li>
                     </ul>
                     <a href="https://wa.me/59899253103?text=Hola!%20Quiero%20informaci%C3%B3n%20sobre%20las%20clases%20online" class="btn-primary" style="width:100%;justify-content:center;margin-top:15px;" data-track="Lead" data-track-source="pricing_online" data-value="800" data-currency="UYU" data-content-name="Clase online">Consultar por online</a>
                 </div>
@@ -2274,7 +2292,7 @@
     <section class="about" id="about">
         <div class="container">
             <div class="section-header reveal">
-                <h2>Conocé a tu <span>profesor</span></h2>
+                <h2>Conocé a tu&nbsp;<span>profesor</span></h2>
                 <p>43 años de experiencia entrenando personas de todas las edades. Mirá su presentación en video.</p>
             </div>
             <div class="about-grid">
@@ -2290,7 +2308,7 @@
                     </div>
                     <h3>Álvaro Gustavo Pérez Rodríguez</h3>
                     <div class="subtitle">Licenciado en Educación Física (ISEF)</div>
-                    <p>Formado en el Instituto Superior de Educación Física, con especialización en deportes, salud física y mental. Lleva 43 años entrenando personas y acompaña a grupos como el nuestro: mayores de 45 que quieren recuperar su fuerza, su movilidad y su energía para vivir mejor.</p>
+                    <p>Formado en el Instituto Superior de Educación Física, con especialización en deportes, salud física y mental. Lleva 43 años entrenando personas y desde hace más de 10 acompaña a mayores de 45 que quieren recuperar su fuerza, su movilidad y su energía para vivir mejor.</p>
                     <div class="quote">"Mi filosofía es clara: si yo puedo, ¡vos también podés!"</div>
                     <a href="https://www.instagram.com/profesor_alvaro_perez/" target="_blank" rel="noopener" class="insta-link" aria-label="Seguime en Instagram">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.064 4.945c-.06 1.278-.086 1.688-.086 4.948 0 3.259.014 3.668.072 4.948.2 1.289.967 2.772 2.969 3.99 1.002.609 2.424 1.078 4.068 1.414 1.65.336 3.43.506 5.33.506 3.26 0 3.584-.014 4.85-.072 1.278-.086 1.688-.086 4.948-.086 3.259 0 3.668.014 4.948.072 1.278.086 1.689.086 4.948.086 3.259 0 3.668-.014 4.948-.072 1.278-.086 1.689-.086 4.948-.086 1.903 0 3.682-.17 5.33-.506 1.644-.336 3.066-.805 4.068-1.414 2.002-1.218 2.769-2.701 2.969-3.99.072-1.28.072-1.689.072-4.948 0-3.259-.014-3.667-.072-4.948-.196-2.255-1.667-3.673-2.969-3.973C18.682.014 18.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
@@ -2368,7 +2386,7 @@
         <div class="container">
             <div class="section-header reveal">
                 <h2 id="testimonials-title">Personas reales, <span>dudas reales</span>, cambios reales</h2>
-                <p>Antes de agendar es normal preguntarse si uno va a poder, si lo van a cuidar y si el grupo va a ser de su edad. Estos testimonios responden eso desde la experiencia.</p>
+                <p>Antes de agendar es normal preguntarte si vas a poder, si te van a cuidar y si el grupo va a ser de tu edad. Estos testimonios responden eso desde la experiencia.</p>
             </div>
 
             <div class="testimonials-lede reveal">
@@ -2382,7 +2400,7 @@
                 </div>
                 <div class="testimonials-proof-card">
                     <strong>Si te cuesta sostener la constancia</strong>
-                    <p>El grupo te espera. Entrenar acompañado es la forma más simple de volver, sostener el hábito y sentirte parte.</p>
+                    <p>El grupo te espera. Entrenar acompañada es la forma más simple de volver, sostener el hábito y sentirte parte.</p>
                 </div>
             </div>
 
@@ -2520,7 +2538,7 @@
 
             <div class="testimonial-cta reveal">
                 <p>Si te reconocés en alguna de estas dudas, el siguiente paso no es inscribirte: es probar una clase gratis.</p>
-                <a href="#reservar" class="btn-primary" data-track="Lead" data-track-source="testimonials_section" data-content-name="Formulario clase gratis">Agendar mi clase gratuita</a>
+                <a href="https://wa.me/59899253103?text=Hola!%20Quiero%20reservar%20mi%20clase%20gratuita%20de%20prueba" class="btn-primary" data-track="Lead" data-track-source="testimonials_section" data-content-name="WhatsApp">Agendar mi clase gratuita</a>
             </div>
         </div>
     </section>
@@ -2529,7 +2547,7 @@
     <section class="objections" id="objections">
         <div class="container">
             <div class="section-header reveal">
-                <h2>¿Tenés <span>dudas</span>?</h2>
+                <h2>¿Tenés&nbsp;<span>dudas</span>?</h2>
                 <p>Respondemos las preguntas más frecuentes</p>
             </div>
             <div class="objections-grid">
@@ -2551,7 +2569,7 @@
                 </div>
                 <div class="objection-card" data-accordion role="button" tabindex="0" aria-expanded="false">
                     <h4>¿Cómo funcionan las clases online?</h4>
-                    <p>Son sesiones en vivo de 45 a 60 minutos desde tu casa, con guía y corrección en tiempo real. Individual $800; si se conectan 2 personas, $500 cada una; si se conectan 3, $400 cada una.</p>
+                    <p>Son sesiones en vivo de 45 a 60 minutos desde tu casa, con la guía del profesor en tiempo real. Podés hacerlas sola o acompañada: si se conectan 2 personas a la misma hora (por ejemplo, amigas que entrenan juntas), cada una paga $500; si se conectan 3, $400 cada una.</p>
                 </div>
                 <div class="objection-card" data-accordion role="button" tabindex="0" aria-expanded="false">
                     <h4>¿Necesito autorización médica?</h4>
@@ -2565,114 +2583,11 @@
         </div>
     </section>
 
-    <!-- Lead Form Section — alternativa a WhatsApp -->
-    <section class="lead-form-section" id="reservar" aria-labelledby="lead-form-title">
-        <div class="container">
-            <div class="lead-form-wrapper">
-                <h2 id="lead-form-title">Dejanos tus datos y coordinamos tu clase gratis</h2>
-                <p class="lead-form-sub">Completá el formulario y te contactamos por WhatsApp o email para agendar tu clase de prueba, sin compromiso.</p>
-                <form class="lead-form" id="leadForm" novalidate>
-                    <!-- Honeypot: campo oculto. Los bots lo llenan, las personas no. -->
-                    <div class="hp-field" aria-hidden="true">
-                        <label for="lf-company">No llenar</label>
-                        <input type="text" id="lf-company" name="company" tabindex="-1" autocomplete="off">
-                    </div>
-
-                    <div>
-                        <label for="lf-name">Nombre <span aria-hidden="true" style="color:#c62828;">*</span></label>
-                        <input type="text" id="lf-name" name="name" required autocomplete="name" placeholder="Tu nombre" aria-required="true" minlength="2">
-                        <div class="field-error" data-error-for="name"></div>
-                    </div>
-
-                    <div class="form-row">
-                        <div>
-                            <label for="lf-email">Email</label>
-                            <input type="email" id="lf-email" name="email" autocomplete="email" inputmode="email" placeholder="tu@email.com" aria-describedby="contact-help">
-                        </div>
-                        <div>
-                            <label for="lf-phone">Teléfono / WhatsApp</label>
-                            <input type="tel" id="lf-phone" name="phone" autocomplete="tel" inputmode="tel" placeholder="099 123 456" pattern="[0-9\s\-\+]{7,}" aria-describedby="contact-help">
-                        </div>
-                    </div>
-                    <p id="contact-help" class="form-legal" style="margin:-8px 0 0;">Con uno solo alcanza. Te respondemos por donde prefieras.</p>
-                    <div class="field-error" data-error-for="contact"></div>
-
-                    <div class="form-row">
-                        <div>
-                            <label for="lf-schedule">Horario preferido</label>
-                            <select id="lf-schedule" name="schedule_preference">
-                                <option value="">Elegí un horario</option>
-                                <option value="7:30">7:30</option>
-                                <option value="8:30">8:30</option>
-                                <option value="10:00">10:00</option>
-                                <option value="18:15">18:15</option>
-                                <option value="19:15">19:15</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="lf-park">Lugar preferido</label>
-                            <select id="lf-park" name="park_preference">
-                                <option value="">Elegí un lugar</option>
-                                <option value="Parque Rodó">Parque Rodó</option>
-                                <option value="Parque Batlle">Parque Batlle</option>
-                                <option value="Prado">Prado (frente a los Charrúas)</option>
-                                <option value="Online">Online (desde tu casa)</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Preguntas de calificación (filtro de leads) -->
-                    <div class="form-row">
-                        <div>
-                            <label for="lf-goal">¿Cuál es tu objetivo principal? <span aria-hidden="true" style="color:#c62828;">*</span></label>
-                            <select id="lf-goal" name="goal" required aria-required="true">
-                                <option value="">Elegí una opción</option>
-                                <option value="energia_dolor">Tener más energía y aliviar dolores</option>
-                                <option value="fuerza_movilidad">Recuperar movilidad e independencia</option>
-                                <option value="bajar_peso">Bajar de peso y tonificar</option>
-                                <option value="consistencia">Volver a ser constante con el ejercicio</option>
-                                <option value="bienestar">Cuidar mi salud y sentirme mejor</option>
-                            </select>
-                            <div class="field-error" data-error-for="goal"></div>
-                        </div>
-                        <div>
-                            <label for="lf-condition">¿Tenés alguna limitación física actual?</label>
-                            <select id="lf-condition" name="physical_condition">
-                                <option value="">Elegí una opción</option>
-                                <option value="ninguna">No, estoy bien</option>
-                                <option value="leve">Sí, algo leve (rodilla, espalda, etc.)</option>
-                                <option value="cronica">Tengo una condición crónica controlada</option>
-                                <option value="consulto_medico">Estoy con seguimiento médico</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label for="lf-start">¿Cuándo querés empezar?</label>
-                        <select id="lf-start" name="start_when">
-                            <option value="">Elegí una opción</option>
-                            <option value="esta_semana">Esta semana</option>
-                            <option value="proximo_mes">El próximo mes</option>
-                            <option value="evaluo">Todavía lo estoy evaluando</option>
-                        </select>
-                    </div>
-
-                    <button type="submit" class="btn-primary" id="lf-submit" style="justify-content:center;">
-                        Reservar mi clase gratis
-                    </button>
-
-                    <div class="form-status" id="lf-status" role="status" aria-live="polite"></div>
-                    <p class="form-legal">Tus datos solo se usan para coordinar la clase. No los compartimos.</p>
-                </form>
-            </div>
-        </div>
-    </section>
-
     <!-- CTA Section -->
     <section class="cta">
         <div class="container">
             <h2>¿Empezamos?</h2>
-            <p>La primera clase es gratis y sin compromiso. Vení a probar cómo se siente recuperar tu fuerza, tu movilidad y tu energía: al aire libre, acompañado y a tu ritmo. Cada semana que pasa es una oportunidad que no vuelve.</p>
+            <p>La primera clase es gratis y sin compromiso. Vení a probar cómo se siente recuperar tu fuerza, tu movilidad y tu energía: al aire libre, acompañada y a tu ritmo. Cada semana que pasa es una oportunidad que no vuelve.</p>
             <a href="https://wa.me/59899253103?text=Hola!%20Quiero%20reservar%20mi%20clase%20gratuita%20de%20prueba" class="btn-primary btn-white" data-track="Lead" data-track-source="final_cta">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.355 4.243 4.527.898.493 1.951.743 2.835.744.297 0 .575-.013.792-.026.25-.013.372-.025.495-.058.174-.036.347-.086.496-.124.298-.074.497-.12.571-.19.173-.15.173-.297.173-.496 0-.174-.025-.347-.074-.496-.149-.298-.745-2.023-.745-2.023 0-.372.049-.695.173-.92.124-.224.372-.397.495-.604.149-.224.272-.298.371-.497.099-.174.05-.347-.025-.495-.075-.149-.745-2.023-.745-2.023z"/>
@@ -2717,23 +2632,6 @@
         </a>
     </div>
 
-    <!-- Success Modal -->
-    <div class="exit-modal-backdrop" id="successModal" role="dialog" aria-modal="true" aria-hidden="true">
-        <div class="exit-modal">
-            <div class="success-check">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"/>
-                </svg>
-            </div>
-            <span class="exit-modal-badge" style="background: #E8F5E9; color: #2E7D32;">¡Solicitud recibida!</span>
-            <h3 style="color: var(--primary);">¡Felicitaciones por elegir tu bienestar!</h3>
-            <p>Tu mensaje fue recibido con éxito. En breve nos estaremos comunicando con vos vía WhatsApp para coordinar tu clase gratuita.</p>
-            <button type="button" class="btn-primary" style="width: 100%;" onclick="var m=document.getElementById('successModal');m.classList.remove('is-open');m.setAttribute('aria-hidden','true')">
-                Entendido
-            </button>
-        </div>
-    </div>
-
     <!-- Exit Intent Modal -->
     <div class="exit-modal-backdrop" id="exitModal" role="dialog" aria-modal="true" aria-labelledby="exitModalTitle" aria-hidden="true">
         <div class="exit-modal">
@@ -2741,7 +2639,7 @@
             <span class="exit-modal-badge">Sin compromiso</span>
             <h3 id="exitModalTitle">¿Te vas sin probar una clase gratis?</h3>
             <p>Si no es para vos, no perdés nada. Si lo es, ganás salud, energía e independencia. Solo te lleva 30 segundos.</p>
-            <a href="#reservar" id="exitModalCta" class="btn-primary" data-track="Lead" data-track-source="exit_intent" data-content-name="Formulario clase gratis">
+            <a href="https://wa.me/59899253103?text=Hola!%20Quiero%20reservar%20mi%20clase%20gratuita%20de%20prueba" id="exitModalCta" class="btn-primary" data-track="Lead" data-track-source="exit_intent" data-content-name="WhatsApp">
                 Quiero mi clase gratis
             </a>
         </div>
@@ -2885,224 +2783,6 @@
             }
             window.__pageStart = Date.now();
             window.addEventListener('scroll', onScroll, { passive: true });
-        })();
-
-        // ============================================================
-        // Prefill desde querystring (?email=...&name=...&phone=...)
-        // Útil para campañas que pre-identifican al usuario
-        // ============================================================
-        (function() {
-            var p = new URLSearchParams(window.location.search);
-            var fields = { name: 'lf-name', email: 'lf-email', phone: 'lf-phone' };
-            Object.keys(fields).forEach(function(k) {
-                var v = p.get(k);
-                var el = document.getElementById(fields[k]);
-                if (v && el) el.value = v;
-            });
-        })();
-
-        // ============================================================
-        // Lead Form — validación + submit + progressive fallback
-        // ============================================================
-        (function() {
-            var form = document.getElementById('leadForm');
-            if (!form) return;
-
-            var renderedAt = Date.now();
-            var submitBtn = document.getElementById('lf-submit');
-            var statusEl = document.getElementById('lf-status');
-
-            function setError(field, message) {
-                var el = form.querySelector('[data-error-for="' + field + '"]');
-                if (el) el.textContent = message || '';
-            }
-            function clearErrors() {
-                form.querySelectorAll('[data-error-for]').forEach(function(el){ el.textContent = ''; });
-            }
-            function setStatus(type, message, html) {
-                if (html) { statusEl.innerHTML = message; }
-                else { statusEl.textContent = message; }
-                statusEl.className = 'form-status' + (type ? ' is-' + type : '');
-            }
-            function validEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
-            function normalizePhoneClient(p) { return (p || '').replace(/\D/g, ''); }
-
-            // Fallback a WhatsApp con mensaje prearmado si el API falla
-            function whatsappFallback(name, schedule, park) {
-                var parts = ['Hola! Soy ' + name + '.'];
-                parts.push('Quiero reservar mi clase gratuita de prueba.');
-                if (schedule) parts.push('Horario preferido: ' + schedule);
-                if (park) parts.push('Parque preferido: ' + park);
-                if (UTM_DATA.utm_campaign) parts.push('[campaña: ' + UTM_DATA.utm_campaign + ']');
-                return 'https://wa.me/59899253103?text=' + encodeURIComponent(parts.join(' '));
-            }
-
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                clearErrors();
-                setStatus('', '');
-
-                var name = form.name.value.trim();
-                var email = form.email.value.trim();
-                var phone = form.phone.value.trim();
-                var schedule = form.schedule_preference.value;
-                var park = form.park_preference.value;
-                var goal = form.goal ? form.goal.value : '';
-                var physicalCondition = form.physical_condition ? form.physical_condition.value : '';
-                var startWhen = form.start_when ? form.start_when.value : '';
-
-                var hasError = false;
-                if (name.length < 2) { setError('name', 'Decinos tu nombre'); hasError = true; }
-                if (!email && !phone) { setError('contact', 'Dejanos un email o un teléfono'); hasError = true; }
-                if (email && !validEmail(email)) { setError('contact', 'El email no parece válido'); hasError = true; }
-                if (phone && normalizePhoneClient(phone).length < 7) { setError('contact', 'El teléfono parece corto'); hasError = true; }
-                if (!goal) { setError('goal', 'Contanos cuál es tu objetivo'); hasError = true; }
-                if (hasError) return;
-
-                var eventId = genEventId('lead');
-
-                submitBtn.disabled = true;
-                var originalText = submitBtn.textContent;
-                submitBtn.textContent = 'Enviando...';
-
-                function renderSuccess() {
-                    var successModal = document.getElementById('successModal');
-                    if (successModal) {
-                        successModal.classList.add('is-open');
-                        successModal.setAttribute('aria-hidden', 'false');
-                    }
-                    
-                    // Mensaje corto en el formulario por si cierran el modal
-                    setStatus('success', '<strong>¡Listo!</strong> Ya recibimos tus datos. Te contactaremos pronto.', true);
-                    form.reset();
-                }
-
-                try {
-                    var resp = await fetch('/api/lead', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            name: name, email: email, phone: phone,
-                            schedule_preference: schedule,
-                            park_preference: park,
-                            goal: goal,
-                            physical_condition: physicalCondition,
-                            start_when: startWhen,
-                            company: form.company.value, // honeypot
-                            rendered_at: renderedAt,
-                            event_id: eventId,
-                            event_source_url: window.location.href,
-                            utm: UTM_DATA
-                        })
-                    });
-                    var data = await resp.json().catch(function(){ return {}; });
-
-                    if (!resp.ok) {
-                        if (data && data.errors) {
-                            Object.keys(data.errors).forEach(function(k){ setError(k, data.errors[k]); });
-                        }
-                        // Si el API falla, mostramos error pero no redirigimos
-                        setStatus('error', 'Tuvimos un problema guardando tus datos. Por favor, reintentá o escribinos por WhatsApp.');
-                        return;
-                    }
-
-                    if (data.tracked !== false && typeof fbq === 'function') {
-                        try {
-                            fbq('track', 'Lead', {
-                                content_name: 'Formulario clase gratis',
-                                source_button: 'form_lead',
-                                utm_source: UTM_DATA.utm_source,
-                                utm_campaign: UTM_DATA.utm_campaign
-                            }, { eventID: eventId });
-                        } catch(err) {}
-                    }
-
-                    renderSuccess();
-                } catch (err) {
-                    // Sin red / server caído
-                    setStatus('error', 'Sin conexión al servidor. Por favor, revisá tu internet y reintentá.');
-                } finally {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = originalText;
-                }
-            });
-        })();
-
-        // ============================================================
-        // Lógica de filtrado dinámico: Vinculación Parque <-> Horario
-        // ============================================================
-        (function() {
-            var scheduleSelect = document.getElementById('lf-schedule');
-            var parkSelect = document.getElementById('lf-park');
-            if (!scheduleSelect || !parkSelect) return;
-
-            var parkOptions = Array.from(parkSelect.options);
-            var scheduleOptions = Array.from(scheduleSelect.options);
-
-            // Mapa de disponibilidad
-            // Batlle: 7:30, 8:30
-            // Prado: 10
-            // Rodó: 18:15, 19:15
-            // Online: todos los horarios (a coordinar)
-            var availability = {
-                'Parque Batlle': ['7:30', '8:30'],
-                'Prado': ['10:00'],
-                'Parque Rodó': ['18:15', '19:15'],
-                'Online': ['7:30', '8:30', '10:00', '18:15', '19:15']
-            };
-
-            function updateFilters(e) {
-                var selectedPark = parkSelect.value;
-                var selectedTime = scheduleSelect.value;
-
-                // Filtrar Horarios según Parque
-                scheduleOptions.forEach(function(opt) {
-                    if (!opt.value) return; // "Elegí..." siempre visible
-                    if (!selectedPark) {
-                        opt.hidden = false;
-                        opt.disabled = false;
-                    } else {
-                        var isAvailable = availability[selectedPark].indexOf(opt.value) !== -1;
-                        opt.hidden = !isAvailable;
-                        opt.disabled = !isAvailable;
-                    }
-                });
-
-                // Filtrar Parques según Horario
-                parkOptions.forEach(function(opt) {
-                    if (!opt.value) return;
-                    if (!selectedTime) {
-                        opt.hidden = false;
-                        opt.disabled = false;
-                    } else {
-                        var isAvailable = false;
-                        for (var p in availability) {
-                            if (p === opt.value && availability[p].indexOf(selectedTime) !== -1) {
-                                isAvailable = true;
-                                break;
-                            }
-                        }
-                        opt.hidden = !isAvailable;
-                        opt.disabled = !isAvailable;
-                    }
-                });
-
-                // Validar consistencia y resetear si es necesario
-                if (selectedPark && selectedTime) {
-                    if (availability[selectedPark].indexOf(selectedTime) === -1) {
-                        // Si el cambio vino del parque, reseteamos el horario
-                        if (e && e.target === parkSelect) scheduleSelect.value = '';
-                        // Si vino del horario, reseteamos el parque
-                        else if (e && e.target === scheduleSelect) parkSelect.value = '';
-                    }
-                }
-            }
-
-            parkSelect.addEventListener('change', updateFilters);
-            scheduleSelect.addEventListener('change', updateFilters);
-            
-            // Inicializar
-            updateFilters();
         })();
 
         // ============================================================
@@ -3502,6 +3182,34 @@
                     videoObserver.observe(container);
                 });
             }
+        })();
+        // ============================================================
+        // Anti-huérfanas: garantizar que la última línea de cada título
+        // lleve al menos dos palabras (pegándolas con espacio duro).
+        // ============================================================
+        (function() {
+            var headings = document.querySelectorAll('h1,h2,h3,.schedule-note,.form-legal,.lead-form-sub');
+            headings.forEach(function(h) {
+                var nodes = [];
+                (function walk(n) {
+                    if (n.nodeType === 3 && n.nodeValue && /\S/.test(n.nodeValue)) nodes.push(n);
+                    for (var k = 0; k < n.childNodes.length; k++) walk(n.childNodes[k]);
+                })(h);
+                if (nodes.length === 0) return;
+                var last = nodes[nodes.length - 1];
+                if (/\S\s+\S+\s*$/.test(last.nodeValue)) {
+                    // El último nodo de texto tiene 2+ palabras: pegar sus últimas 2
+                    last.nodeValue = last.nodeValue.replace(/\s+([^\s]+)\s*$/, '\u00A0$1');
+                } else if (nodes.length >= 2) {
+                    // El último nodo es una sola palabra (ej. dentro de un <span>):
+                    // pegarla a la palabra anterior convirtiendo el espacio previo en duro
+                    var j = nodes.length - 2;
+                    while (j >= 0 && !/\S/.test(nodes[j].nodeValue)) j--;
+                    if (j >= 0 && /\S[ \t]+$/.test(nodes[j].nodeValue)) {
+                        nodes[j].nodeValue = nodes[j].nodeValue.replace(/[ \t]+$/, '\u00A0');
+                    }
+                }
+            });
         })();
     </script>
 </body>
