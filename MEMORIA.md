@@ -28,6 +28,8 @@
 - **CAPI:** deduplicación por `event_id` generado en el front; token solo server-side
 - **Anti-huérfanas:** `text-wrap: balance/pretty` + script que pega las 2 últimas palabras de cada título (no dejar palabras sueltas en la última línea)
 - **Push desde esta máquina:** el global config de git usa el helper de gh para github.com (cuenta activa que puede NO ser la del repo). Este repo tiene override local: helper `manager` + `credential.useHttpPath=true` + credencial por-repo de `ramarketinguy` en el Credential Manager. `git push` funciona directo desde esta carpeta.
+- **Videos:** el video de presentación (`videos/alvaro-v3_comp.mp4`) lleva audio AAC stereo, porque es un talking head con controles. Al recomprimir assets de video usar siempre `-c:a aac` (si no, ffmpeg descarta la pista). Como `/videos/*` se sirve con `Cache-Control: immutable`, cualquier reemplazo necesita **nombre nuevo** (`v4`, `v5`…) para romper la caché.
+- **Identidad de git:** repo-local `Ramarketing <dev@ramarketing.uy>` (el global de esta máquina no tiene identidad configurada).
 
 ## Estado (sesión 24/10/2026 — v2)
 
@@ -48,6 +50,11 @@
 - [ ] Generar Test Event Code nuevo en el pixel nuevo (manual)
 - [ ] Comprar dominio y actualizar los 5 puntos del README (manual)
 - [ ] Verificar dominio en Meta Business Manager (manual)
+
+## Estado (sesión 26/10/2026)
+
+- [x] Audio del video de Álvaro restaurado (se había comprimido sin pista de audio) — re-encode desde el master 720x720, H.264 CRF 26 + AAC 96k, publicado como `alvaro-v3_comp.mp4`
+- [x] Verificado en producción: el MP4 servido por Vercel tiene stream de audio AAC stereo
 
 ## Reglas para la próxima sesión
 
