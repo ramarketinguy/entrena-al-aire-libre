@@ -51,6 +51,20 @@
 - [ ] Comprar dominio y actualizar los 5 puntos del README (manual)
 - [ ] Verificar dominio en Meta Business Manager (manual)
 
+## Estado (sesión 10/11/2026 — v4)
+
+- [x] **Videos nuevos comprimidos**: los 9 videos de `videos/Testimonios nuevos/` (verticales 1080x1920, 1.288 GB) pasaron a `videos/testimonios-optimizados/` en 540x960, CRF 34, H.264 + AAC mono 72k, `-movflags +faststart`. Total final **27,4 MB** (reducción del 97,9%). Nombres: `resumen-1-540p.mp4`, `testimonio-n{1,2,3,4,5,6,8,9}-540p.mp4` + poster webp.
+- [x] **Video del hero eliminado** (`hero-web_comp.mp4` y `hero-mobile_comp.mp4` borrados del repo, −7 MB). El hero queda con el degradado verde.
+- [x] **Modal de video**: abre con el botón "Escuchá lo que dicen ellas" del hero. Cartelito animado "Escuchar lo que dicen ellas" (ecualizador + brillo + levitación), título "¿Y vos, qué excusa tenés?" y reproductor vertical. Click en el video = play/pause, siempre con sonido.
+- [x] **8 testimonios distribuidos en 4 bandas** a lo largo de la página (3 + 2 + 2 + 1), intercalados entre Benefits, Schedule, About y Objections. En mobile son carrusel horizontal.
+- [x] Copy en femenino: "disposta", "quedás sola", "sentirte perdida", "mujeres de tu edad contarte cómo volvieron a moverse".
+- [x] El cuestionario de reserva pide **el nombre** en todos los planes. El mensaje a WhatsApp arranca "Hola Álvaro, soy María." El nombre viaja a Meta hasheado (`user_data.fn`), nunca en texto plano.
+- [x] `videos/Testimonios nuevos/` agregado al `.gitignore` (los originales no van al repo)
+
+### Nota sobre QA de video
+
+El Chromium que trae Playwright **no tiene códecs H.264**: los videos no reproducen en esa QA (tampoco los viejos que ya funcionan en producción). Para verificar playback real hay que usar el browser in-app de OpenCode o un Chrome de verdad.
+
 ## Estado (sesión 10/11/2026 — v3)
 
 - [x] Nombre de la página cambiado a "Recupera tu movilidad al aire libre" (title, OG, Twitter, H1). La marca "Entrenáte en Movimiento" se mantiene en el logo, el footer y el JSON-LD.

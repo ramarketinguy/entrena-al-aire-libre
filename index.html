@@ -409,20 +409,6 @@
             z-index: 0;
             background: #1B5E20; /* Fallback color */
         }
-        .hero-video-bg video {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: blur(2px);
-            transform: scale(1.04);
-            opacity: 0;
-            transition: opacity 1s ease-in;
-        }
-        .hero-video-bg video.loaded {
-            opacity: 1;
-        }
         .hero-video-overlay {
             position: absolute;
             inset: 0;
@@ -435,18 +421,6 @@
             backdrop-filter: blur(3px);
             -webkit-backdrop-filter: blur(3px);
             z-index: 1;
-        }
-        .hero-video-bg source {
-            display: none;
-        }
-
-        @media (max-width: 768px) {
-            .hero-video-bg .video-web { display: none; }
-            .hero-video-bg .video-mobile { display: block; }
-        }
-        @media (min-width: 769px) {
-            .hero-video-bg .video-web { display: block; }
-            .hero-video-bg .video-mobile { display: none; }
         }
 
         .hero-content {
@@ -2037,6 +2011,23 @@
             font-size: 0.76rem;
             margin-top: 3px;
         }
+        .booking-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            color: var(--gray-900);
+            background: var(--white);
+            transition: border-color .15s, box-shadow .15s;
+        }
+        .booking-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, .12);
+        }
+        .booking-input::placeholder { color: var(--gray-500); }
         .booking-chip.is-selected small { color: var(--primary-dark); opacity: 0.85; }
         .booking-hint {
             font-size: 0.82rem;
@@ -2088,6 +2079,315 @@
             .booking-chip { font-size: 0.85rem; padding: 8px 10px; }
             .booking-summary { font-size: 0.85rem; padding: 11px 13px; }
         }
+
+        /* ============================================================
+           Voces — testimonios en video repartidos por la página
+           ============================================================ */
+        .voices {
+            padding: 80px 0;
+            background: var(--off-white);
+        }
+        .voices--dark {
+            background: linear-gradient(135deg, #14261a 0%, #1B5E20 100%);
+        }
+        .voices--dark .voices-copy h2 { color: var(--white); }
+        .voices--dark .voices-copy p { color: rgba(255, 255, 255, 0.82); }
+        .voices-grid {
+            display: grid;
+            grid-template-columns: minmax(250px, 360px) 1fr;
+            gap: 44px;
+            align-items: center;
+        }
+        .voices-eyebrow {
+            display: inline-block;
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        .voices-copy h2 {
+            font-size: 2.05rem;
+            line-height: 1.2;
+            margin-bottom: 14px;
+            color: var(--gray-900);
+        }
+        .voices-copy p {
+            color: var(--gray-700);
+            font-size: 1.04rem;
+            line-height: 1.65;
+        }
+        .voices-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+            gap: 14px;
+        }
+        .voices-row.is-single {
+            grid-template-columns: minmax(190px, 250px);
+            justify-content: center;
+        }
+        .voice-card {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 26px rgba(0, 0, 0, 0.14);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .voice-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
+        }
+        .voice-media {
+            position: relative;
+            aspect-ratio: 9 / 16;
+            background: #0d1a10;
+            cursor: pointer;
+        }
+        .voice-media video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .voice-play {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            border: none;
+            padding: 0;
+            background: rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.25s ease, background 0.25s ease;
+            color: var(--white);
+        }
+        .voice-play::before {
+            content: '';
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: rgba(255, 109, 0, 0.95);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            transition: transform 0.25s ease, background 0.25s ease;
+        }
+        .voice-play svg {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            margin-left: 3px;
+        }
+        .voice-card:hover .voice-play::before { transform: scale(1.1); background: var(--accent); }
+        .voice-card.is-playing .voice-play { opacity: 0; pointer-events: none; }
+        .voice-card.is-playing .voice-media::after {
+            content: '';
+            position: absolute;
+            left: 10px;
+            bottom: 10px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #FF5252;
+            box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+            animation: recPulse 1.4s infinite;
+        }
+        @keyframes recPulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7); }
+            70% { box-shadow: 0 0 0 9px rgba(255, 82, 82, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 82, 82, 0); }
+        }
+        @media (max-width: 900px) {
+            .voices { padding: 58px 0; }
+            .voices-grid { grid-template-columns: 1fr; gap: 26px; }
+            .voices-copy h2 { font-size: 1.7rem; }
+            .voices-row {
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                gap: 10px;
+                padding-bottom: 6px;
+                -webkit-overflow-scrolling: touch;
+            }
+            .voices-row::-webkit-scrollbar { height: 4px; }
+            .voices-row::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 2px; }
+            .voices-row .voice-card { flex: 0 0 158px; scroll-snap-align: start; }
+            .voices-row.is-single .voice-card { flex: 0 0 190px; }
+        }
+
+        /* ============================================================
+           Modal de video (RESUMEN 1)
+           ============================================================ */
+        .vm-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.84);
+            z-index: 1200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+            animation: fadeInBackdrop 0.25s ease;
+        }
+        .vm-backdrop.is-open { display: flex; }
+        .vm {
+            background: var(--white);
+            border-radius: 20px;
+            max-width: 400px;
+            width: 100%;
+            padding: 22px 18px 18px;
+            position: relative;
+            margin: auto;
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+            animation: scaleIn 0.28s ease;
+        }
+        .vm-close {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            line-height: 1;
+            cursor: pointer;
+            color: var(--gray-500);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            z-index: 2;
+        }
+        .vm-close:hover { background: var(--gray-100); color: var(--gray-900); }
+        .vm-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+            border: 2px solid #FFB74D;
+            color: #E65100;
+            font-weight: 800;
+            font-size: 0.78rem;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            padding: 9px 15px;
+            border-radius: 30px;
+            margin-bottom: 14px;
+            position: relative;
+            overflow: hidden;
+            animation: badgeFloat 2.8s ease-in-out infinite;
+        }
+        .vm-badge::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 30px;
+            background: linear-gradient(120deg, transparent 32%, rgba(255, 255, 255, 0.9) 50%, transparent 68%);
+            background-size: 250% 100%;
+            animation: badgeShimmer 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes badgeFloat {
+            0%, 100% { transform: translateY(0) rotate(-1deg); }
+            50% { transform: translateY(-4px) rotate(1deg); }
+        }
+        @keyframes badgeShimmer {
+            0% { background-position: 160% 0; }
+            60%, 100% { background-position: -70% 0; }
+        }
+        .vm-eq {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 17px;
+            flex-shrink: 0;
+        }
+        .vm-eq i {
+            width: 3px;
+            background: #E65100;
+            border-radius: 2px;
+            transform-origin: bottom;
+            animation: vmEq 0.9s ease-in-out infinite;
+        }
+        .vm-eq i:nth-child(1) { height: 8px; animation-delay: 0s; }
+        .vm-eq i:nth-child(2) { height: 16px; animation-delay: 0.15s; }
+        .vm-eq i:nth-child(3) { height: 11px; animation-delay: 0.3s; }
+        .vm-eq i:nth-child(4) { height: 6px; animation-delay: 0.45s; }
+        @keyframes vmEq {
+            0%, 100% { transform: scaleY(0.35); }
+            50% { transform: scaleY(1); }
+        }
+        .vm h3 {
+            font-size: 1.28rem;
+            color: var(--gray-900);
+            margin-bottom: 12px;
+            line-height: 1.25;
+        }
+        .vm-player {
+            position: relative;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #000;
+            aspect-ratio: 9 / 16;
+            cursor: pointer;
+        }
+        .vm-player video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .vm-hint {
+            text-align: center;
+            font-size: 0.79rem;
+            color: var(--gray-500);
+            margin-top: 10px;
+        }
+        @media (max-width: 480px) {
+            .vm-backdrop { padding: 12px 10px; }
+            .vm { padding: 18px 14px 14px; border-radius: 16px; }
+            .vm h3 { font-size: 1.1rem; }
+        }
+
+        /* ============================================================
+           Botón de video en el hero
+           ============================================================ */
+        .hero-video-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 22px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            color: var(--white);
+            font-family: inherit;
+            font-size: 0.98rem;
+            font-weight: 600;
+            padding: 12px 22px 12px 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background 0.25s ease, transform 0.2s ease, border-color 0.25s ease;
+        }
+        .hero-video-cta:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        .hero-video-cta .vm-eq { height: 18px; }
+        .hero-video-cta .vm-eq i { background: var(--accent-light); }
+        .hero-video-cta-play {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 14px rgba(255, 109, 0, 0.45);
+        }
+        .hero-video-cta-play svg { width: 15px; height: 15px; margin-left: 2px; }
 
         /* ============================================================
            Skip link (a11y)
@@ -2318,8 +2618,6 @@
     <main id="main-content">
     <section class="hero">
         <div class="hero-video-bg" aria-hidden="true">
-            <video class="video-web" muted loop playsinline preload="none" data-src="videos/hero-web_comp.mp4"></video>
-            <video class="video-mobile" muted loop playsinline preload="none" data-src="videos/hero-mobile_comp.mp4"></video>
             <div class="hero-video-overlay"></div>
         </div>
         <div class="container">
@@ -2342,6 +2640,13 @@
                         Ver horarios
                     </a>
                 </div>
+                <button type="button" class="hero-video-cta" data-video-modal="resumen-1">
+                    <span class="hero-video-cta-play" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                    </span>
+                    <span class="vm-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                    Escuchá lo que dicen ellas
+                </button>
                 <div class="hero-stats">
                     <div class="stat-item">
                         <div class="stat-number">43 años</div>
@@ -2402,6 +2707,54 @@
         </div>
     </section>
 
+    <!-- Voces 1 — testimonios en video -->
+    <section class="voices" aria-labelledby="voices-1-title">
+        <div class="container">
+            <div class="voices-grid">
+                <div class="voices-copy reveal">
+                    <span class="voices-eyebrow">Testimonios</span>
+                    <h2 id="voices-1-title">¿Y si no puedo?</h2>
+                    <p>La pregunta que todas se hicieron antes de la primera clase. Tocá el play y escuchalas.</p>
+                </div>
+                <div class="voices-row">
+                    <article class="voice-card reveal">
+                        <div class="voice-media" data-voice-video>
+                            <video preload="none" playsinline poster="videos/testimonios-optimizados/testimonio-n1-540p-poster.webp">
+                                <source src="videos/testimonios-optimizados/testimonio-n1-540p.mp4" type="video/mp4">
+                                Tu navegador no soporta video HTML5.
+                            </video>
+                            <button type="button" class="voice-play" aria-label="Reproducir testimonio en video">
+                                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                            </button>
+                        </div>
+                    </article>
+                    <article class="voice-card reveal">
+                        <div class="voice-media" data-voice-video>
+                            <video preload="none" playsinline poster="videos/testimonios-optimizados/testimonio-n2-540p-poster.webp">
+                                <source src="videos/testimonios-optimizados/testimonio-n2-540p.mp4" type="video/mp4">
+                                Tu navegador no soporta video HTML5.
+                            </video>
+                            <button type="button" class="voice-play" aria-label="Reproducir testimonio en video">
+                                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                            </button>
+                        </div>
+                    </article>
+                    <article class="voice-card reveal">
+                        <div class="voice-media" data-voice-video>
+                            <video preload="none" playsinline poster="videos/testimonios-optimizados/testimonio-n3-540p-poster.webp">
+                                <source src="videos/testimonios-optimizados/testimonio-n3-540p.mp4" type="video/mp4">
+                                Tu navegador no soporta video HTML5.
+                            </video>
+                            <button type="button" class="voice-play" aria-label="Reproducir testimonio en video">
+                                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                            </button>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Fit / Filtro de calidad -->
     <section class="fit" id="fit">
         <div class="container">
@@ -2414,7 +2767,7 @@
                     <h3>Sí, es para vos si…</h3>
                     <ul>
                         <li>Tienes 45 años o más y querés recuperar fuerza y movilidad.</li>
-                        <li>Estás dispuesto a salir al parque dos o tres veces por semana.</li>
+                        <li>Estás dispuesta a salir al parque dos o tres veces por semana.</li>
                         <li>Aceptás que el profesor te corrija la técnica, aunque te cueste.</li>
                         <li>Querés resultados en semanas, no en meses.</li>
                     </ul>
@@ -2494,7 +2847,44 @@
                     </ul>
                 </div>
             </div>
-            <p class="schedule-note">Presenciales de 60 minutos: Parque Rodó, Parque Batlle y Prado | Online desde tu casa, ideal para entrenar con amigas o en grupo | Todas las clases son conAdaptación de ejercicios a tu condición</p>
+            <p class="schedule-note">Presenciales de 60 minutos: Parque Rodó, Parque Batlle y Prado | Online desde tu casa, ideal para entrenar con amigas o en grupo | Todos los ejercicios se adaptan a tu condición</p>
+        </div>
+    </section>
+
+    <!-- Voces 2 — testimonios en video -->
+    <section class="voices voices--dark" aria-labelledby="voices-2-title">
+        <div class="container">
+            <div class="voices-grid">
+                <div class="voices-copy reveal">
+                    <span class="voices-eyebrow">Testimonios</span>
+                    <h2 id="voices-2-title">Escuchá antes de decidir</h2>
+                    <p>Un minuto de video te va a decir más que toda esta página. Ellas cuentan cómo fue de verdad.</p>
+                </div>
+                <div class="voices-row">
+                    <article class="voice-card reveal">
+                        <div class="voice-media" data-voice-video>
+                            <video preload="none" playsinline poster="videos/testimonios-optimizados/testimonio-n4-540p-poster.webp">
+                                <source src="videos/testimonios-optimizados/testimonio-n4-540p.mp4" type="video/mp4">
+                                Tu navegador no soporta video HTML5.
+                            </video>
+                            <button type="button" class="voice-play" aria-label="Reproducir testimonio en video">
+                                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                            </button>
+                        </div>
+                    </article>
+                    <article class="voice-card reveal">
+                        <div class="voice-media" data-voice-video>
+                            <video preload="none" playsinline poster="videos/testimonios-optimizados/testimonio-n5-540p-poster.webp">
+                                <source src="videos/testimonios-optimizados/testimonio-n5-540p.mp4" type="video/mp4">
+                                Tu navegador no soporta video HTML5.
+                            </video>
+                            <button type="button" class="voice-play" aria-label="Reproducir testimonio en video">
+                                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                            </button>
+                        </div>
+                    </article>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -2618,6 +3008,43 @@
         </div>
     </section>
 
+    <!-- Voces 3 — testimonios en video -->
+    <section class="voices" aria-labelledby="voices-3-title">
+        <div class="container">
+            <div class="voices-grid">
+                <div class="voices-copy reveal">
+                    <span class="voices-eyebrow">Testimonios</span>
+                    <h2 id="voices-3-title">No entrenás sola</h2>
+                    <p>El grupo es lo que hace que vuelvas. Y lo que hace que no abandones a la segunda semana.</p>
+                </div>
+                <div class="voices-row">
+                    <article class="voice-card reveal">
+                        <div class="voice-media" data-voice-video>
+                            <video preload="none" playsinline poster="videos/testimonios-optimizados/testimonio-n6-540p-poster.webp">
+                                <source src="videos/testimonios-optimizados/testimonio-n6-540p.mp4" type="video/mp4">
+                                Tu navegador no soporta video HTML5.
+                            </video>
+                            <button type="button" class="voice-play" aria-label="Reproducir testimonio en video">
+                                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                            </button>
+                        </div>
+                    </article>
+                    <article class="voice-card reveal">
+                        <div class="voice-media" data-voice-video>
+                            <video preload="none" playsinline poster="videos/testimonios-optimizados/testimonio-n8-540p-poster.webp">
+                                <source src="videos/testimonios-optimizados/testimonio-n8-540p.mp4" type="video/mp4">
+                                Tu navegador no soporta video HTML5.
+                            </video>
+                            <button type="button" class="voice-play" aria-label="Reproducir testimonio en video">
+                                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                            </button>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="proof-interlude proof-interlude--dark" aria-labelledby="proof-video-title">
         <div class="container">
             <div class="proof-split">
@@ -2632,7 +3059,7 @@
                 </div>
                 <div class="proof-copy reveal">
                     <h2 id="proof-video-title">Escuchá a personas como vos, que ya se animaron.</h2>
-                    <p>No hay mejor respuesta a tus dudas que alguien de tu edad contando cómo volvió a moverse sin dolor. Mirá los testimonios, probá una clase y decidí después.</p>
+                    <p>No hay mejor respuesta a tus dudas que escuchar a mujeres de tu edad contarte cómo volvieron a moverse sin dolor. Mirá los testimonios, probá una clase y decidí después.</p>
                     <ul class="proof-points">
                         <li>Sin compromiso de inscripción.</li>
                         <li>Un profesor atento a tu técnica y a tu ritmo.</li>
@@ -2695,7 +3122,7 @@
                 </div>
                 <div class="testimonials-proof-card">
                     <strong>Si te preocupa lesionarte</strong>
-                    <p>El profesor mira tu técnica, corrige y ajusta cada ejercicio a tu historia: rodillas, espalda, hombros. No es una clase masiva donde quedás solo.</p>
+                    <p>El profesor mira tu técnica, corrige y ajusta cada ejercicio a tu historia: rodillas, espalda, hombros. No es una clase masiva donde quedás sola.</p>
                 </div>
                 <div class="testimonials-proof-card">
                     <strong>Si te cuesta sostener la constancia</strong>
@@ -2872,7 +3299,7 @@
                 </div>
                 <div class="objection-card" data-accordion role="button" tabindex="0" aria-expanded="false">
                     <h4>¿Qué diferencia hay con un gimnasio?</h4>
-                    <p>Acá tenés un profesor que te corrige la postura, te motiva y te hace seguimiento, al aire libre y en un grupo chico. Nada de máquinas ni de sentirte perdido entre gente joven.</p>
+                    <p>Acá tenés un profesor que te corrige la postura, te motiva y te hace seguimiento, al aire libre y en un grupo chico. Nada de máquinas ni de sentirte perdida entre gente joven.</p>
                 </div>
                 <div class="objection-card" data-accordion role="button" tabindex="0" aria-expanded="false">
                     <h4>¿Cómo funcionan las clases online?</h4>
@@ -2889,6 +3316,32 @@
                 <div class="objection-card" data-accordion role="button" tabindex="0" aria-expanded="false">
                     <h4>¿Qué pasa si llueve?</h4>
                     <p>Si el clima no permite entrenar de forma segura, se avisa por WhatsApp y la clase se reprograma sin costo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Voces 4 — testimonios en video -->
+    <section class="voices voices--dark" aria-labelledby="voices-4-title">
+        <div class="container">
+            <div class="voices-grid">
+                <div class="voices-copy reveal">
+                    <span class="voices-eyebrow">Testimonios</span>
+                    <h2 id="voices-4-title">Si dudás, escuchá esto</h2>
+                    <p>Antes de escribirnos, date un minuto. Capaz que este video te terminó de decidir.</p>
+                </div>
+                <div class="voices-row is-single">
+                    <article class="voice-card reveal">
+                        <div class="voice-media" data-voice-video>
+                            <video preload="none" playsinline poster="videos/testimonios-optimizados/testimonio-n9-540p-poster.webp">
+                                <source src="videos/testimonios-optimizados/testimonio-n9-540p.mp4" type="video/mp4">
+                                Tu navegador no soporta video HTML5.
+                            </video>
+                            <button type="button" class="voice-play" aria-label="Reproducir testimonio en video">
+                                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                            </button>
+                        </div>
+                    </article>
                 </div>
             </div>
         </div>
@@ -2967,6 +3420,11 @@
             </div>
 
             <div class="booking-steps">
+                <div class="booking-step is-hidden" id="bookingNameStep">
+                    <div class="booking-step-label"><span class="booking-num">1</span> ¿Cómo te llamás?</div>
+                    <input type="text" class="booking-input" id="bookingName" placeholder="Escribí tu nombre" autocomplete="given-name" maxlength="40" aria-label="Tu nombre">
+                </div>
+
                 <div class="booking-step is-hidden" id="bookingZoneStep">
                     <div class="booking-step-label"><span class="booking-num">1</span> ¿Dónde?</div>
                     <div class="booking-chips" id="bookingZones" role="radiogroup" aria-label="Lugar"></div>
@@ -3001,6 +3459,25 @@
                 Reservar por WhatsApp
             </a>
             <p class="booking-foot">Te confirmo el lugar por WhatsApp. La clase de prueba no tiene ningún compromiso.</p>
+        </div>
+    </div>
+
+    <!-- Modal de video (RESUMEN 1) -->
+    <div class="vm-backdrop" id="videoModal" role="dialog" aria-modal="true" aria-labelledby="videoModalTitle" aria-hidden="true">
+        <div class="vm">
+            <button type="button" id="videoModalClose" class="vm-close" aria-label="Cerrar">✕</button>
+            <span class="vm-badge">
+                <span class="vm-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                Escuchar lo que dicen ellas
+            </span>
+            <h3 id="videoModalTitle">¿Y vos, qué excusa tenés?</h3>
+            <div class="vm-player" id="vmPlayer" role="button" tabindex="0" aria-label="Reproducir o pausar el video">
+                <video id="resumenVideo" preload="none" playsinline poster="videos/testimonios-optimizados/resumen-1-540p-poster.webp">
+                    <source src="videos/testimonios-optimizados/resumen-1-540p.mp4" type="video/mp4">
+                    Tu navegador no soporta video HTML5.
+                </video>
+            </div>
+            <p class="vm-hint">Tocá el video para pausar</p>
         </div>
     </div>
 
@@ -3039,7 +3516,7 @@
         // ============================================================
         var STANDARD_EVENTS = ['PageView', 'ViewContent', 'Lead', 'Purchase', 'AddToCart', 'Contact', 'Schedule', 'Subscribe'];
 
-        window.__track = function(eventName, params, isStandard) {
+        window.__track = function(eventName, params, isStandard, userData) {
             if (!eventName) return null;
             params = params || {};
 
@@ -3070,7 +3547,8 @@
                             event_name: eventName,
                             event_id: eventId,
                             event_source_url: window.location.href,
-                            custom_data: params
+                            custom_data: params,
+                            user_data: userData || {}
                         })
                     }).catch(function(){});
                 } catch (err) {}
@@ -3487,31 +3965,9 @@
         })();
 
         // ============================================================
-        // Optimización de carga de Videos (Hero + Lazy)
+        // Optimización de carga de videos (lazy por visibilidad)
         // ============================================================
         (function() {
-            // Hero videos: Cargar después del primer frame de interacción o tras 1s
-            function loadHeroVideos() {
-                document.querySelectorAll('.hero-video-bg video').forEach(function(v) {
-                    if (v.getAttribute('data-src') && !v.src) {
-                        v.src = v.getAttribute('data-src');
-                        v.load();
-                        v.onloadeddata = function() {
-                            v.classList.add('loaded');
-                            v.play().catch(function(){});
-                        };
-                    }
-                });
-            }
-
-            if (document.readyState === 'complete') {
-                setTimeout(loadHeroVideos, 2000);
-            } else {
-                window.addEventListener('load', function() {
-                    setTimeout(loadHeroVideos, 1800);
-                });
-            }
-
             // Lazy load para videos de About
             if ('IntersectionObserver' in window) {
                 var videoObserver = new IntersectionObserver(function(entries) {
@@ -3531,6 +3987,137 @@
                 });
             }
         })();
+        // ============================================================
+        // Videos de testimonio: click en el video = play / pause CON sonido
+        // ============================================================
+        (function() {
+            var shells = document.querySelectorAll('[data-voice-video]');
+            if (!shells.length) return;
+
+            function trackVideo(eventName, name) {
+                if (typeof fbq === 'function') {
+                    try { fbq('trackCustom', eventName, { content_name: name }); } catch (_) {}
+                }
+            }
+
+            shells.forEach(function(shell) {
+                var video = shell.querySelector('video');
+                var button = shell.querySelector('.voice-play');
+                var card = shell.closest ? shell.closest('.voice-card') : shell.parentNode;
+                if (!video) return;
+
+                function play() {
+                    // un solo video sonando a la vez
+                    document.querySelectorAll('[data-voice-video] video').forEach(function(other) {
+                        if (other !== video) other.pause();
+                    });
+                    video.muted = false;
+                    video.volume = 1;
+                    var p = video.play();
+                    if (p && p.catch) p.catch(function(){});
+                    if (card) card.classList.add('is-playing');
+                    trackVideo('VideoPlay', 'testimonio_vertical');
+                }
+                function pause() {
+                    video.pause();
+                    if (card) card.classList.remove('is-playing');
+                }
+                function toggle(e) {
+                    if (e) e.preventDefault();
+                    if (video.paused) play(); else pause();
+                }
+
+                if (button) button.addEventListener('click', toggle);
+                shell.addEventListener('click', function(e) {
+                    if (button && (e.target === button || button.contains(e.target))) return;
+                    toggle(e);
+                });
+
+                video.addEventListener('play', function() { if (card) card.classList.add('is-playing'); });
+                video.addEventListener('pause', function() { if (card) card.classList.remove('is-playing'); });
+                video.addEventListener('ended', function() {
+                    if (card) card.classList.remove('is-playing');
+                    video.currentTime = 0;
+                    trackVideo('VideoComplete', 'testimonio_vertical');
+                });
+            });
+        })();
+
+        // ============================================================
+        // Modal de video (RESUMEN 1) — click en el video = play / pause
+        // ============================================================
+        (function() {
+            var modal = document.getElementById('videoModal');
+            if (!modal) return;
+            var video = document.getElementById('resumenVideo');
+            var player = document.getElementById('vmPlayer');
+            var closeBtn = document.getElementById('videoModalClose');
+            var lastFocus = null;
+
+            function trackVideo(eventName) {
+                if (typeof fbq === 'function') {
+                    try { fbq('trackCustom', eventName, { content_name: 'resumen_1' }); } catch (_) {}
+                }
+            }
+
+            function open() {
+                lastFocus = document.activeElement;
+                modal.classList.add('is-open');
+                modal.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('booking-open');
+                if (closeBtn) closeBtn.focus();
+                if (video) {
+                    video.muted = false;
+                    video.volume = 1;
+                    video.currentTime = 0;
+                    var p = video.play();
+                    if (p && p.catch) p.catch(function(){});
+                }
+                trackVideo('VideoPlay');
+            }
+
+            function close() {
+                modal.classList.remove('is-open');
+                modal.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('booking-open');
+                if (video) { video.pause(); video.currentTime = 0; }
+                if (lastFocus && lastFocus.focus) lastFocus.focus();
+            }
+
+            function toggle() {
+                if (!video) return;
+                if (video.paused) {
+                    video.muted = false;
+                    var p = video.play();
+                    if (p && p.catch) p.catch(function(){});
+                } else {
+                    video.pause();
+                }
+            }
+
+            document.addEventListener('click', function(e) {
+                var trigger = e.target.closest ? e.target.closest('[data-video-modal]') : null;
+                if (!trigger) return;
+                e.preventDefault();
+                open();
+            });
+
+            if (closeBtn) closeBtn.addEventListener('click', close);
+            modal.addEventListener('click', function(e) { if (e.target === modal) close(); });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.classList.contains('is-open')) close();
+            });
+            if (player) {
+                player.addEventListener('click', toggle);
+                player.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+                });
+            }
+            if (video) {
+                video.addEventListener('ended', function() { trackVideo('VideoComplete'); });
+            }
+        })();
+
         // ============================================================
         // Modal de reserva — plan, lugar, turno y días
         // El mensaje a WhatsApp sale armadito: qué quiere, dónde,
@@ -3600,8 +4187,10 @@
             var dayStep   = document.getElementById('bookingDayStep');
             var zoneStep  = document.getElementById('bookingZoneStep');
             var peopleStep= document.getElementById('bookingPeopleStep');
+            var nameStep  = document.getElementById('bookingNameStep');
+            var elName    = document.getElementById('bookingName');
 
-            var state = { plan: 'prueba', zone: null, slot: null, people: null, days: [], goal: null };
+            var state = { plan: 'prueba', zone: null, slot: null, people: null, days: [], goal: null, name: '' };
 
             function getPlan(id) {
                 for (var i = 0; i < PLANS.length; i++) if (PLANS[i].id === id) return PLANS[i];
@@ -3705,10 +4294,16 @@
                 elPeopleHint.textContent = 'El precio baja por persona. Si se conectan 2 pagan $500 cada una y si son 3, $400 cada una.';
             }
 
+            // El nombre se pide siempre: el mensaje que llega a Álvaro
+            // tiene que decir quién escribe.
+            function renderNameStep() {
+                nameStep.classList.remove('is-hidden');
+            }
+
             // Renumera los pasos visibles (si el plan es online, ¿Dónde? no existe).
             function renumber() {
                 var n = 0;
-                [zoneStep, peopleStep, slotStep, dayStep, document.getElementById('bookingGoalStep')].forEach(function(step) {
+                [nameStep, zoneStep, peopleStep, slotStep, dayStep, document.getElementById('bookingGoalStep')].forEach(function(step) {
                     if (!step || step.classList.contains('is-hidden')) return;
                     n++;
                     var num = step.querySelector('.booking-num');
@@ -3825,7 +4420,7 @@
                 var goal = getGoal(state.goal);
 
                 var lines = [];
-                lines.push('Hola Álvaro. ' + plan.headline);
+                lines.push('Hola Álvaro' + (state.name ? ', soy ' + state.name : '') + '. ' + plan.headline);
                 if (plan.online) {
                     var n = state.people || 1;
                     lines.push('Plan: Online — ' + (n === 1
@@ -3849,6 +4444,7 @@
                 var plan = getPlan(state.plan);
                 var zone = getZone(state.zone);
                 var out = [];
+                if (plan && !state.name.trim()) out.push('tu nombre');
                 if (!zone) out.push('un lugar');
                 else {
                     if (zone.slots.length && !getSlot(zone, state.slot)) out.push('un turno');
@@ -3874,6 +4470,7 @@
                         rows.push('<strong>Plan:</strong> ' + plan.label);
                     }
                 }
+                if (state.name.trim()) rows.push('<strong>Nombre:</strong> ' + state.name.trim());
                 if (zone) rows.push('<strong>Lugar:</strong> ' + zone.short);
                 if (slot) rows.push('<strong>Turno:</strong> ' + slot.label);
                 if (zone && zone.days.length) {
@@ -3920,8 +4517,11 @@
             function open(planId) {
                 state.plan = planId || 'prueba';
                 state.zone = null; state.slot = null; state.people = null; state.days = []; state.goal = null;
+                state.name = '';
+                if (elName) elName.value = '';
                 syncZone();
                 renderPlanLine();
+                renderNameStep();
                 renderZones(); renderSlots(); renderPeople(); renderDays(); renderGoals();
                 updateSummary();
                 modal.classList.add('is-open');
@@ -3951,6 +4551,16 @@
                 if (e.key === 'Escape' && modal.classList.contains('is-open')) close();
             });
 
+            if (elName) {
+                elName.addEventListener('input', function() {
+                    state.name = elName.value;
+                    updateSummary();
+                });
+                elName.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') { e.preventDefault(); elName.blur(); }
+                });
+            }
+
             elConfirm.addEventListener('click', function(e) {
                 if (elConfirm.getAttribute('aria-disabled') === 'true') {
                     e.preventDefault();
@@ -3976,7 +4586,7 @@
                     params.value = unit;
                     params.currency = 'UYU';
                 }
-                __track('Lead', params);
+                __track('Lead', params, true, state.name.trim() ? { first_name: state.name.trim() } : {});
                 setTimeout(close, 200);
             });
         })();

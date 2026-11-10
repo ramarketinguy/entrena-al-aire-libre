@@ -66,7 +66,7 @@ Para probar en local con las functions: `vercel dev` (no abrir index.html direct
 | `BookingStart` (custom) | Click en cualquier CTA que lleva a planes o abre el modal | Pixel + CAPI |
 | `BookingSelect` (custom) | Cada elección dentro del modal (zona, turno, días, personas, objetivo) | Pixel + CAPI |
 | `ScrollDepth` (custom) | 25/50/75/100% | Pixel |
-| `VideoPlay` / `VideoComplete` (custom) | Video de Álvaro y testimonios | Pixel |
+| `VideoPlay` / `VideoComplete` (custom) | Videos de testimonios, modal de resumen y video de Álvaro | Pixel |
 | `ExitIntentShown` (custom) | Modal de salida | Pixel |
 
 \*CAPI se dispara cuando `window.__capiEnabled` está activo (por defecto, sí).
@@ -82,6 +82,7 @@ y replica a `/api/capi` con el mismo `event_id`.
 2. El botón de cada tarjeta de plan abre el modal con el **plan ya definido**:
    no se vuelve a preguntar qué quiere reservar.
 3. Dentro del modal se elige:
+   - **nombre** (siempre): el mensaje a WhatsApp empieza "Hola Álvaro, soy ..."
    - presencial: lugar → turno → días → objetivo
    - online: no se pregunta el lugar (es desde la casa); se pregunta **cuántas
      personas se conectan** (1 / 2 / 3), porque el precio por persona cambia
@@ -91,6 +92,24 @@ y replica a `/api/capi` con el mismo `event_id`.
 
 El mensaje de WhatsApp **no lleva UTMs**: la atribución vive en el Pixel y en
 CAPI (`custom_data`), no en el texto que lee Álvaro.
+
+## Videos
+
+- `videos/testimonios-optimizados/` — los videos que se sirven. Los testimonios
+  verticales nuevos (9:16) van en 540x960, CRF 34, H.264 + AAC mono, con
+  `-movflags +faststart` y un poster `.webp` por video.
+- `videos/Testimonios nuevos/` y `videos/Testimonios Editados/` — originales
+  pesados, ignorados por git. Nunca se sirven.
+- Todos los videos de la página se reproducen **con sonido**: click en el video
+  = play/pause. Solo uno suena a la vez.
+- `videos/alvaro-v3_comp.mp4` — presentación del profesor en la sección About.
+
+> Al recomprimir un video, usar **nombre nuevo** (el server sirve `/videos/*` con
+> `Cache-Control: immutable`) y **siempre `-c:a aac`**, si no ffmpeg descarta la
+> pista de audio.
+
+> El Chromium de Playwright no trae códecs H.264: los videos no reproducen en
+> esa QA. Para verificar playback real, usar el browser in-app o un Chrome.
 
 ## Deduplicación
 
