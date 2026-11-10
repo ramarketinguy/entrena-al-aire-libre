@@ -62,7 +62,10 @@
 - [x] `api/capi.js`: whitelist de eventos extendida y nuevos campos `booking_*` reenviados
 - [x] Tarjetas de planes reordenadas (prueba → 1x → 2x → 3x → online)
 - [x] QA visual con Playwright en 1440x900 y 390x844; sin errores de JS
-- [ ] Verificar en Events Manager que los eventos nuevos llegan y que `Lead` baja (cambio de señal de optimización: antes disparaba al click, ahora al completar la reserva)
+- [x] Verificado en producción: deploy OK, scroll a `#pricing` OK, modal OK, mensaje de WhatsApp OK
+- [!] **CAPI roto en producción (manual)**: el relay `/api/capi` responde 502 con `OAuthException 190 — "Application has been deleted"`. El `META_CAPI_TOKEN` de Vercel pertenece a una app de Meta que fue borrada. El Pixel del browser sí funciona (`fbevents.js` y `signals/config/2289502958273608` devuelven 200), pero **no hay Conversions API**: cada evento llega al Pixel y rebota contra Meta por CAPI. Sin CAPI no hay deduplicación ni atribución server-side, y el match de calidad de las campañas vive justamente del lado server.
+- [ ] Regenerar `META_CAPI_TOKEN` en Meta Business Manager (System User con permiso de Ads + `ads_read` sobre el pixel `2289502958273608`) y actualizar la env var en Vercel (Production + Preview)
+- [ ] Verificar en Events Manager que los eventos nuevos (`BookingStart`, `BookingSelect`) llegan y que `Lead` baja (cambio de señal de optimización: antes disparaba al click, ahora al completar la reserva)
 
 ## Estado (sesión 26/10/2026)
 
