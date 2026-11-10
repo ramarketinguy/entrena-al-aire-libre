@@ -297,12 +297,20 @@
             box-sizing: border-box;
         }
 
+        html {
+            /* `clip` (y no `hidden`) impide de verdad el scroll horizontal con
+               el dedo. Con `hidden` la pagina igual se corria de lado. */
+            overflow-x: hidden;
+            overflow-x: clip;
+        }
+
         body {
             font-family: 'Open Sans', sans-serif;
             line-height: 1.6;
             color: var(--gray-700);
             background: var(--off-white);
             overflow-x: hidden;
+            overflow-x: clip;
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -328,6 +336,7 @@
             top: 0;
             left: 0;
             right: 0;
+            width: 100%;
             background: var(--white);
             box-shadow: var(--shadow);
             z-index: 1000;
@@ -987,6 +996,8 @@
             gap: 42px;
             align-items: center;
         }
+        /* Sin esto los items no bajan de su min-content y ensanchan la pagina */
+        .proof-split > * { min-width: 0; }
 
         .proof-interlude--dark .proof-split {
             grid-template-columns: minmax(280px, 460px) minmax(0, 1fr);
@@ -1769,6 +1780,7 @@
             bottom: 0;
             left: 0;
             right: 0;
+            width: 100%;
             background: var(--white);
             border-top: 1px solid var(--gray-200);
             padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
@@ -2777,7 +2789,7 @@
                 <div class="voices-copy reveal">
                     <span class="voices-eyebrow">Testimonios</span>
                     <h2 id="voices-1-title">¿Y si no puedo?</h2>
-                    <p>La pregunta que todas se hicieron antes de la primera clase. Tocá el play y escuchalas.</p>
+                    <p>La pregunta que todas se hicieron antes de la primera clase. Escuchá estos testimonios.</p>
                 </div>
                 <div class="voices-row">
                     <article class="voice-card reveal">

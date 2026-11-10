@@ -59,7 +59,9 @@
 - [x] **Modal de video**: abre con el chip del hero. Cartelito animado "Escuchar lo que dicen ellas" (ecualizador + brillo + levitación), título "¿Y vos, qué excusa tenés?" y reproductor vertical. Click en el video = play/pause, siempre con sonido.
 - [x] **Cuestionario reordenado**: nombre → **mañana o tarde** → lugar (solo los de ese turno: mañana = Batlle y Prado, tarde = Rodó) → hora → días → objetivo. Los lugares no aparecen hasta elegir el turno.
 - [x] **8 testimonios distribuidos en 4 bandas** a lo largo de la página (3 + 2 + 2 + 1), intercalados entre Benefits, Schedule, About y Objections. En mobile son carrusel horizontal.
-- [x] Copy en femenino: "disposta", "quedás sola", "sentirte perdida", "mujeres de tu edad contarte cómo volvieron a moverse".
+- [x] **Copy en femenino**: "disposta", "quedás sola", "sentirte perdida", "mujeres de tu edad contarte cómo volvieron a moverse".
+- [x] **Fix scroll horizontal en mobile**: `.proof-split` tenía items con `min-width: auto` que no bajaban de su min-content (377 px) y ensanchaban la página 7 px. Con eso el header fijo (y el sticky CTA) quedaban en 397 px y la página se corría de lado al scrollear. Fix: `min-width: 0` en los items de grid, `width: 100%` en los fijos y `overflow-x: clip` (no `hidden`, que igual deja scrollear con el dedo) en `html` y `body`. Verificado a 390 px y 360 px: `scrollWidth == clientWidth`, `scrollX` siempre 0.
+- [x] Copy: "La pregunta que todas se hicieron antes de la primera clase. **Escuchá estos testimonios.**"
 - [x] El cuestionario de reserva pide **el nombre** en todos los planes. El mensaje a WhatsApp arranca "Hola Álvaro, soy María." El nombre viaja a Meta hasheado (`user_data.fn`), nunca en texto plano.
 - [x] `videos/Testimonios nuevos/` agregado al `.gitignore` (los originales no van al repo)
 
