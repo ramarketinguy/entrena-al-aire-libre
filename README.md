@@ -60,13 +60,37 @@ Para probar en local con las functions: `vercel dev` (no abrir index.html direct
 
 | Evento | Dónde dispara | Canales |
 | --- | --- | --- |
-| `PageView` | Carga de página | Pixel + CAPI |
-| `ViewContent` | Scroll 50% y 75% | Pixel + CAPI* |
-| `Lead` | Click en cualquier CTA de WhatsApp (hero, planes, online, testimonios, sticky, flotante, exit modal) | Pixel + CAPI* |
+| `PageView` | Carga de página (incluye los UTMs del click en el anuncio) | Pixel + CAPI |
+| `ViewContent` | Scroll 50% y 75% | Pixel + CAPI |
+| `Lead` | Envío final del modal de reserva y botón flotante de WhatsApp | Pixel + CAPI |
+| `BookingStart` (custom) | Click en cualquier CTA que lleva a planes o abre el modal | Pixel + CAPI |
+| `BookingSelect` (custom) | Cada elección dentro del modal (zona, turno, días, personas, objetivo) | Pixel + CAPI |
 | `ScrollDepth` (custom) | 25/50/75/100% | Pixel |
 | `VideoPlay` / `VideoComplete` (custom) | Video de Álvaro y testimonios | Pixel |
+| `ExitIntentShown` (custom) | Modal de salida | Pixel |
 
 \*CAPI se dispara cuando `window.__capiEnabled` está activo (por defecto, sí).
+
+Todos los eventos pasan por `window.__track(evento, params)`: agrega los UTMs al
+`custom_data`, manda al Pixel (`track` para estándar, `trackCustom` para propios)
+y replica a `/api/capi` con el mismo `event_id`.
+
+## Flujo de reserva
+
+1. Todos los CTA de reserva (hero, interludios, testimonios, CTA final, sticky
+   móvil, modal de salida) llevan a `#pricing`, no directo a WhatsApp.
+2. El botón de cada tarjeta de plan abre el modal con el **plan ya definido**:
+   no se vuelve a preguntar qué quiere reservar.
+3. Dentro del modal se elige:
+   - presencial: lugar → turno → días → objetivo
+   - online: no se pregunta el lugar (es desde la casa); se pregunta **cuántas
+     personas se conectan** (1 / 2 / 3), porque el precio por persona cambia
+     ($800 / $500 / $400)
+4. El botón final arma el mensaje de WhatsApp con plan, lugar, turno, días y
+   objetivo, y lo manda a Álvaro.
+
+El mensaje de WhatsApp **no lleva UTMs**: la atribución vive en el Pixel y en
+CAPI (`custom_data`), no en el texto que lee Álvaro.
 
 ## Deduplicación
 

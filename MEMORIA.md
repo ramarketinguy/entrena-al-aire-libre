@@ -51,6 +51,19 @@
 - [ ] Comprar dominio y actualizar los 5 puntos del README (manual)
 - [ ] Verificar dominio en Meta Business Manager (manual)
 
+## Estado (sesión 10/11/2026 — v3)
+
+- [x] Nombre de la página cambiado a "Recupera tu movilidad al aire libre" (title, OG, Twitter, H1). La marca "Entrenáte en Movimiento" se mantiene en el logo, el footer y el JSON-LD.
+- [x] Copy reescrito para filtrar calidad: nueva sección "¿Esto es para vos?" (sí / no), hero más directo, objeciones nuevas ("¿No me levanto temprano?", "¿Y si no tengo ganas de ir?") y CTA final sin humo.
+- [x] UTMs eliminados del mensaje de WhatsApp (la atribución queda en Pixel + CAPI por `custom_data`)
+- [x] Todos los CTA de reserva llevan a `#pricing`; el botón flotante y el del footer siguen yendo directo a WhatsApp
+- [x] Modal de reserva nuevo: el plan llega predefinido, se elige lugar → turno → días → objetivo. Para online no se pregunta el lugar y se pregunta cuántas personas se conectan (1/2/3), porque el precio por persona baja ($800 / $500 / $400)
+- [x] Eventos nuevos: `BookingStart` y `BookingSelect` (Pixel + CAPI). `Lead` ahora solo se dispara en conversiones reales (envío del modal y botón flotante)
+- [x] `api/capi.js`: whitelist de eventos extendida y nuevos campos `booking_*` reenviados
+- [x] Tarjetas de planes reordenadas (prueba → 1x → 2x → 3x → online)
+- [x] QA visual con Playwright en 1440x900 y 390x844; sin errores de JS
+- [ ] Verificar en Events Manager que los eventos nuevos llegan y que `Lead` baja (cambio de señal de optimización: antes disparaba al click, ahora al completar la reserva)
+
 ## Estado (sesión 26/10/2026)
 
 - [x] Audio del video de Álvaro restaurado (se había comprimido sin pista de audio) — re-encode desde el master 720x720, H.264 CRF 26 + AAC 96k, publicado como `alvaro-v3_comp.mp4`
@@ -63,3 +76,6 @@
 3. El copy va siempre en voseo uruguayo, singular y en femenino
 4. No agregar formularios ni captura de datos: la conversión es WhatsApp
 5. Revisar cortes de línea en títulos (sin palabras huérfanas)
+6. El mensaje de WhatsApp va limpio: los UTMs nunca se escriben en el texto que ve Álvaro
+7. `Lead` solo cuando hay conversión real (mensaje enviado). Un click que abre el modal es `BookingStart`
+8. El plan de reserva se elige en la tarjeta de precios: en el modal ya viene predefinido y no se vuelve a preguntar

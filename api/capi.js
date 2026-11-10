@@ -168,7 +168,9 @@ module.exports = async function handler(req, res) {
   const ALLOWED = new Set([
     'PageView',
     'ViewContent',
-    'Lead'
+    'Lead',
+    'BookingStart',
+    'BookingSelect'
   ]);
   if (!ALLOWED.has(event_name)) {
     res.status(400).json({ error: 'Unsupported event_name' });
@@ -218,6 +220,13 @@ module.exports = async function handler(req, res) {
   // UTMs y click IDs — pasarlos para atribución en Meta
   ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'fbclid', 'gclid', 'ttclid'].forEach(k => {
     if (custom_data[k]) cd[k] = String(custom_data[k]);
+  });
+
+  // Datos del flujo de reserva (modal): plan, lugar, turno, días y objetivo
+  ['booking_plan', 'booking_zone', 'booking_slot', 'booking_people', 'booking_days', 'booking_goal', 'booking_value'].forEach(k => {
+    if (custom_data[k] !== undefined && custom_data[k] !== null && custom_data[k] !== '') {
+      cd[k] = String(custom_data[k]);
+    }
   });
 
   // ---------- Payload final ----------

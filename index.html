@@ -9,9 +9,9 @@
     <meta name="geo.region" content="UY-MO">
     <meta name="geo.placename" content="Montevideo">
 
-    <title>Entrenamientos al Aire Libre +45 en Montevideo | Entrenáte en Movimiento</title>
-    <meta name="description" content="Si tenés más de 45 y sentís dolores, rigidez o menos energía, estas clases al aire libre en Parque Rodó, Batlle y Prado son para vos. Primera clase gratis.">
-    <meta name="keywords" content="entrenamiento para mayores de 45, clases de ejercicio al aire libre montevideo, entrenamiento funcional adultos mayores, movilidad, salud, parque rodó, parque batlle, prado, clase de prueba gratis, clases online">
+    <title>Recupera tu movilidad al aire libre en Montevideo | Entrenáte en Movimiento</title>
+    <meta name="description" content="Clases grupales al aire libre en Parque Rodó, Batlle y Prado para personas de 45 años o más. Grupos de 15, ejercicios adaptados y 43 años de profesor. Primera clase gratis.">
+    <meta name="keywords" content="recuperar movilidad al aire libre, entrenamiento para mayores de 45, clases de ejercicio al aire libre montevideo, entrenamiento funcional adultos mayores, movilidad, salud, parque rodó, parque batlle, prado, clase de prueba gratis, clases online">
 
     <link rel="canonical" href="https://entrena-al-aire-libre.vercel.app/">
 
@@ -19,8 +19,8 @@
     <meta property="og:type" content="website">
     <meta property="og:locale" content="es_UY">
     <meta property="og:site_name" content="Entrenáte en Movimiento">
-    <meta property="og:title" content="Entrenamientos al Aire Libre en Montevideo para +45 | Primera clase gratis">
-    <meta property="og:description" content="Recuperá tu energía, tu movilidad y tu independencia con clases grupales al aire libre adaptadas a tu edad. Reservá tu clase de prueba sin compromiso.">
+    <meta property="og:title" content="Recupera tu movilidad al aire libre en Montevideo">
+    <meta property="og:description" content="Grupos de 15 personas, ejercicios adaptados a tu edad y un profesor con 43 años de oficio. Elegí tu turno y reservá tu clase gratis.">
     <meta property="og:url" content="https://entrena-al-aire-libre.vercel.app/">
     <meta property="og:image" content="https://entrena-al-aire-libre.vercel.app/og-image.jpg">
     <meta property="og:image:width" content="1200">
@@ -29,8 +29,8 @@
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Entrenamientos al Aire Libre en Montevideo para +45 | Primera clase gratis">
-    <meta name="twitter:description" content="Recuperá tu energía, tu movilidad y tu independencia. Clases grupales al aire libre en Parque Rodó, Batlle y Prado.">
+    <meta name="twitter:title" content="Recupera tu movilidad al aire libre en Montevideo">
+    <meta name="twitter:description" content="Grupos de 15, ejercicios adaptados y 43 años de profesor. Elegí tu turno y reservá tu clase gratis.">
     <meta name="twitter:image" content="https://entrena-al-aire-libre.vercel.app/og-image.jpg">
 
     <!-- Favicons -->
@@ -52,7 +52,15 @@
     // PageView con event_id para deduplicación con CAPI server-side
     (function(){
       var pageViewId = 'pv_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11);
-      fbq('track', 'PageView', {}, { eventID: pageViewId });
+      // UTMs del click en el anuncio, para que el PageView quede atribuido
+      var _utm = {};
+      try {
+        var _keys = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','fbclid','gclid','ttclid'];
+        new URLSearchParams(window.location.search).forEach(function(v, k){
+          if (_keys.indexOf(k) > -1) _utm[k] = v;
+        });
+      } catch(err){}
+      fbq('track', 'PageView', _utm, { eventID: pageViewId });
       window.__metaPageViewId = pageViewId;
       // Habilitar envío server-side (CAPI) — el tracker final usará esto
       window.__capiEnabled = true;
@@ -65,7 +73,8 @@
           body: JSON.stringify({
             event_name: 'PageView',
             event_id: pageViewId,
-            event_source_url: window.location.href
+            event_source_url: window.location.href,
+            custom_data: _utm
           })
         }).catch(function(){});
       } catch(err){}
@@ -176,7 +185,23 @@
               "name": "¿Es para mí si tengo más de 45, 55 o 60 años?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Sí. La mayoría de quienes entrenan acá superan los 45 años. Los ejercicios se adaptan a tu nivel de fuerza y movilidad actual y se intensifican de a poco, a tu ritmo."
+                "text": "Sí. La mayoría de quienes entrenan acá supera los 45 años y muchos tienen más de 60. Los ejercicios se adaptan a tu nivel de fuerza y movilidad actual y se intensifican de a poco, a tu ritmo."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿No me levanto temprano?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Por eso hay turnos de tarde en Parque Rodó (18:15 y 19:15) y clase online desde tu casa. Elegí el turno que puedas sostener 8 semanas seguidas: el que no lo puedas, no lo elijas."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Y si no tengo ganas de ir?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Las ganas van y vienen, el horario no. Por eso insistimos en que elijas turno y grupo: eso, y no la motivación del día, es lo que hace que el resultado aparezca. Si hoy no tenés ganas, vení igual: la clase dura 60 minutos y el cuerpo se encarga del resto."
               }
             },
             {
@@ -224,7 +249,15 @@
               "name": "¿Qué pasa si llueve?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Si el clima no permite entrenar de forma segura, se avisa por WhatsApp y la clase se reprograma."
+                "text": "Si el clima no permite entrenar de forma segura, se avisa por WhatsApp y la clase se reprograma sin costo."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Cómo se paga?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Efectivo o transferencia bancaria. Te lo confirma el profesor por WhatsApp el día que reservás."
               }
             }
           ]
@@ -488,6 +521,7 @@
             box-shadow: 0 6px 25px rgba(255, 109, 0, 0.4);
             border: none;
             cursor: pointer;
+            font-family: inherit;
         }
 
         .btn-primary:hover {
@@ -509,6 +543,8 @@
             font-size: 1.1rem;
             transition: all 0.3s ease;
             border: 2px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            font-family: inherit;
         }
 
         .btn-secondary:hover {
@@ -1794,6 +1830,266 @@
         }
 
         /* ============================================================
+           Sección "¿Esto es para vos?" — filtro de calidad
+           ============================================================ */
+        .fit {
+            padding: 80px 0;
+            background: var(--off-white);
+        }
+        .fit-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+        .fit-card {
+            background: var(--white);
+            border-radius: 18px;
+            padding: 30px 28px;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--primary);
+        }
+        .fit-card--no { border-top-color: #C62828; }
+        .fit-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 18px;
+            color: var(--gray-900);
+        }
+        .fit-card ul { list-style: none; margin: 0; padding: 0; }
+        .fit-card li {
+            position: relative;
+            padding-left: 32px;
+            margin-bottom: 13px;
+            color: var(--gray-700);
+            line-height: 1.55;
+            font-size: 0.99rem;
+        }
+        .fit-card li:last-child { margin-bottom: 0; }
+        .fit-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: -2px;
+            color: var(--primary);
+            font-weight: 800;
+        }
+        .fit-card--no li::before { content: '✕'; color: #C62828; }
+        .fit-note {
+            text-align: center;
+            color: var(--gray-700);
+            font-size: 1.02rem;
+            margin-top: 28px;
+            max-width: 720px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        @media (max-width: 768px) {
+            .fit { padding: 58px 0; }
+            .fit-grid { grid-template-columns: 1fr; gap: 18px; }
+            .fit-card { padding: 24px 20px; }
+        }
+
+        /* ============================================================
+           Modal de reserva (plan + lugar + turno)
+           ============================================================ */
+        .booking-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.62);
+            z-index: 1100;
+            display: none;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 24px 16px;
+            overflow-y: auto;
+            animation: fadeInBackdrop 0.25s ease;
+        }
+        .booking-backdrop.is-open { display: flex; }
+        body.booking-open { overflow: hidden; }
+        body.booking-open .sticky-cta,
+        body.booking-open .wa-float { display: none !important; }
+        .booking-modal {
+            background: var(--white);
+            border-radius: 20px;
+            max-width: 540px;
+            width: 100%;
+            padding: 26px 22px 20px;
+            position: relative;
+            margin: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: scaleIn 0.28s ease;
+            display: flex;
+            flex-direction: column;
+            max-height: calc(100vh - 24px);
+        }
+        .booking-steps {
+            overflow-y: auto;
+            flex: 1 1 auto;
+            min-height: 0;
+            padding-right: 2px;
+        }
+        .booking-steps::-webkit-scrollbar { width: 6px; }
+        .booking-steps::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 3px; }
+        .booking-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            border: none;
+            font-size: 1.6rem;
+            line-height: 1;
+            cursor: pointer;
+            color: var(--gray-500);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+        }
+        .booking-close:hover { background: var(--gray-100); color: var(--gray-900); }
+        .booking-badge {
+            display: inline-block;
+            background: #FFF3E0;
+            color: #E65100;
+            font-weight: 700;
+            font-size: 0.72rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .booking-head { flex: 0 0 auto; }
+        .booking-head h3 {
+            font-size: 1.35rem;
+            margin-bottom: 4px;
+            color: var(--gray-900);
+            line-height: 1.25;
+        }
+        .booking-head p {
+            color: var(--gray-700);
+            font-size: 0.9rem;
+            margin-bottom: 14px;
+        }
+        .booking-planline {
+            background: #E8F5E9;
+            border: 1px solid #C8E6C9;
+            border-radius: 10px;
+            padding: 9px 12px;
+            color: var(--primary-dark) !important;
+            font-size: 0.92rem !important;
+            line-height: 1.45;
+            margin-bottom: 14px !important;
+        }
+        .booking-planline strong { color: var(--primary-dark); }
+        .booking-step { margin-bottom: 18px; }
+        .booking-step.is-hidden { display: none; }
+        .booking-step-label {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-weight: 700;
+            color: var(--gray-900);
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        .booking-num {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: var(--white);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.78rem;
+            flex-shrink: 0;
+        }
+        .booking-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .booking-chip {
+            border: 2px solid var(--gray-200);
+            background: var(--white);
+            border-radius: 12px;
+            padding: 9px 13px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            cursor: pointer;
+            text-align: left;
+            font-family: inherit;
+            line-height: 1.3;
+            transition: border-color 0.15s, background 0.15s, color 0.15s;
+        }
+        .booking-chip:hover { border-color: var(--primary-light); }
+        .booking-chip.is-selected {
+            border-color: var(--primary);
+            background: #E8F5E9;
+            color: var(--primary-dark);
+        }
+        .booking-chip small {
+            display: block;
+            font-weight: 500;
+            color: var(--gray-500);
+            font-size: 0.76rem;
+            margin-top: 3px;
+        }
+        .booking-chip.is-selected small { color: var(--primary-dark); opacity: 0.85; }
+        .booking-hint {
+            font-size: 0.82rem;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+        .booking-summary {
+            flex: 0 0 auto;
+            background: var(--off-white);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 11px 14px;
+            font-size: 0.88rem;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.55;
+        }
+        .booking-summary strong { color: var(--gray-900); }
+        .booking-confirm { width: 100%; justify-content: center; flex: 0 0 auto; }
+        .booking-confirm[aria-disabled="true"] {
+            background: var(--gray-200);
+            color: var(--gray-500);
+            box-shadow: none;
+            pointer-events: none;
+        }
+        .booking-foot {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--gray-500);
+            margin-top: 10px;
+        }
+        @media (min-width: 700px) {
+            .booking-modal { max-width: 760px; padding: 30px 28px 24px; }
+            .booking-steps {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 14px 28px;
+                align-items: start;
+            }
+            .booking-step { margin-bottom: 0; }
+        }
+        @media (max-width: 600px) {
+            .booking-backdrop { padding: 10px 8px; }
+            .booking-modal { padding: 22px 16px 16px; border-radius: 16px; max-height: calc(100vh - 20px); }
+            .booking-head h3 { font-size: 1.2rem; }
+            .booking-head p { font-size: 0.88rem; margin-bottom: 14px; }
+            .booking-badge { margin-bottom: 8px; }
+            .booking-step { margin-bottom: 14px; }
+            .booking-chip { font-size: 0.85rem; padding: 8px 10px; }
+            .booking-summary { font-size: 0.85rem; padding: 11px 13px; }
+        }
+
+        /* ============================================================
            Skip link (a11y)
            ============================================================ */
         .skip-link {
@@ -2003,7 +2299,7 @@
     <!-- Urgency / social proof bar -->
     <div class="urgency-bar" role="status" aria-live="polite">
         <span class="ub-dot" aria-hidden="true"></span>
-        <strong>Clase de prueba gratis</strong> · Cupos limitados a 15 personas por grupo
+        <strong>Clase de prueba gratis</strong> · Máximo 15 personas por grupo
     </div>
 
     <!-- Header -->
@@ -2029,21 +2325,21 @@
         <div class="container">
             <div class="hero-content">
                 <div class="hero-badge">
-                    <span>🌱</span> Más de 300 personas ya recuperaron su energía con nosotros
+                    <span>🌱</span> Más de 300 personas ya entrenaron con nosotros
                 </div>
-                <h1>Recuperá tu&nbsp;<span>energía</span><br>tu movilidad<br>y tu independencia</h1>
+                <h1>Recuperá tu&nbsp;<span>movilidad</span><br>al&nbsp;aire&nbsp;libre</h1>
                 <p class="hero-description">
-                    ¿Sentís que el cuerpo ya no responde como antes? Si tenés más de 45, estas clases al aire libre son para vos: ejercicios adaptados a tu edad y condición, en grupos reducidos y con un profesor que te cuida en cada movimiento. Sin gimnasios llenos ni máquinas intimidantes.
+                    Clases al aire libre en Parque Rodó, Batlle y Prado, para personas de 45 años o más. Grupos de 15, ejercicios adaptados a tu cuerpo y 43 años de un profesor que te corrige uno por uno. Y te lo decimos de frente: si buscás algo que puedas hacer desde la cama, esto no es para vos.
                 </p>
                 <div class="hero-buttons">
-                    <a href="https://wa.me/59899253103?text=Hola!%20Quiero%20reservar%20mi%20clase%20gratuita%20de%20prueba" class="btn-primary" data-track="Lead" data-track-source="hero_cta">
+                    <a href="#pricing" class="btn-primary" data-track="BookingStart" data-track-source="hero_cta" data-content-name="Planes y precios">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.355 4.243 4.527.898.493 1.951.743 2.835.744.297 0 .575-.013.792-.026.25-.013.372-.025.495-.058.174-.036.347-.086.496-.124.298-.074.497-.12.571-.19.173-.15.173-.297.173-.496 0-.174-.025-.347-.074-.496-.149-.298-.745-2.023-.745-2.023 0-.372.049-.695.173-.92.124-.224.372-.397.495-.604.149-.224.272-.298.371-.497.099-.174.05-.347-.025-.495-.075-.149-.745-2.023-.745-2.023z"/>
                         </svg>
                         Reservá tu clase gratis
                     </a>
                     <a href="#schedule" class="btn-secondary">
-                        Ver horarios y planes
+                        Ver horarios
                     </a>
                 </div>
                 <div class="hero-stats">
@@ -2069,33 +2365,33 @@
         <div class="container">
             <div class="section-header reveal">
                 <h2>Por qué entrenar <span>con nosotros</span></h2>
-                <p>Salud, movilidad e independencia&nbsp;en&nbsp;cada&nbsp;clase</p>
+                <p>Fuerza, movilidad e&nbsp;independencia&nbsp;en&nbsp;cada&nbsp;clase</p>
             </div>
             <div class="benefits-grid">
                 <div class="benefit-card">
                     <div class="benefit-icon">🌳</div>
                     <h3>Al Aire Libre</h3>
-                    <p>Entrená al sol y con aire fresco, en los parques más lindos de Montevideo. La naturaleza mejora tu ánimo y tu energía desde el primer día</p>
+                    <p>Entrená al sol y con aire fresco, en los parques más lindos de Montevideo. El verde, la luz y el aire libre te cambian el ánimo desde la primera clase</p>
                 </div>
                 <div class="benefit-card">
                     <div class="benefit-icon">👥</div>
-                    <h3>Grupos Pequeños</h3>
-                    <p>Máximo 15 personas por clase. Nada de gimnasios llenos: acá el profesor te conoce por tu nombre y te sigue de cerca</p>
+                    <h3>Grupos de 15</h3>
+                    <p>Máximo 15 personas por clase. Nada de gimnasios llenos: acá el profesor te conoce por tu nombre y te corrige en cada movimiento</p>
                 </div>
                 <div class="benefit-card">
                     <div class="benefit-icon">💪</div>
                     <h3>Un Profesor que te Cuida</h3>
-                    <p>43 años de experiencia adaptando ejercicios a cada cuerpo. Si algo te duele o te cuesta, se ajusta en el momento</p>
+                    <p>43 años adaptando ejercicios a cada cuerpo. Si algo te duele o te cuesta, lo cambiamos en el momento, no a la semana siguiente</p>
                 </div>
                 <div class="benefit-card">
                     <div class="benefit-icon">🎯</div>
                     <h3>Movilidad para tu Día a Día</h3>
-                    <p>Subí escaleras sin cansarte, agachate sin miedo, cargá las bolsas del mercado y jugá con tus nietos. Fuerza que se nota en tu vida real</p>
+                    <p>Subí escaleras sin cansarte, agachate sin miedo, cargá las bolsas del mercado y jugá con tus nietos. La fuerza se nota en tu vida real</p>
                 </div>
                 <div class="benefit-card">
                     <div class="benefit-icon">🤝</div>
                     <h3>Gente como Vos</h3>
-                    <p>Entrená con personas de tu edad que comparten tus objetivos. La compañía del grupo hace que sea fácil volver y no abandonar</p>
+                    <p>Entrenás con personas de tu edad que comparten tus objetivos. La compañía del grupo es lo que hace que vuelvas y no abandones</p>
                 </div>
                 <div class="benefit-card">
                     <div class="benefit-icon">⏱️</div>
@@ -2106,12 +2402,43 @@
         </div>
     </section>
 
+    <!-- Fit / Filtro de calidad -->
+    <section class="fit" id="fit">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>¿Esto <span>es para vos</span>?</h2>
+                <p>Te lo decimos antes de que escribas, para no hacer perder el tiempo&nbsp;a&nbsp;nadie</p>
+            </div>
+            <div class="fit-grid">
+                <div class="fit-card fit-card--yes reveal">
+                    <h3>Sí, es para vos si…</h3>
+                    <ul>
+                        <li>Tienes 45 años o más y querés recuperar fuerza y movilidad.</li>
+                        <li>Estás dispuesto a salir al parque dos o tres veces por semana.</li>
+                        <li>Aceptás que el profesor te corrija la técnica, aunque te cueste.</li>
+                        <li>Querés resultados en semanas, no en meses.</li>
+                    </ul>
+                </div>
+                <div class="fit-card fit-card--no reveal">
+                    <h3>No, no es para vos si…</h3>
+                    <ul>
+                        <li>Buscás una actividad suave que puedas hacer desde la cama.</li>
+                        <li>Pensás empezar a entrenarte sin moverte.</li>
+                        <li>Necesitás tratar una lesión: eso es un médico, no un grupo de entrenamiento.</li>
+                        <li>No vas a poder sostener el mismo horario 8 semanas seguidas.</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="fit-note reveal">Si estás en la primera columna, reservá tu clase gratis y probá. Son 60 minutos, no te cuesta nada y no te compromete a nada. Si estás en la segunda, mejor que no nos escribas: te vamos a hacer perder el tiempo.</p>
+        </div>
+    </section>
+
     <!-- Schedule Section -->
     <section class="schedule" id="schedule">
         <div class="container">
             <div class="section-header reveal">
                 <h2>Horarios disponibles</h2>
-                <p>Elegí el turno que mejor se adapte a tu rutina</p>
+                <p>Elegí el turno que puedas sostener 8 semanas seguidas. El&nbsp;que&nbsp;no, no&nbsp;lo&nbsp;elijas</p>
             </div>
             <div class="schedule-grid">
                 <div class="schedule-card">
@@ -2167,7 +2494,7 @@
                     </ul>
                 </div>
             </div>
-            <p class="schedule-note">Presenciales de 60 minutos: Parque Rodó, Parque Batlle y Prado | Online desde tu casa, ideal para entrenar con amigas o en grupo</p>
+            <p class="schedule-note">Presenciales de 60 minutos: Parque Rodó, Parque Batlle y Prado | Online desde tu casa, ideal para entrenar con amigas o en grupo | Todas las clases son conAdaptación de ejercicios a tu condición</p>
         </div>
     </section>
 
@@ -2182,7 +2509,7 @@
                         <li>Ejercicios adaptados a tu condición, sin importar cuánto hace que no te movés.</li>
                         <li>Grupos reducidos con corrección personalizada en cada movimiento.</li>
                     </ul>
-                    <a href="https://wa.me/59899253103?text=Hola!%20Quiero%20reservar%20mi%20clase%20gratuita%20de%20prueba" class="btn-primary" data-track="Lead" data-track-source="testimonial_image_interlude" data-content-name="WhatsApp">Reservar por WhatsApp</a>
+                    <a href="#pricing" class="btn-primary" data-track="BookingStart" data-track-source="proof_image_interlude" data-content-name="Planes y precios">Reservar mi clase gratis</a>
                 </div>
                 <figure class="proof-media proof-image reveal">
                     <img src="videos/testimonios-optimizados/testimonio-8.webp" alt="Testimonio de una persona que entrena en Entrenáte en Movimiento" loading="lazy" decoding="async" width="720" height="900">
@@ -2196,7 +2523,7 @@
         <div class="container">
             <div class="section-header reveal">
                 <h2>Planes y&nbsp;<span>precios</span></h2>
-                <p>Planes accesibles para cuidar tu salud, mes&nbsp;a&nbsp;mes</p>
+                <p>La primera vez, la clase de prueba. Después, el plan que&nbsp;pu&nbsp;edas&nbsp;sostener</p>
             </div>
             <div class="pricing-grid">
                 <div class="pricing-card">
@@ -2208,7 +2535,18 @@
                         <li>Sin compromiso</li>
                         <li>Conocé el método y el grupo</li>
                     </ul>
-                    <a href="https://wa.me/59899253103?text=Hola!%20Quiero%20reservar%20mi%20clase%20gratuita%20de%20prueba" class="btn-primary" style="width:100%;justify-content:center;margin-top:15px;" data-track="Lead" data-track-source="pricing_free">Reservar ahora</a>
+                    <button type="button" class="btn-primary" style="width:100%;justify-content:center;margin-top:15px;" data-booking="prueba" data-track="BookingStart" data-track-source="pricing_free" data-content-name="Clase de prueba" data-value="0" data-currency="UYU">Reservar ahora</button>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-title">1 vez por semana</div>
+                    <div class="price">$1.200</div>
+                    <div class="price-period">por mes</div>
+                    <ul class="pricing-features">
+                        <li>4 clases al mes</li>
+                        <li>Ideal para empezar suave</li>
+                        <li>Flexibilidad total</li>
+                    </ul>
+                    <button type="button" class="btn-primary" style="width:100%;justify-content:center;margin-top:15px;" data-booking="1x" data-track="BookingStart" data-track-source="pricing_1x" data-content-name="Plan 1x semana" data-value="1200" data-currency="UYU">Elegir plan</button>
                 </div>
                 <div class="pricing-card featured">
                     <div class="pricing-badge">Más popular</div>
@@ -2220,7 +2558,7 @@
                         <li>Todos los niveles</li>
                         <li>Seguimiento personalizado</li>
                     </ul>
-                    <a href="https://wa.me/59899253103?text=Hola!%20Quiero%20inscribirme%20al%20plan%20de%202%20veces%20por%20semana" class="btn-secondary" style="background:var(--white);color:var(--primary);width:100%;justify-content:center;margin-top:15px;" data-track="Lead" data-track-source="pricing_2x" data-value="2000" data-currency="UYU" data-content-name="Plan 2x semana">Elegir plan</a>
+                    <button type="button" class="btn-secondary" style="background:var(--white);color:var(--primary);width:100%;justify-content:center;margin-top:15px;" data-booking="2x" data-track="BookingStart" data-track-source="pricing_2x" data-content-name="Plan 2x semana" data-value="2000" data-currency="UYU">Elegir plan</button>
                 </div>
                 <div class="pricing-card">
                     <div class="pricing-title">3 veces por semana</div>
@@ -2231,18 +2569,7 @@
                         <li>Máxima frecuencia</li>
                         <li>Progreso más rápido</li>
                     </ul>
-                    <a href="https://wa.me/59899253103?text=Hola!%20Quiero%20inscribirme%20al%20plan%20de%203%20veces%20por%20semana" class="btn-primary" style="width:100%;justify-content:center;margin-top:15px;" data-track="Lead" data-track-source="pricing_3x" data-value="2700" data-currency="UYU" data-content-name="Plan 3x semana">Elegir plan</a>
-                </div>
-                <div class="pricing-card">
-                    <div class="pricing-title">1 vez por semana</div>
-                    <div class="price">$1.200</div>
-                    <div class="price-period">por mes</div>
-                    <ul class="pricing-features">
-                        <li>4 clases al mes</li>
-                        <li>Ideal para empezar suave</li>
-                        <li>Flexibilidad total</li>
-                    </ul>
-                    <a href="https://wa.me/59899253103?text=Hola!%20Quiero%20inscribirme%20al%20plan%20de%201%20vez%20por%20semana" class="btn-primary" style="width:100%;justify-content:center;margin-top:15px;" data-track="Lead" data-track-source="pricing_1x" data-value="1200" data-currency="UYU" data-content-name="Plan 1x semana">Elegir plan</a>
+                    <button type="button" class="btn-primary" style="width:100%;justify-content:center;margin-top:15px;" data-booking="3x" data-track="BookingStart" data-track-source="pricing_3x" data-content-name="Plan 3x semana" data-value="2700" data-currency="UYU">Elegir plan</button>
                 </div>
                 <div class="pricing-card">
                     <div class="pricing-title">Online</div>
@@ -2253,9 +2580,10 @@
                         <li>Si se conectan 2: $500 cada una</li>
                         <li>Si se conectan 3: $400 cada una</li>
                     </ul>
-                    <a href="https://wa.me/59899253103?text=Hola!%20Quiero%20informaci%C3%B3n%20sobre%20las%20clases%20online" class="btn-primary" style="width:100%;justify-content:center;margin-top:15px;" data-track="Lead" data-track-source="pricing_online" data-value="800" data-currency="UYU" data-content-name="Clase online">Consultar por online</a>
+                    <button type="button" class="btn-primary" style="width:100%;justify-content:center;margin-top:15px;" data-booking="online" data-track="BookingStart" data-track-source="pricing_online" data-content-name="Clase online" data-value="800" data-currency="UYU">Consultar por online</button>
                 </div>
             </div>
+            <p class="schedule-note" style="margin-top:30px;text-align:center;">Todas las clases presenciales son de 60 minutos, en grupos de máximo 15 personas y con los ejercicios adaptados a tu condición</p>
         </div>
     </section>
 
@@ -2310,7 +2638,7 @@
                         <li>Un profesor atento a tu técnica y a tu ritmo.</li>
                         <li>Ambiente cercano, al aire libre y con buena energía.</li>
                     </ul>
-                    <a href="https://wa.me/59899253103?text=Hola!%20Quiero%20reservar%20mi%20clase%20gratuita%20de%20prueba" class="btn-primary" data-track="Lead" data-track-source="testimonial_video_interlude">Reservar por WhatsApp</a>
+                    <a href="#pricing" class="btn-primary" data-track="BookingStart" data-track-source="proof_video_interlude" data-content-name="Planes y precios">Reservar mi clase gratis</a>
                 </div>
             </div>
         </div>
@@ -2509,7 +2837,7 @@
 
             <div class="testimonial-cta reveal">
                 <p>Si te reconocés en alguna de estas dudas, el siguiente paso no es inscribirte: es probar una clase gratis.</p>
-                <a href="https://wa.me/59899253103?text=Hola!%20Quiero%20reservar%20mi%20clase%20gratuita%20de%20prueba" class="btn-primary" data-track="Lead" data-track-source="testimonials_section" data-content-name="WhatsApp">Agendar mi clase gratuita</a>
+                <a href="#pricing" class="btn-primary" data-track="BookingStart" data-track-source="testimonials_section" data-content-name="Planes y precios">Agendar mi clase gratuita</a>
             </div>
         </div>
     </section>
@@ -2524,15 +2852,23 @@
             <div class="objections-grid">
                 <div class="objection-card" data-accordion role="button" tabindex="0" aria-expanded="false">
                     <h4>¿Es para mí si tengo más de 55 o 60 años?</h4>
-                    <p>Sí. La mayoría de quienes entrenan acá supera los 45 años. Los ejercicios se adaptan a tu nivel de fuerza y movilidad actual, y se intensifican de a poco, a tu ritmo.</p>
+                    <p>Sí. La mayoría de quienes entrenan acá supera los 45 años y muchos tienen más de 60. Los ejercicios se adaptan a tu nivel de fuerza y movilidad actual, y se intensifican de a poco, a tu ritmo.</p>
                 </div>
                 <div class="objection-card" data-accordion role="button" tabindex="0" aria-expanded="false">
-                    <h4>¿Qué pasa si tengo una lesión o una molestia?</h4>
-                    <p>Siempre hay alguna adaptación posible. Los ejercicios se modifican según tu historial (rodillas, espalda, hombros, lo que sea) y tu seguridad va primero.</p>
+                    <h4>¿No me levanto temprano?</h4>
+                    <p>Por eso hay turnos de tarde en Parque Rodó (18:15 y 19:15) y clase online desde tu casa. Elegí el turno que puedas sostener 8 semanas seguidas: el que no lo puedas, no lo elijas.</p>
+                </div>
+                <div class="objection-card" data-accordion role="button" tabindex="0" aria-expanded="false">
+                    <h4>¿Y si no tengo ganas de ir?</h4>
+                    <p>Las ganas van y vienen, el horario no. Por eso insistimos en que elijas turno y grupo: eso, y no la motivation del día, es lo que hace que el resultado aparezca. Si hoy no tenés ganas, vení igual: la clase dura 60 minutos y el cuerpo se encarga del resto.</p>
                 </div>
                 <div class="objection-card" data-accordion role="button" tabindex="0" aria-expanded="false">
                     <h4>¿Tengo que tener experiencia previa?</h4>
                     <p>No, ninguna. La mayoría empezó desde cero. Las clases se adaptan en el momento según cada caso.</p>
+                </div>
+                <div class="objection-card" data-accordion role="button" tabindex="0" aria-expanded="false">
+                    <h4>¿Qué pasa si tengo una lesión o una molestia?</h4>
+                    <p>Siempre hay alguna adaptación posible. Los ejercicios se modifican según tu historial (rodillas, espalda, hombros, lo que sea) y tu seguridad va primero. Contame tu lesión antes de la clase y la adaptamos.</p>
                 </div>
                 <div class="objection-card" data-accordion role="button" tabindex="0" aria-expanded="false">
                     <h4>¿Qué diferencia hay con un gimnasio?</h4>
@@ -2547,6 +2883,10 @@
                     <p>Solo si estás volviendo de una lesión o tratamiento reciente. En ese caso, un apto de tu médico y listo.</p>
                 </div>
                 <div class="objection-card" data-accordion role="button" tabindex="0" aria-expanded="false">
+                    <h4>¿Cómo se paga?</h4>
+                    <p>Efectivo o transferencia bancaria. Te lo confirmo por WhatsApp el día que reservás.</p>
+                </div>
+                <div class="objection-card" data-accordion role="button" tabindex="0" aria-expanded="false">
                     <h4>¿Qué pasa si llueve?</h4>
                     <p>Si el clima no permite entrenar de forma segura, se avisa por WhatsApp y la clase se reprograma sin costo.</p>
                 </div>
@@ -2558,8 +2898,8 @@
     <section class="cta">
         <div class="container">
             <h2>¿Empezamos?</h2>
-            <p>La primera clase es gratis y sin compromiso. Vení a probar cómo se siente recuperar tu fuerza, tu movilidad y tu energía: al aire libre, acompañada y a tu ritmo. Cada semana que pasa es una oportunidad que no vuelve.</p>
-            <a href="https://wa.me/59899253103?text=Hola!%20Quiero%20reservar%20mi%20clase%20gratuita%20de%20prueba" class="btn-primary btn-white" data-track="Lead" data-track-source="final_cta">
+            <p>La primera clase es gratis y no te compromete a nada más. Salís, entrenás 60 minutos en el parque y decidís con el cuerpo, no con la cabeza. Si te sirve, elegís tu plan. Si no, no pasa nada. Lo único que no va a pasar es seguir esperando el momento perfecto.</p>
+            <a href="#pricing" class="btn-primary btn-white" data-track="BookingStart" data-track-source="final_cta" data-content-name="Planes y precios">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.355 4.243 4.527.898.493 1.951.743 2.835.744.297 0 .575-.013.792-.026.25-.013.372-.025.495-.058.174-.036.347-.086.496-.124.298-.074.497-.12.571-.19.173-.15.173-.297.173-.496 0-.174-.025-.347-.074-.496-.149-.298-.745-2.023-.745-2.023 0-.372.049-.695.173-.92.124-.224.372-.397.495-.604.149-.224.272-.298.371-.497.099-.174.05-.347-.025-.495-.075-.149-.745-2.023-.745-2.023z"/>
                 </svg>
@@ -2584,7 +2924,7 @@
     </footer>
 
     <!-- Floating WhatsApp -->
-    <a href="https://wa.me/59899253103?text=Hola!%20Quiero%20más%20información%20sobre%20los%20grupos%20de%20entrenamiento"
+    <a href="https://wa.me/59899253103?text=Hola%20%C3%81lvaro,%20quiero%20informaci%C3%B3n%20sobre%20las%20clases%20al%20aire%20libre."
        class="wa-float"
        aria-label="Contactanos por WhatsApp"
        data-track="Lead"
@@ -2598,7 +2938,7 @@
 
     <!-- Sticky mobile CTA -->
     <div class="sticky-cta" aria-hidden="false">
-        <a href="https://wa.me/59899253103?text=Hola!%20Quiero%20reservar%20mi%20clase%20gratuita%20de%20prueba" data-track="Lead" data-track-source="mobile_sticky">
+        <a href="#pricing" data-track="BookingStart" data-track-source="mobile_sticky" data-content-name="Planes y precios">
             Reservá tu clase gratis
         </a>
     </div>
@@ -2609,10 +2949,58 @@
             <button id="exitModalClose" class="exit-modal-close" aria-label="Cerrar">✕</button>
             <span class="exit-modal-badge">Sin compromiso</span>
             <h3 id="exitModalTitle">¿Te vas sin probar una clase gratis?</h3>
-            <p>Si no es para vos, no perdés nada. Si lo es, ganás salud, energía e independencia. Solo te lleva 30 segundos.</p>
-            <a href="https://wa.me/59899253103?text=Hola!%20Quiero%20reservar%20mi%20clase%20gratuita%20de%20prueba" id="exitModalCta" class="btn-primary" data-track="Lead" data-track-source="exit_intent" data-content-name="WhatsApp">
+            <p>Si no es para vos, no perdés nada. Si lo es, ganás salud, energía e independencia. Elegí tu plan y reservá: te lleva 30 segundos.</p>
+            <a href="#pricing" id="exitModalCta" class="btn-primary" data-track="BookingStart" data-track-source="exit_intent" data-content-name="Planes y precios">
                 Quiero mi clase gratis
             </a>
+        </div>
+    </div>
+
+    <!-- Booking Modal (plan + lugar + turno) -->
+    <div class="booking-backdrop" id="bookingModal" role="dialog" aria-modal="true" aria-labelledby="bookingTitle" aria-hidden="true">
+        <div class="booking-modal">
+            <button type="button" id="bookingClose" class="booking-close" aria-label="Cerrar">✕</button>
+            <div class="booking-head">
+                <span class="booking-badge">Reservá tu lugar</span>
+                <h3 id="bookingTitle">Elegí tu lugar y tu turno</h3>
+                <p id="bookingPlanLine" class="booking-planline"></p>
+            </div>
+
+            <div class="booking-steps">
+                <div class="booking-step is-hidden" id="bookingZoneStep">
+                    <div class="booking-step-label"><span class="booking-num">1</span> ¿Dónde?</div>
+                    <div class="booking-chips" id="bookingZones" role="radiogroup" aria-label="Lugar"></div>
+                </div>
+
+                <div class="booking-step is-hidden" id="bookingSlotStep">
+                    <div class="booking-step-label"><span class="booking-num">2</span> ¿Qué turno?</div>
+                    <div class="booking-chips" id="bookingSlots" role="radiogroup" aria-label="Turno"></div>
+                </div>
+
+                <div class="booking-step is-hidden" id="bookingPeopleStep">
+                    <div class="booking-step-label"><span class="booking-num">2</span> ¿Cuántas se conectan?</div>
+                    <div class="booking-chips" id="bookingPeople" role="radiogroup" aria-label="Cuántas personas"></div>
+                    <p class="booking-hint" id="bookingPeopleHint"></p>
+                </div>
+
+                <div class="booking-step is-hidden" id="bookingDayStep">
+                    <div class="booking-step-label"><span class="booking-num">3</span> ¿Qué días?</div>
+                    <div class="booking-chips" id="bookingDays" role="group" aria-label="Días"></div>
+                    <p class="booking-hint" id="bookingDayHint"></p>
+                </div>
+
+                <div class="booking-step" id="bookingGoalStep">
+                    <div class="booking-step-label"><span class="booking-num">4</span> ¿Qué querés recuperar?</div>
+                    <div class="booking-chips" id="bookingGoals" role="radiogroup" aria-label="Objetivo"></div>
+                </div>
+            </div>
+
+            <div class="booking-summary" id="bookingSummary"></div>
+
+            <a id="bookingConfirm" class="btn-primary booking-confirm" href="#" target="_blank" rel="noopener" aria-disabled="true">
+                Reservar por WhatsApp
+            </a>
+            <p class="booking-foot">Te confirmo el lugar por WhatsApp. La clase de prueba no tiene ningún compromiso.</p>
         </div>
     </div>
 
@@ -2626,7 +3014,9 @@
 
         // ============================================================
         // UTM + referrer capture (persiste en sessionStorage)
-        // Se envía con cada evento CAPI y se agrega al mensaje de WhatsApp
+        // Se envía con cada evento a Pixel y CAPI.
+        // NO se agrega al mensaje de WhatsApp: el mensaje va limpio
+        // para Álvaro y la atribución vive en Meta.
         // ============================================================
         var UTM_DATA = (function() {
             var keys = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','fbclid','gclid','ttclid'];
@@ -2643,22 +3033,50 @@
             return stored;
         })();
 
-        // Inyectar UTMs al mensaje de WhatsApp de los botones (para trazabilidad manual)
-        (function() {
-            var utmStr = '';
-            ['utm_source','utm_campaign','fbclid'].forEach(function(k){
-                if (UTM_DATA[k]) utmStr += ' [' + k + '=' + UTM_DATA[k] + ']';
+        // ============================================================
+        // Envío centralizado de eventos (Pixel + CAPI, deduplicados)
+        // Eventos estándar van con fbq('track'); los propios, con trackCustom.
+        // ============================================================
+        var STANDARD_EVENTS = ['PageView', 'ViewContent', 'Lead', 'Purchase', 'AddToCart', 'Contact', 'Schedule', 'Subscribe'];
+
+        window.__track = function(eventName, params, isStandard) {
+            if (!eventName) return null;
+            params = params || {};
+
+            // Enriquecer con UTMs (no pisa valores ya seteados)
+            Object.keys(UTM_DATA).forEach(function(k){
+                if (UTM_DATA[k] && params[k] === undefined) params[k] = UTM_DATA[k];
             });
-            if (!utmStr) return;
-            document.querySelectorAll('a[href*="wa.me/"]').forEach(function(a){
+
+            var eventId = genEventId(String(eventName).toLowerCase());
+            var standard = (typeof isStandard === 'boolean')
+                ? isStandard
+                : STANDARD_EVENTS.indexOf(eventName) > -1;
+
+            try {
+                if (typeof fbq === 'function') {
+                    if (standard) fbq('track', eventName, params, { eventID: eventId });
+                    else fbq('trackCustom', eventName, params, { eventID: eventId });
+                }
+            } catch (err) {}
+
+            if (window.__capiEnabled) {
                 try {
-                    var url = new URL(a.href);
-                    var text = url.searchParams.get('text') || '';
-                    url.searchParams.set('text', text + ' ' + utmStr);
-                    a.href = url.toString();
-                } catch(_) {}
-            });
-        })();
+                    fetch('/api/capi', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        keepalive: true,
+                        body: JSON.stringify({
+                            event_name: eventName,
+                            event_id: eventId,
+                            event_source_url: window.location.href,
+                            custom_data: params
+                        })
+                    }).catch(function(){});
+                } catch (err) {}
+            }
+            return eventId;
+        };
 
         // ============================================================
         // Meta Pixel — Event Tracking (delegation)
@@ -2675,38 +3093,12 @@
 
                 var params = { source_button: source };
                 if (contentName) params.content_name = contentName;
-                if (value) {
+                if (value !== null && value !== undefined && value !== '') {
                     params.value = parseFloat(value);
                     params.currency = currency;
                 }
-                // Añadir UTMs a custom_data
-                Object.keys(UTM_DATA).forEach(function(k){
-                    if (UTM_DATA[k]) params[k] = UTM_DATA[k];
-                });
 
-                var eventId = genEventId(eventName.toLowerCase());
-
-                try {
-                    if (typeof fbq === 'function') {
-                        fbq('track', eventName, params, { eventID: eventId });
-                    }
-                } catch (err) {}
-
-                if (window.__capiEnabled) {
-                    try {
-                        fetch('/api/capi', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            keepalive: true,
-                            body: JSON.stringify({
-                                event_name: eventName,
-                                event_id: eventId,
-                                event_source_url: window.location.href,
-                                custom_data: params
-                            })
-                        }).catch(function(){});
-                    } catch (err) {}
-                }
+                __track(eventName, params);
             }
 
             document.addEventListener('click', function(e) {
@@ -2730,23 +3122,8 @@
                             fbq('trackCustom', 'ScrollDepth', { depth: key, time_on_page: Math.round((Date.now() - window.__pageStart) / 1000) });
                         }
                         // ViewContent oficial en 50 y 75 (para campañas)
-                        if ((key === 's50' || key === 's75') && typeof fbq === 'function') {
-                            var vcId = genEventId('viewcontent_' + Math.round(m*100));
-                            var vcName = 'scroll_' + Math.round(m*100);
-                            fbq('track', 'ViewContent', { content_name: vcName }, { eventID: vcId });
-                            if (window.__capiEnabled) {
-                                fetch('/api/capi', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    keepalive: true,
-                                    body: JSON.stringify({
-                                        event_name: 'ViewContent',
-                                        event_id: vcId,
-                                        event_source_url: window.location.href,
-                                        custom_data: { content_name: vcName }
-                                    })
-                                }).catch(function(){});
-                            }
+                        if (key === 's50' || key === 's75') {
+                            __track('ViewContent', { content_name: 'scroll_' + Math.round(m * 100) });
                         }
                     }
                 });
@@ -3081,7 +3458,7 @@
         document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
             anchor.addEventListener('click', function(e) {
                 var href = this.getAttribute('href');
-                if (href === '#') return;
+                if (!href || href === '#' || href.charAt(0) !== '#') return;
                 var target = document.querySelector(href);
                 if (target) {
                     e.preventDefault();
@@ -3154,6 +3531,456 @@
                 });
             }
         })();
+        // ============================================================
+        // Modal de reserva — plan, lugar, turno y días
+        // El mensaje a WhatsApp sale armadito: qué quiere, dónde,
+        // en qué turno y en qué días. Sin preguntas, sin vueltas.
+        // ============================================================
+        (function() {
+            var WA_NUMBER = '59899253103';
+
+            var PLANS = [
+                { id: 'prueba', label: 'Clase de prueba', sub: 'Gratis · 1 clase de 60 min', value: 0, freq: 1,
+                  headline: 'Quiero reservar la clase gratuita de prueba.' },
+                { id: '1x', label: '1 vez por semana', sub: '$1.200/mes · 4 clases', value: 1200, freq: 1,
+                  headline: 'Quiero empezar el plan de 1 vez por semana.' },
+                { id: '2x', label: '2 veces por semana', sub: '$2.000/mes · 8 clases', value: 2000, freq: 2,
+                  headline: 'Quiero empezar el plan de 2 veces por semana.' },
+                { id: '3x', label: '3 veces por semana', sub: '$2.700/mes · 12 clases', value: 2700, freq: 3,
+                  headline: 'Quiero empezar el plan de 3 veces por semana.' },
+                { id: 'online', label: 'Online', sub: 'Por sesión de 45 a 60 min', value: 800, freq: 1, online: true,
+                  headline: 'Quiero arrancar con las clases online.' }
+            ];
+
+            // Online: el precio por persona baja según cuántas se conectan.
+            var ONLINE_PRICES = { 1: 800, 2: 500, 3: 400 };
+
+            var ZONES = [
+                { id: 'batlle', label: 'Parque Batlle', short: 'Parque Batlle',
+                  days: ['Lunes', 'Miércoles', 'Viernes'],
+                  slots: [
+                    { id: 'batlle-manana-0730', label: 'Mañana 7:30', turno: 'Mañana', hora: '7:30' },
+                    { id: 'batlle-manana-0830', label: 'Mañana 8:30', turno: 'Mañana', hora: '8:30' }
+                  ] },
+                { id: 'prado', label: 'Prado (frente al Charrúa)', short: 'Prado (frente al Charrúa)',
+                  days: ['Martes', 'Jueves'],
+                  slots: [
+                    { id: 'prado-manana-1000', label: 'Mañana 10:00', turno: 'Mañana', hora: '10:00' }
+                  ] },
+                { id: 'rodo', label: 'Parque Rodó', short: 'Parque Rodó',
+                  days: ['Lunes', 'Miércoles', 'Jueves', 'Viernes'],
+                  slots: [
+                    { id: 'rodo-tarde-1815', label: 'Tarde 18:15', turno: 'Tarde', hora: '18:15' },
+                    { id: 'rodo-tarde-1915', label: 'Tarde 19:15', turno: 'Tarde', hora: '19:15' }
+                  ] },
+                { id: 'online', label: 'Online (desde tu casa)', short: 'Online (desde tu casa)', days: [], slots: [], online: true }
+            ];
+
+            var GOALS = [
+                { id: 'movilidad', label: 'Movilidad sin dolor' },
+                { id: 'fuerza', label: 'Fuerza para la vida diaria' },
+                { id: 'independencia', label: 'Independencia y confianza' }
+            ];
+
+            var modal = document.getElementById('bookingModal');
+            if (!modal) return;
+
+            var elZones   = document.getElementById('bookingZones');
+            var elSlots   = document.getElementById('bookingSlots');
+            var elPeople  = document.getElementById('bookingPeople');
+            var elPeopleHint = document.getElementById('bookingPeopleHint');
+            var elDays    = document.getElementById('bookingDays');
+            var elGoals   = document.getElementById('bookingGoals');
+            var elSummary = document.getElementById('bookingSummary');
+            var elConfirm = document.getElementById('bookingConfirm');
+            var elHint    = document.getElementById('bookingDayHint');
+            var elClose   = document.getElementById('bookingClose');
+            var elPlanLine= document.getElementById('bookingPlanLine');
+            var slotStep  = document.getElementById('bookingSlotStep');
+            var dayStep   = document.getElementById('bookingDayStep');
+            var zoneStep  = document.getElementById('bookingZoneStep');
+            var peopleStep= document.getElementById('bookingPeopleStep');
+
+            var state = { plan: 'prueba', zone: null, slot: null, people: null, days: [], goal: null };
+
+            function getPlan(id) {
+                for (var i = 0; i < PLANS.length; i++) if (PLANS[i].id === id) return PLANS[i];
+                return null;
+            }
+            function getZone(id) {
+                for (var i = 0; i < ZONES.length; i++) if (ZONES[i].id === id) return ZONES[i];
+                return null;
+            }
+            function getSlot(zone, id) {
+                if (!zone) return null;
+                for (var i = 0; i < zone.slots.length; i++) if (zone.slots[i].id === id) return zone.slots[i];
+                return null;
+            }
+            function getGoal(id) {
+                for (var i = 0; i < GOALS.length; i++) if (GOALS[i].id === id) return GOALS[i];
+                return null;
+            }
+
+            function clear(el) { while (el.firstChild) el.removeChild(el.firstChild); }
+
+            function makeChip(label, sub, selected, onClick) {
+                var b = document.createElement('button');
+                b.type = 'button';
+                b.className = 'booking-chip' + (selected ? ' is-selected' : '');
+                b.setAttribute('role', 'radio');
+                b.setAttribute('aria-checked', selected ? 'true' : 'false');
+                b.appendChild(document.createTextNode(label));
+                if (sub) {
+                    var s = document.createElement('small');
+                    s.textContent = sub;
+                    b.appendChild(s);
+                }
+                b.addEventListener('click', onClick);
+                return b;
+            }
+
+            function availableZones() {
+                var plan = getPlan(state.plan);
+                if (!plan) return [];
+                return ZONES.filter(function(z) { return plan.online ? !!z.online : !z.online; });
+            }
+
+            // Si el plan deja una sola alternativa de lugar (caso Online),
+            // se preselecciona sola: no tiene sentido pedir algo que no hay.
+            function syncZone() {
+                var plan = getPlan(state.plan);
+                if (plan && plan.online) {
+                    state.zone = 'online';
+                    state.slot = null;
+                    state.days = [];
+                    return;
+                }
+                var zones = availableZones();
+                if (state.zone && zones.some(function(z) { return z.id === state.zone; })) return;
+                state.zone = null; state.slot = null; state.days = [];
+            }
+
+            // El plan ya viene elegido desde la tarjeta de precios:
+            // se muestra fijo arriba, no se vuelve a preguntar.
+            function renderPlanLine() {
+                var plan = getPlan(state.plan);
+                if (!plan || !elPlanLine) return;
+                var txt;
+                if (plan.online) {
+                    var n = state.people || 1;
+                    txt = 'Estás reservando: <strong>Online</strong> — ' + onlinePriceText(n);
+                    txt += '. La clase es desde tu casa, en el horario que coordinemos.';
+                } else {
+                    txt = 'Estás reservando: <strong>' + plan.label + '</strong> — ' + plan.sub;
+                }
+                elPlanLine.innerHTML = txt;
+                var title = document.getElementById('bookingTitle');
+                if (title) {
+                    title.textContent = plan.online
+                        ? 'Contame y coordinamos el horario'
+                        : 'Elegí tu lugar y tu turno';
+                }
+            }
+
+            // Render del paso "¿cuántas se conectan?" (solo plan online)
+            function renderPeople() {
+                clear(elPeople);
+                var plan = getPlan(state.plan);
+                if (!plan || !plan.online) {
+                    peopleStep.classList.add('is-hidden');
+                    return;
+                }
+                peopleStep.classList.remove('is-hidden');
+                [1, 2, 3].forEach(function(n) {
+                    var label = n === 1 ? '1 persona' : n + ' personas';
+                    var sub = n === 1
+                        ? '$' + formatPrice(ONLINE_PRICES[1]) + ' por sesión'
+                        : '$' + formatPrice(ONLINE_PRICES[n]) + ' cada una';
+                    elPeople.appendChild(makeChip(label, sub, state.people === n, function() {
+                        state.people = n;
+                        renderPeople(); updateSummary();
+                        trackSelect('personas', label + ' a ' + sub);
+                    }));
+                });
+                elPeopleHint.textContent = 'El precio baja por persona. Si se conectan 2 pagan $500 cada una y si son 3, $400 cada una.';
+            }
+
+            // Renumera los pasos visibles (si el plan es online, ¿Dónde? no existe).
+            function renumber() {
+                var n = 0;
+                [zoneStep, peopleStep, slotStep, dayStep, document.getElementById('bookingGoalStep')].forEach(function(step) {
+                    if (!step || step.classList.contains('is-hidden')) return;
+                    n++;
+                    var num = step.querySelector('.booking-num');
+                    if (num) num.textContent = String(n);
+                });
+            }
+
+            function renderZones() {
+                clear(elZones);
+                var plan = getPlan(state.plan);
+                // Online: el lugar es siempre la casa, no hay nada que elegir.
+                if (plan && plan.online) {
+                    zoneStep.classList.add('is-hidden');
+                    state.zone = 'online';
+                    state.slot = null;
+                    state.days = [];
+                    return;
+                }
+                zoneStep.classList.remove('is-hidden');
+                availableZones().forEach(function(z) {
+                    elZones.appendChild(makeChip(z.label, null, state.zone === z.id, function() {
+                        state.zone = z.id; state.slot = null; state.days = [];
+                        renderZones(); renderSlots(); renderDays(); updateSummary();
+                        trackSelect('zona', z.label);
+                    }));
+                });
+            }
+
+            function renderSlots() {
+                clear(elSlots);
+                var zone = getZone(state.zone);
+                if (!zone || !zone.slots.length) {
+                    slotStep.classList.add('is-hidden');
+                    return;
+                }
+                slotStep.classList.remove('is-hidden');
+                zone.slots.forEach(function(s) {
+                    elSlots.appendChild(makeChip(s.label, null, state.slot === s.id, function() {
+                        state.slot = s.id; state.days = [];
+                        renderSlots(); renderDays(); updateSummary();
+                        trackSelect('turno', s.label);
+                    }));
+                });
+            }
+
+            function renderDays() {
+                clear(elDays);
+                var zone = getZone(state.zone);
+                if (!zone || !zone.days.length) {
+                    dayStep.classList.add('is-hidden');
+                    elHint.textContent = '';
+                    return;
+                }
+                dayStep.classList.remove('is-hidden');
+                var plan = getPlan(state.plan);
+                var max = plan ? plan.freq : 1;
+                zone.days.forEach(function(d) {
+                    var selected = state.days.indexOf(d) > -1;
+                    elDays.appendChild(makeChip(d, null, selected, function() {
+                        var idx = state.days.indexOf(d);
+                        if (idx > -1) {
+                            state.days.splice(idx, 1);
+                        } else {
+                            if (state.days.length >= max) state.days.shift();
+                            state.days.push(d);
+                        }
+                        renderDays(); updateSummary();
+                        trackSelect('dias', state.days.join(', ') || d);
+                    }));
+                });
+                elHint.textContent = max > 1
+                    ? ('Elegí ' + max + ' días. Si tocás uno que ya está, se reemplaza por el nuevo.')
+                    : 'Elegí el día que te venga bien.';
+            }
+
+            function renderGoals() {
+                clear(elGoals);
+                GOALS.forEach(function(g) {
+                    elGoals.appendChild(makeChip(g.label, null, state.goal === g.id, function() {
+                        state.goal = g.id;
+                        renderGoals(); updateSummary();
+                        trackSelect('objetivo', g.label);
+                    }));
+                });
+            }
+
+            function formatPrice(n) {
+                return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            }
+
+            function onlineUnitPrice(n) {
+                return ONLINE_PRICES[n] || ONLINE_PRICES[1];
+            }
+
+            // Texto del precio online según cuántas personas se conectan.
+            function onlinePriceText(n) {
+                var unit = onlineUnitPrice(n);
+                if (n === 1) return '$' + formatPrice(unit) + ' por sesión';
+                return n + ' personas a $' + formatPrice(unit) + ' cada una';
+            }
+
+            // Precio que paga esta persona (en online, el precio por persona).
+            function planUnitValue() {
+                var plan = getPlan(state.plan);
+                if (!plan) return 0;
+                if (plan.online) return onlineUnitPrice(state.people || 1);
+                return plan.value;
+            }
+
+            function buildMessage() {
+                var plan = getPlan(state.plan);
+                var zone = getZone(state.zone);
+                var slot = getSlot(zone, state.slot);
+                var goal = getGoal(state.goal);
+
+                var lines = [];
+                lines.push('Hola Álvaro. ' + plan.headline);
+                if (plan.online) {
+                    var n = state.people || 1;
+                    lines.push('Plan: Online — ' + (n === 1
+                        ? '1 persona, $' + formatPrice(onlineUnitPrice(1)) + ' por sesión'
+                        : n + ' personas, $' + formatPrice(onlineUnitPrice(n)) + ' cada una'));
+                } else if (plan.value) {
+                    lines.push('Plan: ' + plan.label + ' ($' + formatPrice(plan.value) + '/mes)');
+                } else {
+                    lines.push('Plan: ' + plan.label + ' (gratis)');
+                }
+                lines.push('Lugar: ' + zone.short);
+                lines.push('Turno: ' + (slot ? slot.label : 'a coordinar'));
+                if (zone.days.length) {
+                    lines.push((state.days.length > 1 ? 'Días' : 'Día') + ': ' + state.days.join(', '));
+                }
+                if (goal) lines.push('Objetivo: ' + goal.label);
+                return lines.join('\n');
+            }
+
+            function missing() {
+                var plan = getPlan(state.plan);
+                var zone = getZone(state.zone);
+                var out = [];
+                if (!zone) out.push('un lugar');
+                else {
+                    if (zone.slots.length && !getSlot(zone, state.slot)) out.push('un turno');
+                    if (zone.days.length && !state.days.length) out.push('un día');
+                }
+                if (plan && plan.online && !state.people) out.push('cuántas se conectan');
+                if (!getGoal(state.goal)) out.push('tu objetivo');
+                return out;
+            }
+
+            function updateSummary() {
+                var plan = getPlan(state.plan);
+                var zone = getZone(state.zone);
+                var slot = getSlot(zone, state.slot);
+                var goal = getGoal(state.goal);
+
+                var rows = [];
+                if (plan) {
+                    if (plan.online) {
+                        var n = state.people || 1;
+                        rows.push('<strong>Plan:</strong> Online — ' + onlinePriceText(n));
+                    } else {
+                        rows.push('<strong>Plan:</strong> ' + plan.label);
+                    }
+                }
+                if (zone) rows.push('<strong>Lugar:</strong> ' + zone.short);
+                if (slot) rows.push('<strong>Turno:</strong> ' + slot.label);
+                if (zone && zone.days.length) {
+                    rows.push('<strong>' + (state.days.length > 1 ? 'Días' : 'Día') + ':</strong> ' + state.days.join(', '));
+                }
+                if (goal) rows.push('<strong>Objetivo:</strong> ' + goal.label);
+
+                var faltan = missing();
+                var html = rows.length ? '<p style="margin:0 0 6px;">' + rows.join(' · ') + '</p>' : '';
+                if (faltan.length) {
+                    var frase = faltan.join(', ').replace(/,([^,]*)$/, ' y$1');
+                    html += '<span style="color:#C62828;">Te falta elegir ' + frase + '.</span>';
+                } else {
+                    html += '<span style="color:var(--gray-500);">Esto es lo que le llega a Álvaro por WhatsApp.</span>';
+                }
+                elSummary.innerHTML = html;
+
+                var ready = faltan.length === 0;
+                renumber();
+                renderPlanLine();
+                elConfirm.setAttribute('aria-disabled', ready ? 'false' : 'true');
+                elConfirm.href = ready
+                    ? ('https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(buildMessage()))
+                    : '#';
+                elConfirm.textContent = ready ? 'Reservar por WhatsApp' : 'Elegí lo que falta arriba';
+            }
+
+            function trackStart() {
+                var plan = getPlan(state.plan);
+                __track('BookingStart', {
+                    source_button: 'pricing_card',
+                    content_name: plan ? plan.label : ''
+                });
+            }
+
+            function trackSelect(step, value) {
+                __track('BookingSelect', {
+                    source_button: 'booking_modal',
+                    content_name: step,
+                    booking_value: value
+                });
+            }
+
+            function open(planId) {
+                state.plan = planId || 'prueba';
+                state.zone = null; state.slot = null; state.people = null; state.days = []; state.goal = null;
+                syncZone();
+                renderPlanLine();
+                renderZones(); renderSlots(); renderPeople(); renderDays(); renderGoals();
+                updateSummary();
+                modal.classList.add('is-open');
+                modal.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('booking-open');
+                if (elClose) elClose.focus();
+                trackStart();
+            }
+
+            function close() {
+                modal.classList.remove('is-open');
+                modal.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('booking-open');
+            }
+
+            // Botones de plan -> abren el modal
+            document.addEventListener('click', function(e) {
+                var trigger = e.target.closest ? e.target.closest('[data-booking]') : null;
+                if (!trigger) return;
+                e.preventDefault();
+                open(trigger.getAttribute('data-booking'));
+            });
+
+            if (elClose) elClose.addEventListener('click', close);
+            modal.addEventListener('click', function(e) { if (e.target === modal) close(); });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.classList.contains('is-open')) close();
+            });
+
+            elConfirm.addEventListener('click', function(e) {
+                if (elConfirm.getAttribute('aria-disabled') === 'true') {
+                    e.preventDefault();
+                    return;
+                }
+                var plan = getPlan(state.plan);
+                var zone = getZone(state.zone);
+                var slot = getSlot(zone, state.slot);
+                var goal = getGoal(state.goal);
+
+                var params = {
+                    source_button: 'booking_modal',
+                    content_name: plan ? plan.label : '',
+                    booking_plan: plan ? plan.id : '',
+                    booking_zone: zone ? zone.short : '',
+                    booking_slot: slot ? slot.label : '',
+                    booking_days: state.days.join(', '),
+                    booking_goal: goal ? goal.label : ''
+                };
+                if (state.people) params.booking_people = String(state.people);
+                var unit = planUnitValue();
+                if (unit) {
+                    params.value = unit;
+                    params.currency = 'UYU';
+                }
+                __track('Lead', params);
+                setTimeout(close, 200);
+            });
+        })();
+
         // ============================================================
         // Anti-huérfanas: garantizar que la última línea de cada título
         // lleve al menos dos palabras (pegándolas con espacio duro).
