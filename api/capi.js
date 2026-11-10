@@ -223,7 +223,7 @@ module.exports = async function handler(req, res) {
   });
 
   // Datos del flujo de reserva (modal): plan, lugar, turno, días y objetivo
-  ['booking_plan', 'booking_zone', 'booking_slot', 'booking_people', 'booking_days', 'booking_goal', 'booking_value'].forEach(k => {
+  ['booking_plan', 'booking_turno', 'booking_zone', 'booking_slot', 'booking_people', 'booking_days', 'booking_goal', 'booking_value'].forEach(k => {
     if (custom_data[k] !== undefined && custom_data[k] !== null && custom_data[k] !== '') {
       cd[k] = String(custom_data[k]);
     }

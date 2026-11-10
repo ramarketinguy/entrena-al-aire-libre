@@ -55,7 +55,9 @@
 
 - [x] **Videos nuevos comprimidos**: los 9 videos de `videos/Testimonios nuevos/` (verticales 1080x1920, 1.288 GB) pasaron a `videos/testimonios-optimizados/` en 540x960, CRF 34, H.264 + AAC mono 72k, `-movflags +faststart`. Total final **27,4 MB** (reducción del 97,9%). Nombres: `resumen-1-540p.mp4`, `testimonio-n{1,2,3,4,5,6,8,9}-540p.mp4` + poster webp.
 - [x] **Video del hero eliminado** (`hero-web_comp.mp4` y `hero-mobile_comp.mp4` borrados del repo, −7 MB). El hero queda con el degradado verde.
-- [x] **Modal de video**: abre con el botón "Escuchá lo que dicen ellas" del hero. Cartelito animado "Escuchar lo que dicen ellas" (ecualizador + brillo + levitación), título "¿Y vos, qué excusa tenés?" y reproductor vertical. Click en el video = play/pause, siempre con sonido.
+- [x] **RESUMEN 1 pasa al hero** como "ventana" al lado del texto (desktop: video a la derecha, 340 px; mobile: video primero, 260 px, y después el texto). Click en la ventana = play/pause con sonido. Debajo, el chip "Escuchá lo que dicen ellas" abre el modal con el cartelito animado.
+- [x] **Modal de video**: abre con el chip del hero. Cartelito animado "Escuchar lo que dicen ellas" (ecualizador + brillo + levitación), título "¿Y vos, qué excusa tenés?" y reproductor vertical. Click en el video = play/pause, siempre con sonido.
+- [x] **Cuestionario reordenado**: nombre → **mañana o tarde** → lugar (solo los de ese turno: mañana = Batlle y Prado, tarde = Rodó) → hora → días → objetivo. Los lugares no aparecen hasta elegir el turno.
 - [x] **8 testimonios distribuidos en 4 bandas** a lo largo de la página (3 + 2 + 2 + 1), intercalados entre Benefits, Schedule, About y Objections. En mobile son carrusel horizontal.
 - [x] Copy en femenino: "disposta", "quedás sola", "sentirte perdida", "mujeres de tu edad contarte cómo volvieron a moverse".
 - [x] El cuestionario de reserva pide **el nombre** en todos los planes. El mensaje a WhatsApp arranca "Hola Álvaro, soy María." El nombre viaja a Meta hasheado (`user_data.fn`), nunca en texto plano.

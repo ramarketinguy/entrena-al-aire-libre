@@ -426,7 +426,64 @@
         .hero-content {
             position: relative;
             z-index: 2;
-            max-width: 700px;
+            width: 100%;
+            max-width: 1120px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 56px;
+            align-items: center;
+        }
+        .hero-text { max-width: 700px; }
+
+        /* Ventana de video del hero */
+        .hero-media {
+            order: 2;
+            width: 100%;
+            max-width: 340px;
+            justify-self: end;
+        }
+        .hero-window {
+            position: relative;
+            aspect-ratio: 9 / 16;
+            background: #0d1a10;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 18px 48px rgba(0, 0, 0, 0.38);
+            border: 3px solid rgba(255, 255, 255, 0.14);
+        }
+        .hero-window video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .hero-window.is-playing .voice-play { opacity: 0; pointer-events: none; }
+        .hero-window.is-playing::after {
+            content: '';
+            position: absolute;
+            left: 12px;
+            bottom: 12px;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #FF5252;
+            box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+            animation: recPulse 1.4s infinite;
+        }
+        @media (max-width: 980px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                max-width: 640px;
+            }
+            .hero-media {
+                order: -1;
+                max-width: 260px;
+                justify-self: center;
+            }
+            .hero-text { max-width: none; }
         }
 
         .hero-badge {
@@ -2353,18 +2410,20 @@
            Botón de video en el hero
            ============================================================ */
         .hero-video-cta {
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 12px;
-            margin-top: 22px;
+            justify-content: center;
+            gap: 9px;
+            width: 100%;
+            margin-top: 14px;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.28);
             color: var(--white);
             font-family: inherit;
-            font-size: 0.98rem;
+            font-size: 0.9rem;
             font-weight: 600;
-            padding: 12px 22px 12px 14px;
+            padding: 11px 16px;
             border-radius: 50px;
             cursor: pointer;
             transition: background 0.25s ease, transform 0.2s ease, border-color 0.25s ease;
@@ -2374,20 +2433,8 @@
             transform: translateY(-2px);
             border-color: rgba(255, 255, 255, 0.5);
         }
-        .hero-video-cta .vm-eq { height: 18px; }
+        .hero-video-cta .vm-eq { height: 17px; }
         .hero-video-cta .vm-eq i { background: var(--accent-light); }
-        .hero-video-cta-play {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            background: var(--accent);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            box-shadow: 0 4px 14px rgba(255, 109, 0, 0.45);
-        }
-        .hero-video-cta-play svg { width: 15px; height: 15px; margin-left: 2px; }
 
         /* ============================================================
            Skip link (a11y)
@@ -2622,6 +2669,22 @@
         </div>
         <div class="container">
             <div class="hero-content">
+                <div class="hero-media">
+                    <div class="hero-window" data-voice-video>
+                        <video preload="none" playsinline poster="videos/testimonios-optimizados/resumen-1-540p-poster.webp">
+                            <source src="videos/testimonios-optimizados/resumen-1-540p.mp4" type="video/mp4">
+                            Tu navegador no soporta video HTML5.
+                        </video>
+                        <button type="button" class="voice-play" aria-label="Reproducir el video resumen">
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                        </button>
+                    </div>
+                    <button type="button" class="hero-video-cta" data-video-modal="resumen-1">
+                        <span class="vm-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                        Escuchá lo que dicen ellas
+                    </button>
+                </div>
+                <div class="hero-text">
                 <div class="hero-badge">
                     <span>🌱</span> Más de 300 personas ya entrenaron con nosotros
                 </div>
@@ -2640,13 +2703,6 @@
                         Ver horarios
                     </a>
                 </div>
-                <button type="button" class="hero-video-cta" data-video-modal="resumen-1">
-                    <span class="hero-video-cta-play" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                    </span>
-                    <span class="vm-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-                    Escuchá lo que dicen ellas
-                </button>
                 <div class="hero-stats">
                     <div class="stat-item">
                         <div class="stat-number">43 años</div>
@@ -2660,6 +2716,7 @@
                         <div class="stat-number">+300</div>
                         <div class="stat-label">Personas ya entrenaron</div>
                     </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -3425,14 +3482,19 @@
                     <input type="text" class="booking-input" id="bookingName" placeholder="Escribí tu nombre" autocomplete="given-name" maxlength="40" aria-label="Tu nombre">
                 </div>
 
+                <div class="booking-step is-hidden" id="bookingTurnoStep">
+                    <div class="booking-step-label"><span class="booking-num">2</span> ¿Mañana o tarde?</div>
+                    <div class="booking-chips" id="bookingTurnos" role="radiogroup" aria-label="Mañana o tarde"></div>
+                </div>
+
                 <div class="booking-step is-hidden" id="bookingZoneStep">
-                    <div class="booking-step-label"><span class="booking-num">1</span> ¿Dónde?</div>
+                    <div class="booking-step-label"><span class="booking-num">3</span> ¿Dónde?</div>
                     <div class="booking-chips" id="bookingZones" role="radiogroup" aria-label="Lugar"></div>
                 </div>
 
                 <div class="booking-step is-hidden" id="bookingSlotStep">
-                    <div class="booking-step-label"><span class="booking-num">2</span> ¿Qué turno?</div>
-                    <div class="booking-chips" id="bookingSlots" role="radiogroup" aria-label="Turno"></div>
+                    <div class="booking-step-label"><span class="booking-num">4</span> ¿A qué hora?</div>
+                    <div class="booking-chips" id="bookingSlots" role="radiogroup" aria-label="Hora"></div>
                 </div>
 
                 <div class="booking-step is-hidden" id="bookingPeopleStep">
@@ -4003,7 +4065,7 @@
             shells.forEach(function(shell) {
                 var video = shell.querySelector('video');
                 var button = shell.querySelector('.voice-play');
-                var card = shell.closest ? shell.closest('.voice-card') : shell.parentNode;
+                var card = shell.closest ? shell.closest('.voice-card, .hero-window') : shell.parentNode;
                 if (!video) return;
 
                 function play() {
@@ -4143,24 +4205,31 @@
             var ONLINE_PRICES = { 1: 800, 2: 500, 3: 400 };
 
             var ZONES = [
-                { id: 'batlle', label: 'Parque Batlle', short: 'Parque Batlle',
+                { id: 'batlle', label: 'Parque Batlle', short: 'Parque Batlle', turno: 'manana',
                   days: ['Lunes', 'Miércoles', 'Viernes'],
                   slots: [
-                    { id: 'batlle-manana-0730', label: 'Mañana 7:30', turno: 'Mañana', hora: '7:30' },
-                    { id: 'batlle-manana-0830', label: 'Mañana 8:30', turno: 'Mañana', hora: '8:30' }
+                    { id: 'batlle-0730', label: '7:30', hora: '7:30' },
+                    { id: 'batlle-0830', label: '8:30', hora: '8:30' }
                   ] },
-                { id: 'prado', label: 'Prado (frente al Charrúa)', short: 'Prado (frente al Charrúa)',
+                { id: 'prado', label: 'Prado (frente al Charrúa)', short: 'Prado (frente al Charrúa)', turno: 'manana',
                   days: ['Martes', 'Jueves'],
                   slots: [
-                    { id: 'prado-manana-1000', label: 'Mañana 10:00', turno: 'Mañana', hora: '10:00' }
+                    { id: 'prado-1000', label: '10:00', hora: '10:00' }
                   ] },
-                { id: 'rodo', label: 'Parque Rodó', short: 'Parque Rodó',
+                { id: 'rodo', label: 'Parque Rodó', short: 'Parque Rodó', turno: 'tarde',
                   days: ['Lunes', 'Miércoles', 'Jueves', 'Viernes'],
                   slots: [
-                    { id: 'rodo-tarde-1815', label: 'Tarde 18:15', turno: 'Tarde', hora: '18:15' },
-                    { id: 'rodo-tarde-1915', label: 'Tarde 19:15', turno: 'Tarde', hora: '19:15' }
+                    { id: 'rodo-1815', label: '18:15', hora: '18:15' },
+                    { id: 'rodo-1915', label: '19:15', hora: '19:15' }
                   ] },
-                { id: 'online', label: 'Online (desde tu casa)', short: 'Online (desde tu casa)', days: [], slots: [], online: true }
+                { id: 'online', label: 'Online (desde tu casa)', short: 'Online (desde tu casa)', turno: null, days: [], slots: [], online: true }
+            ];
+
+            // Turno del día: primero se elige mañana o tarde, después se
+            // habilitan los lugares de ese turno.
+            var TURNOS = [
+                { id: 'manana', label: 'Mañana', sub: '7:30 – 10:00' },
+                { id: 'tarde', label: 'Tarde', sub: '18:15 – 19:15' }
             ];
 
             var GOALS = [
@@ -4188,9 +4257,11 @@
             var zoneStep  = document.getElementById('bookingZoneStep');
             var peopleStep= document.getElementById('bookingPeopleStep');
             var nameStep  = document.getElementById('bookingNameStep');
+            var turnoStep = document.getElementById('bookingTurnoStep');
+            var elTurnos  = document.getElementById('bookingTurnos');
             var elName    = document.getElementById('bookingName');
 
-            var state = { plan: 'prueba', zone: null, slot: null, people: null, days: [], goal: null, name: '' };
+            var state = { plan: 'prueba', turno: null, zone: null, slot: null, people: null, days: [], goal: null, name: '' };
 
             function getPlan(id) {
                 for (var i = 0; i < PLANS.length; i++) if (PLANS[i].id === id) return PLANS[i];
@@ -4231,22 +4302,44 @@
             function availableZones() {
                 var plan = getPlan(state.plan);
                 if (!plan) return [];
-                return ZONES.filter(function(z) { return plan.online ? !!z.online : !z.online; });
+                if (plan.online) return ZONES.filter(function(z) { return !!z.online; });
+                // Sin turno elegido no hay lugares: primero mañana o tarde.
+                if (!state.turno) return [];
+                return ZONES.filter(function(z) { return !z.online && z.turno === state.turno; });
             }
 
             // Si el plan deja una sola alternativa de lugar (caso Online),
             // se preselecciona sola: no tiene sentido pedir algo que no hay.
             function syncZone() {
                 var plan = getPlan(state.plan);
+                state.turno = null;
+                state.slot = null;
+                state.days = [];
                 if (plan && plan.online) {
                     state.zone = 'online';
-                    state.slot = null;
-                    state.days = [];
                     return;
                 }
-                var zones = availableZones();
-                if (state.zone && zones.some(function(z) { return z.id === state.zone; })) return;
-                state.zone = null; state.slot = null; state.days = [];
+                state.zone = null;
+            }
+
+            // Paso "¿Mañana o tarde?" — es lo primero que define los lugares.
+            function renderTurnoStep() {
+                clear(elTurnos);
+                var plan = getPlan(state.plan);
+                if (!plan || plan.online) {
+                    turnoStep.classList.add('is-hidden');
+                    state.turno = null;
+                    return;
+                }
+                turnoStep.classList.remove('is-hidden');
+                TURNOS.forEach(function(t) {
+                    elTurnos.appendChild(makeChip(t.label, t.sub, state.turno === t.id, function() {
+                        state.turno = t.id;
+                        state.zone = null; state.slot = null; state.days = [];
+                        renderTurnoStep(); renderZones(); renderSlots(); renderDays(); updateSummary();
+                        trackSelect('turno_del_dia', t.label);
+                    }));
+                });
             }
 
             // El plan ya viene elegido desde la tarjeta de precios:
@@ -4303,7 +4396,7 @@
             // Renumera los pasos visibles (si el plan es online, ¿Dónde? no existe).
             function renumber() {
                 var n = 0;
-                [nameStep, zoneStep, peopleStep, slotStep, dayStep, document.getElementById('bookingGoalStep')].forEach(function(step) {
+                [nameStep, turnoStep, zoneStep, peopleStep, slotStep, dayStep, document.getElementById('bookingGoalStep')].forEach(function(step) {
                     if (!step || step.classList.contains('is-hidden')) return;
                     n++;
                     var num = step.querySelector('.booking-num');
@@ -4314,7 +4407,6 @@
             function renderZones() {
                 clear(elZones);
                 var plan = getPlan(state.plan);
-                // Online: el lugar es siempre la casa, no hay nada que elegir.
                 if (plan && plan.online) {
                     zoneStep.classList.add('is-hidden');
                     state.zone = 'online';
@@ -4322,8 +4414,14 @@
                     state.days = [];
                     return;
                 }
+                var zonas = availableZones();
+                if (!zonas.length) {
+                    zoneStep.classList.add('is-hidden');
+                    state.zone = null; state.slot = null; state.days = [];
+                    return;
+                }
                 zoneStep.classList.remove('is-hidden');
-                availableZones().forEach(function(z) {
+                zonas.forEach(function(z) {
                     elZones.appendChild(makeChip(z.label, null, state.zone === z.id, function() {
                         state.zone = z.id; state.slot = null; state.days = [];
                         renderZones(); renderSlots(); renderDays(); updateSummary();
@@ -4431,8 +4529,11 @@
                 } else {
                     lines.push('Plan: ' + plan.label + ' (gratis)');
                 }
+                var turnoLabel = null;
+                for (var t = 0; t < TURNOS.length; t++) if (TURNOS[t].id === state.turno) turnoLabel = TURNOS[t].label;
+                lines.push('Turno: ' + (turnoLabel || 'a coordinar'));
                 lines.push('Lugar: ' + zone.short);
-                lines.push('Turno: ' + (slot ? slot.label : 'a coordinar'));
+                lines.push('Horario: ' + (slot ? slot.hora : 'a coordinar'));
                 if (zone.days.length) {
                     lines.push((state.days.length > 1 ? 'Días' : 'Día') + ': ' + state.days.join(', '));
                 }
@@ -4445,12 +4546,16 @@
                 var zone = getZone(state.zone);
                 var out = [];
                 if (plan && !state.name.trim()) out.push('tu nombre');
-                if (!zone) out.push('un lugar');
-                else {
-                    if (zone.slots.length && !getSlot(zone, state.slot)) out.push('un turno');
-                    if (zone.days.length && !state.days.length) out.push('un día');
+                if (plan && plan.online) {
+                    if (!state.people) out.push('cuántas se conectan');
+                } else {
+                    if (!state.turno) out.push('si venís de mañana o de tarde');
+                    else if (!zone) out.push('un lugar');
+                    else {
+                        if (zone.slots.length && !getSlot(zone, state.slot)) out.push('la hora');
+                        if (zone.days.length && !state.days.length) out.push('el día');
+                    }
                 }
-                if (plan && plan.online && !state.people) out.push('cuántas se conectan');
                 if (!getGoal(state.goal)) out.push('tu objetivo');
                 return out;
             }
@@ -4471,8 +4576,11 @@
                     }
                 }
                 if (state.name.trim()) rows.push('<strong>Nombre:</strong> ' + state.name.trim());
+                var turnoLabel = null;
+                for (var t = 0; t < TURNOS.length; t++) if (TURNOS[t].id === state.turno) turnoLabel = TURNOS[t].label;
+                if (turnoLabel) rows.push('<strong>Turno:</strong> ' + turnoLabel);
                 if (zone) rows.push('<strong>Lugar:</strong> ' + zone.short);
-                if (slot) rows.push('<strong>Turno:</strong> ' + slot.label);
+                if (slot) rows.push('<strong>Hora:</strong> ' + slot.hora);
                 if (zone && zone.days.length) {
                     rows.push('<strong>' + (state.days.length > 1 ? 'Días' : 'Día') + ':</strong> ' + state.days.join(', '));
                 }
@@ -4516,12 +4624,13 @@
 
             function open(planId) {
                 state.plan = planId || 'prueba';
-                state.zone = null; state.slot = null; state.people = null; state.days = []; state.goal = null;
+                state.turno = null; state.zone = null; state.slot = null; state.people = null; state.days = []; state.goal = null;
                 state.name = '';
                 if (elName) elName.value = '';
                 syncZone();
                 renderPlanLine();
                 renderNameStep();
+                renderTurnoStep();
                 renderZones(); renderSlots(); renderPeople(); renderDays(); renderGoals();
                 updateSummary();
                 modal.classList.add('is-open');
@@ -4575,8 +4684,9 @@
                     source_button: 'booking_modal',
                     content_name: plan ? plan.label : '',
                     booking_plan: plan ? plan.id : '',
+                    booking_turno: state.turno || '',
                     booking_zone: zone ? zone.short : '',
-                    booking_slot: slot ? slot.label : '',
+                    booking_slot: slot ? slot.hora : '',
                     booking_days: state.days.join(', '),
                     booking_goal: goal ? goal.label : ''
                 };

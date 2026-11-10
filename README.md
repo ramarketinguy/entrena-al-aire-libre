@@ -83,12 +83,16 @@ y replica a `/api/capi` con el mismo `event_id`.
    no se vuelve a preguntar qué quiere reservar.
 3. Dentro del modal se elige:
    - **nombre** (siempre): el mensaje a WhatsApp empieza "Hola Álvaro, soy ..."
-   - presencial: lugar → turno → días → objetivo
-   - online: no se pregunta el lugar (es desde la casa); se pregunta **cuántas
-     personas se conectan** (1 / 2 / 3), porque el precio por persona cambia
-     ($800 / $500 / $400)
-4. El botón final arma el mensaje de WhatsApp con plan, lugar, turno, días y
-   objetivo, y lo manda a Álvaro.
+   - presencial: **mañana o tarde** → lugar (solo los de ese turno) → hora →
+     días → objetivo
+   - online: no se pregunta el lugar ni el turno (es desde la casa); se pregunta
+     **cuántas personas se conectan** (1 / 2 / 3), porque el precio por persona
+     cambia ($800 / $500 / $400)
+4. El botón final arma el mensaje de WhatsApp con plan, turno, lugar, horario,
+   días y objetivo, y lo manda a Álvaro.
+
+Los lugares no aparecen hasta que se elige mañana o tarde: mañana habilita
+Parque Batlle y Prado, tarde habilita Parque Rodó.
 
 El mensaje de WhatsApp **no lleva UTMs**: la atribución vive en el Pixel y en
 CAPI (`custom_data`), no en el texto que lee Álvaro.
