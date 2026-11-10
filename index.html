@@ -475,15 +475,21 @@
         @media (max-width: 980px) {
             .hero-content {
                 grid-template-columns: 1fr;
-                gap: 30px;
+                gap: 26px;
                 max-width: 640px;
+            }
+            /* En mobile el video es lo primero: sin aire muerto arriba */
+            .hero {
+                min-height: auto;
+                padding: 22px 0 56px;
             }
             .hero-media {
                 order: -1;
-                max-width: 260px;
+                max-width: 286px;
                 justify-self: center;
             }
             .hero-text { max-width: none; }
+            .hero-badge { margin-bottom: 18px; }
         }
 
         .hero-badge {
