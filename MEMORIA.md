@@ -51,6 +51,26 @@
 - [ ] Comprar dominio y actualizar los 5 puntos del README (manual)
 - [ ] Verificar dominio en Meta Business Manager (manual)
 
+## Estado (sesión 11/11/2026 — v6)
+
+- [x] **Ver ubicación abre un popup** (`#locModal`), no una pestaña nueva: iframe de Google Maps (`maps.google.com/maps?q=...&output=embed`, sin API key) con el nombre del lugar, el punto de encuentro, la dirección y un botón "Abrir en Google Maps" como respaldo. Los botones pasaron de `<a target="_blank">` a `<button data-loc="batlle|prado|rodo">` y los datos viven en el objeto `LOCS` del JS.
+  - Batlle → Plaza de la Amistad, Av. Dr. Américo Ricaldoni 1732
+  - Prado → Monumento a los Últimos Charrúas, Av. Delmira Agustini
+  - Rodó → Casa de Andalucía, Parque Rodó
+- [x] **Botón flotante = modal de info** (`#infoModal`), ya no abre WhatsApp directo. Muestra dónde / horarios / planes y adentro tiene "Reservar mi clase gratis" (abre el formulario de reserva con `data-booking="prueba"`, no manda a `#pricing`) y "Me quedan dudas: escribile a Álvaro" (`wa.me` con "Hola Álvaro, tengo algunas dudas sobre los entrenamientos al aire libre."). El botón flotante pasó de `<a>` a `<button>` y ahora trackea `BookingStart` (`float_info`); el link de dudas trackea `Lead` (`info_modal_doubt`).
+- [x] **Puntos de encuentro**: Parque Batlle · Plaza de la Amistad / Prado · Monumento a los Charrúas / Parque Rodó · Casa de Andalucía (en el modal de info).
+- [x] **Orden de secciones (final)**: hero → horarios → testimonios → "¿Esto es para vos?" → "Por qué entrenar con nosotros" → resto. "Por qué entrenar" vuelve al lugar donde estaban los horarios, debajo del filtro de calidad.
+- [x] `open(planId, source)` en el modal de reserva ahora acepta el origen y lo manda en `BookingStart` (`source_button`), así el botón del popup no queda etiquetado como `pricing_card`.
+- [x] `.schedule-list li` pasó a `align-items: flex-start` (el horario queda alineado con el nombre, no con el botón) y se fue el centrado vertical de las listas en las tarjetas.
+- [x] **Nota QA**: una captura con la imagen de testimonio rota en local era una pestaña del navegador in-app apuntando a un `python -m http.server` que ya estaba apagado. El archivo `testimonio-8.webp` está sano (720x900, WebP válido).
+
+## Estado (sesión 11/11/2026 — v5)
+
+- [x] **Hero con bullets**: la descripción larga salió; ahora son 4 puntos con tilde (`.hero-points`): clases al aire libre / 2 horas por semana te cambian la vida / Parque Rodó, Parque Batlle y Prado / Grupos de 15 personas. Reemplaza a `.hero-description`.
+- [x] **Orden de secciones**: `#schedule` (Horarios) ahora va inmediatamente después del hero y `#benefits` (Por qué entrenar con nosotros) después. El botón "Ver horarios" del hero sigue apuntando a `#schedule`.
+- [x] **Horarios en 3 tarjetas**: Mañana (unifica Parque Batlle 7:30 y 8:30 —lun, mié, vie— + Prado frente al Charrúa 10:00 —mar, jue—), Tarde (Parque Rodó 18:15 y 19:15) y Online (1/2/3 personas). Grid `minmax(260px, 1fr)`: 3 en una fila desde 1024 px, apiladas abajo.
+- [x] **Mapas**: cada lugar de las tarjetas tiene un botón "Ver ubicación" con el link corto de Google Maps al punto exacto de encuentro (batlle / prado / rodó). Reemplaza los links de búsqueda por parque.
+
 ## Estado (sesión 10/11/2026 — v4)
 
 - [x] **Videos nuevos comprimidos**: los 9 videos de `videos/Testimonios nuevos/` (verticales 1080x1920, 1.288 GB) pasaron a `videos/testimonios-optimizados/` en 540x960, CRF 34, H.264 + AAC mono 72k, `-movflags +faststart`. Total final **27,4 MB** (reducción del 97,9%). Nombres: `resumen-1-540p.mp4`, `testimonio-n{1,2,3,4,5,6,8,9}-540p.mp4` + poster webp.

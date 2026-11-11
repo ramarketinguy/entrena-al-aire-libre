@@ -539,11 +539,40 @@
             border-radius: 2px;
         }
 
-        .hero-description {
-            font-size: 1.25rem;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 35px;
-            line-height: 1.8;
+        .hero-points {
+            list-style: none;
+            margin: 0 0 34px;
+            padding: 0;
+            display: grid;
+            gap: 12px;
+            max-width: 520px;
+        }
+
+        .hero-points li {
+            position: relative;
+            padding-left: 34px;
+            font-size: 1.12rem;
+            line-height: 1.45;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .hero-points li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 0.05em;
+            width: 22px;
+            height: 22px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: rgba(255, 109, 0, 0.18);
+            border: 1px solid rgba(255, 109, 0, 0.55);
+            color: var(--accent-light);
+            font-size: 0.75rem;
+            line-height: 1;
+            font-weight: 700;
         }
 
         .hero-buttons {
@@ -721,7 +750,7 @@
 
         .schedule-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 25px;
             position: relative;
             z-index: 1;
@@ -733,6 +762,12 @@
             padding: 30px;
             border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .schedule-card .schedule-list {
+            margin: 0;
         }
 
         .schedule-card h3 {
@@ -741,6 +776,7 @@
             margin-bottom: 20px;
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
             gap: 10px;
         }
 
@@ -761,7 +797,7 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
         }
 
         .schedule-list li:last-child {
@@ -771,6 +807,61 @@
         .schedule-list .time {
             font-weight: 600;
             color: var(--accent-light);
+            white-space: nowrap;
+            padding-left: 12px;
+            padding-top: 2px;
+        }
+
+        .schedule-list .place {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 0;
+            align-items: flex-start;
+        }
+
+        .schedule-list .place-name {
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .schedule-list .place small {
+            font-size: 0.75rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .schedule-list .place-map {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 9px;
+            padding: 6px 12px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--white);
+            font-family: inherit;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            text-decoration: none;
+            width: fit-content;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .schedule-list .place-map:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--white);
+        }
+
+        .schedule-list .place-map svg {
+            width: 13px;
+            height: 13px;
+            flex: 0 0 auto;
         }
 
         .schedule-note {
@@ -1421,8 +1512,8 @@
                 font-size: 2.2rem;
             }
 
-            .hero-description {
-                font-size: 1.1rem;
+            .hero-points li {
+                font-size: 1.02rem;
             }
 
             .hero-stats {
@@ -1750,6 +1841,10 @@
             box-shadow: 0 6px 24px rgba(37, 211, 102, 0.45);
             z-index: 999;
             text-decoration: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            font-family: inherit;
             transition: transform 0.2s, box-shadow 0.2s;
         }
         .wa-float:hover {
@@ -2646,6 +2741,209 @@
         }
 
         /* ============================================================
+           Modal de info rápida (botón flotante de WhatsApp)
+           Muestra dónde, cuándo y cuánto antes de mandar el mensaje.
+           ============================================================ */
+        .info-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1150;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 14px;
+            overflow-y: auto;
+            animation: fadeInBackdrop 0.25s ease;
+        }
+        .info-backdrop.is-open { display: flex; }
+        .info-modal {
+            background: var(--white);
+            border-radius: 20px;
+            max-width: 470px;
+            width: 100%;
+            padding: 26px 24px 20px;
+            position: relative;
+            margin: auto;
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+            animation: scaleIn 0.28s ease;
+            max-height: calc(100vh - 32px);
+            overflow-y: auto;
+        }
+        .info-close {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            line-height: 1;
+            cursor: pointer;
+            color: var(--gray-500);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+        }
+        .info-close:hover { background: var(--gray-100); color: var(--gray-900); }
+        .info-modal h3 {
+            font-size: 1.3rem;
+            color: var(--primary-dark);
+            margin-bottom: 4px;
+            padding-right: 32px;
+            line-height: 1.25;
+        }
+        .info-lede {
+            color: var(--gray-500);
+            font-size: 0.92rem;
+            margin-bottom: 18px;
+        }
+        .info-block { margin-bottom: 15px; }
+        .info-block h4 {
+            font-size: 0.74rem;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+        .info-list { list-style: none; }
+        .info-list li {
+            font-size: 0.93rem;
+            color: var(--gray-700);
+            padding: 3px 0 3px 15px;
+            position: relative;
+            line-height: 1.45;
+        }
+        .info-list li::before {
+            content: "";
+            position: absolute;
+            left: 2px;
+            top: 11px;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--gray-200);
+        }
+        .info-list strong { color: var(--gray-900); }
+        .info-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .info-actions .btn-primary {
+            width: 100%;
+            justify-content: center;
+            padding: 15px 20px;
+            font-size: 1rem;
+        }
+        .info-doubt {
+            display: block;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            padding: 8px;
+            border-radius: 10px;
+        }
+        .info-doubt:hover { background: var(--off-white); }
+
+        /* ============================================================
+           Modal de ubicación (Ver ubicación en las tarjetas de horario)
+           ============================================================ */
+        .loc-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.72);
+            z-index: 1160;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 14px;
+            overflow-y: auto;
+            animation: fadeInBackdrop 0.25s ease;
+        }
+        .loc-backdrop.is-open { display: flex; }
+        .loc-modal {
+            background: var(--white);
+            border-radius: 20px;
+            max-width: 460px;
+            width: 100%;
+            padding: 22px 20px 18px;
+            position: relative;
+            margin: auto;
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+            animation: scaleIn 0.28s ease;
+            max-height: calc(100vh - 32px);
+            overflow-y: auto;
+        }
+        .loc-close {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            line-height: 1;
+            cursor: pointer;
+            color: var(--gray-500);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            z-index: 2;
+        }
+        .loc-close:hover { background: var(--gray-100); color: var(--gray-900); }
+        .loc-modal h3 {
+            font-size: 1.25rem;
+            color: var(--primary-dark);
+            margin-bottom: 2px;
+            padding-right: 34px;
+            line-height: 1.25;
+        }
+        .loc-sub {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+        .loc-map {
+            border-radius: 14px;
+            overflow: hidden;
+            background: var(--gray-200);
+            border: 1px solid var(--gray-200);
+            height: 290px;
+        }        .loc-map iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+        }
+        .loc-addr {
+            font-size: 0.9rem;
+            color: var(--gray-700);
+            margin: 12px 0 14px;
+            line-height: 1.45;
+        }
+        .loc-open {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 13px 18px;
+            border-radius: 50px;
+            background: var(--off-white);
+            border: 1px solid var(--gray-200);
+            color: var(--primary-dark);
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+        }
+        .loc-open:hover { background: var(--gray-100); }
+        .loc-open svg { width: 16px; height: 16px; }
+
+        /* ============================================================
            Respect reduced motion
            ============================================================ */
         @media (prefers-reduced-motion: reduce) {
@@ -2707,9 +3005,12 @@
                     <span>🌱</span> Más de 300 personas ya entrenaron con nosotros
                 </div>
                 <h1>Recuperá tu&nbsp;<span>movilidad</span><br>al&nbsp;aire&nbsp;libre</h1>
-                <p class="hero-description">
-                    Clases al aire libre en Parque Rodó, Batlle y Prado, para personas de 45 años o más. Grupos de 15, ejercicios adaptados a tu cuerpo y 43 años de un profesor que te corrige uno por uno. Y te lo decimos de frente: si buscás algo que puedas hacer desde la cama, esto no es para vos.
-                </p>
+                <ul class="hero-points">
+                    <li>Clases al aire libre</li>
+                    <li>2 horas por semana te cambian la vida</li>
+                    <li>Parque Rodó, Parque Batlle y Prado</li>
+                    <li>Grupos de 15 personas</li>
+                </ul>
                 <div class="hero-buttons">
                     <a href="#pricing" class="btn-primary" data-track="BookingStart" data-track-source="hero_cta" data-content-name="Planes y precios">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -2740,45 +3041,67 @@
         </div>
     </section>
 
-    <!-- Benefits Section -->
-    <section class="benefits" id="benefits">
+    <!-- Schedule Section -->
+    <section class="schedule" id="schedule">
         <div class="container">
             <div class="section-header reveal">
-                <h2>Por qué entrenar <span>con nosotros</span></h2>
-                <p>Fuerza, movilidad e&nbsp;independencia&nbsp;en&nbsp;cada&nbsp;clase</p>
+                <h2>Horarios disponibles</h2>
+                <p>Elegí el turno que puedas sostener 8 semanas seguidas. El&nbsp;que&nbsp;no, no&nbsp;lo&nbsp;elijas</p>
             </div>
-            <div class="benefits-grid">
-                <div class="benefit-card">
-                    <div class="benefit-icon">🌳</div>
-                    <h3>Al Aire Libre</h3>
-                    <p>Entrená al sol y con aire fresco, en los parques más lindos de Montevideo. El verde, la luz y el aire libre te cambian el ánimo desde la primera clase</p>
+            <div class="schedule-grid">
+                <div class="schedule-card">
+                    <h3>🌅 Mañana</h3>
+                    <ul class="schedule-list">
+                        <li>
+                            <span class="place">
+                                <span class="place-name">Parque Batlle</span>
+                                <small>Lun · Mié · Vie</small>
+                                <button type="button" class="place-map" data-loc="batlle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Ver ubicación</button>
+                            </span>
+                            <span class="time">7:30 y 8:30</span>
+                        </li>
+                        <li>
+                            <span class="place">
+                                <span class="place-name">Prado (frente al Charrúa)</span>
+                                <small>Mar · Jue</small>
+                                <button type="button" class="place-map" data-loc="prado"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Ver ubicación</button>
+                            </span>
+                            <span class="time">10:00</span>
+                        </li>
+                    </ul>
                 </div>
-                <div class="benefit-card">
-                    <div class="benefit-icon">👥</div>
-                    <h3>Grupos de 15</h3>
-                    <p>Máximo 15 personas por clase. Nada de gimnasios llenos: acá el profesor te conoce por tu nombre y te corrige en cada movimiento</p>
+                <div class="schedule-card">
+                    <h3>☀️ Tarde</h3>
+                    <ul class="schedule-list">
+                        <li>
+                            <span class="place">
+                                <span class="place-name">Parque Rodó</span>
+                                <small>Lun · Mié · Jue · Vie</small>
+                                <button type="button" class="place-map" data-loc="rodo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Ver ubicación</button>
+                            </span>
+                            <span class="time">18:15 y 19:15</span>
+                        </li>
+                    </ul>
                 </div>
-                <div class="benefit-card">
-                    <div class="benefit-icon">💪</div>
-                    <h3>Un Profesor que te Cuida</h3>
-                    <p>43 años adaptando ejercicios a cada cuerpo. Si algo te duele o te cuesta, lo cambiamos en el momento, no a la semana siguiente</p>
-                </div>
-                <div class="benefit-card">
-                    <div class="benefit-icon">🎯</div>
-                    <h3>Movilidad para tu Día a Día</h3>
-                    <p>Subí escaleras sin cansarte, agachate sin miedo, cargá las bolsas del mercado y jugá con tus nietos. La fuerza se nota en tu vida real</p>
-                </div>
-                <div class="benefit-card">
-                    <div class="benefit-icon">🤝</div>
-                    <h3>Gente como Vos</h3>
-                    <p>Entrenás con personas de tu edad que comparten tus objetivos. La compañía del grupo es lo que hace que vuelvas y no abandones</p>
-                </div>
-                <div class="benefit-card">
-                    <div class="benefit-icon">⏱️</div>
-                    <h3>Sin Complicaciones</h3>
-                    <p>No necesitás experiencia previa ni equipamiento. Vení con ropa cómoda, agua y ganas. Del resto nos ocupamos nosotros</p>
+                <div class="schedule-card">
+                    <h3>💻 Online <span>45 a 60 min</span></h3>
+                    <ul class="schedule-list">
+                        <li>
+                            <span>1 persona</span>
+                            <span class="time">$800</span>
+                        </li>
+                        <li>
+                            <span>2 conectadas a la misma hora</span>
+                            <span class="time">$500 c/u</span>
+                        </li>
+                        <li>
+                            <span>3 conectadas a la misma hora</span>
+                            <span class="time">$400 c/u</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
+            <p class="schedule-note">Presenciales de 60 minutos: Parque Rodó, Parque Batlle y Prado. Tocá "Ver ubicación" para ver el punto de encuentro. | Online desde tu casa, ideal para entrenar con amigas o en grupo | Todos los ejercicios se adaptan a tu condición</p>
         </div>
     </section>
 
@@ -2861,68 +3184,45 @@
         </div>
     </section>
 
-    <!-- Schedule Section -->
-    <section class="schedule" id="schedule">
+    <!-- Benefits Section -->
+    <section class="benefits" id="benefits">
         <div class="container">
             <div class="section-header reveal">
-                <h2>Horarios disponibles</h2>
-                <p>Elegí el turno que puedas sostener 8 semanas seguidas. El&nbsp;que&nbsp;no, no&nbsp;lo&nbsp;elijas</p>
+                <h2>Por qué entrenar <span>con nosotros</span></h2>
+                <p>Fuerza, movilidad e&nbsp;independencia&nbsp;en&nbsp;cada&nbsp;clase</p>
             </div>
-            <div class="schedule-grid">
-                <div class="schedule-card">
-                    <h3>🌅 Mañana <span>Lun - Mié - Vie</span></h3>
-                    <ul class="schedule-list">
-                        <li>
-                            <span>Parque Batlle</span>
-                            <span class="time">7:30</span>
-                        </li>
-                        <li>
-                            <span>Parque Batlle</span>
-                            <span class="time">8:30</span>
-                        </li>
-                    </ul>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">🌳</div>
+                    <h3>Al Aire Libre</h3>
+                    <p>Entrená al sol y con aire fresco, en los parques más lindos de Montevideo. El verde, la luz y el aire libre te cambian el ánimo desde la primera clase</p>
                 </div>
-                <div class="schedule-card">
-                    <h3>🌅 Mañana <span>Mar - Jue</span></h3>
-                    <ul class="schedule-list">
-                        <li>
-                            <span>Prado (frente al Charrúa)</span>
-                            <span class="time">10:00</span>
-                        </li>
-                    </ul>
+                <div class="benefit-card">
+                    <div class="benefit-icon">👥</div>
+                    <h3>Grupos de 15</h3>
+                    <p>Máximo 15 personas por clase. Nada de gimnasios llenos: acá el profesor te conoce por tu nombre y te corrige en cada movimiento</p>
                 </div>
-                <div class="schedule-card">
-                    <h3>☀️ Tarde <span>Lun - Mié - Jue - Vie</span></h3>
-                    <ul class="schedule-list">
-                        <li>
-                            <span>Parque Rodó</span>
-                            <span class="time">18:15</span>
-                        </li>
-                        <li>
-                            <span>Parque Rodó</span>
-                            <span class="time">19:15</span>
-                        </li>
-                    </ul>
+                <div class="benefit-card">
+                    <div class="benefit-icon">💪</div>
+                    <h3>Un Profesor que te Cuida</h3>
+                    <p>43 años adaptando ejercicios a cada cuerpo. Si algo te duele o te cuesta, lo cambiamos en el momento, no a la semana siguiente</p>
                 </div>
-                <div class="schedule-card">
-                    <h3>💻 Online <span>45 a 60 min</span></h3>
-                    <ul class="schedule-list">
-                        <li>
-                            <span>1 persona</span>
-                            <span class="time">$800</span>
-                        </li>
-                        <li>
-                            <span>2 conectadas a la misma hora</span>
-                            <span class="time">$500 c/u</span>
-                        </li>
-                        <li>
-                            <span>3 conectadas a la misma hora</span>
-                            <span class="time">$400 c/u</span>
-                        </li>
-                    </ul>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🎯</div>
+                    <h3>Movilidad para tu Día a Día</h3>
+                    <p>Subí escaleras sin cansarte, agachate sin miedo, cargá las bolsas del mercado y jugá con tus nietos. La fuerza se nota en tu vida real</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🤝</div>
+                    <h3>Gente como Vos</h3>
+                    <p>Entrenás con personas de tu edad que comparten tus objetivos. La compañía del grupo es lo que hace que vuelvas y no abandones</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">⏱️</div>
+                    <h3>Sin Complicaciones</h3>
+                    <p>No necesitás experiencia previa ni equipamiento. Vení con ropa cómoda, agua y ganas. Del resto nos ocupamos nosotros</p>
                 </div>
             </div>
-            <p class="schedule-note">Presenciales de 60 minutos: Parque Rodó, Parque Batlle y Prado | Online desde tu casa, ideal para entrenar con amigas o en grupo | Todos los ejercicios se adaptan a tu condición</p>
         </div>
     </section>
 
@@ -3444,25 +3744,85 @@
             <div class="footer-content">
                 <div class="footer-logo">Entrenáte en Movimiento</div>
                 <div class="footer-contact">
-                    <a href="https://wa.me/59899253103" data-track="Lead" data-track-source="footer_whatsapp">Contactanos por WhatsApp</a>
+                    <a href="https://wa.me/59899253103?text=Hola%20%C3%81lvaro%2C%20quiero%20reservar%20la%20clase%20de%20prueba%20gratis." data-track="Lead" data-track-source="footer_whatsapp">Contactanos por WhatsApp</a>
                 </div>
                 <p class="footer-text">Formas de pago: efectivo y transferencia bancaria</p>
             </div>
         </div>
     </footer>
 
-    <!-- Floating WhatsApp -->
-    <a href="https://wa.me/59899253103?text=Hola%20%C3%81lvaro,%20quiero%20informaci%C3%B3n%20sobre%20las%20clases%20al%20aire%20libre."
+    <!-- Botón flotante: abre el modal con la info antes de escribir -->
+    <button type="button"
        class="wa-float"
-       aria-label="Contactanos por WhatsApp"
-       data-track="Lead"
-       data-track-source="float_whatsapp"
-       target="_blank"
-       rel="noopener">
+       id="infoOpen"
+       aria-label="Ver ubicaciones, horarios y precios"
+       aria-haspopup="dialog"
+       data-track="BookingStart"
+       data-track-source="float_info"
+       data-content-name="Info rápida">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.355 4.243 4.527.898.493 1.951.743 2.835.744.297 0 .575-.013.792-.026.25-.013.372-.025.495-.058.174-.036.347-.086.496-.124.298-.074.497-.12.571-.19.173-.15.173-.297.173-.496 0-.174-.025-.347-.074-.496-.149-.298-.745-2.023-.745-2.023z"/>
         </svg>
-    </a>
+    </button>
+
+    <!-- Modal de info rápida -->
+    <div class="info-backdrop" id="infoModal" role="dialog" aria-modal="true" aria-labelledby="infoTitle" aria-hidden="true">
+        <div class="info-modal">
+            <button type="button" id="infoClose" class="info-close" aria-label="Cerrar">&times;</button>
+            <h3 id="infoTitle">Todo lo que necesitás saber</h3>
+            <p class="info-lede">Antes de escribir, acá está el resumen.</p>
+
+            <div class="info-block">
+                <h4>Dónde</h4>
+                <ul class="info-list">
+                    <li><strong>Parque Batlle</strong> · Plaza de la Amistad</li>
+                    <li><strong>Prado</strong> · Monumento a los Charrúas</li>
+                    <li><strong>Parque Rodó</strong> · Casa de Andalucía</li>
+                </ul>
+            </div>
+
+            <div class="info-block">
+                <h4>Horarios</h4>
+                <ul class="info-list">
+                    <li><strong>Mañana</strong> · Parque Batlle 7:30 y 8:30 (lun, mié y vie) · Prado 10:00 (mar y jue)</li>
+                    <li><strong>Tarde</strong> · Parque Rodó 18:15 y 19:15 (lun, mié, jue y vie)</li>
+                    <li><strong>Online</strong> · horario a coordinar</li>
+                </ul>
+            </div>
+
+            <div class="info-block">
+                <h4>Planes</h4>
+                <ul class="info-list">
+                    <li><strong>Clase de prueba</strong> · gratis, 60 minutos</li>
+                    <li><strong>1 vez por semana</strong> · $1.200 al mes (4 clases)</li>
+                    <li><strong>2 veces por semana</strong> · $2.000 al mes (8 clases)</li>
+                    <li><strong>3 veces por semana</strong> · $2.700 al mes (12 clases)</li>
+                    <li><strong>Online</strong> · $800 la sesión ($500 c/u si son 2, $400 c/u si son 3)</li>
+                </ul>
+            </div>
+
+            <div class="info-actions">
+                <button type="button" class="btn-primary" id="infoReserve" data-booking="prueba" data-track-source="info_modal">Reservar mi clase gratis</button>
+                <a class="info-doubt" href="https://wa.me/59899253103?text=Hola%20%C3%81lvaro%2C%20tengo%20algunas%20dudas%20sobre%20los%20entrenamientos%20al%20aire%20libre." target="_blank" rel="noopener" data-track="Lead" data-track-source="info_modal_doubt">Me quedan dudas: escribile a Álvaro</a>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de ubicación (punto de encuentro) -->
+    <div class="loc-backdrop" id="locModal" role="dialog" aria-modal="true" aria-labelledby="locTitle" aria-hidden="true">
+        <div class="loc-modal">
+            <button type="button" id="locClose" class="loc-close" aria-label="Cerrar">&times;</button>
+            <h3 id="locTitle">Parque Batlle</h3>
+            <p class="loc-sub" id="locSub">Plaza de la Amistad</p>
+            <div class="loc-map">
+                <iframe id="locFrame" title="Mapa del punto de encuentro" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <p class="loc-addr" id="locAddr"></p>
+            <a class="loc-open" id="locOpen" href="#" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+                Abrir en Google Maps
+            </a>
+        </div>
+    </div>
 
     <!-- Sticky mobile CTA -->
     <div class="sticky-cta" aria-hidden="false">
@@ -4624,10 +4984,10 @@
                 elConfirm.textContent = ready ? 'Reservar por WhatsApp' : 'Elegí lo que falta arriba';
             }
 
-            function trackStart() {
+            function trackStart(source) {
                 var plan = getPlan(state.plan);
                 __track('BookingStart', {
-                    source_button: 'pricing_card',
+                    source_button: source || 'pricing_card',
                     content_name: plan ? plan.label : ''
                 });
             }
@@ -4640,7 +5000,7 @@
                 });
             }
 
-            function open(planId) {
+            function open(planId, source) {
                 state.plan = planId || 'prueba';
                 state.turno = null; state.zone = null; state.slot = null; state.people = null; state.days = []; state.goal = null;
                 state.name = '';
@@ -4655,7 +5015,7 @@
                 modal.setAttribute('aria-hidden', 'false');
                 document.body.classList.add('booking-open');
                 if (elClose) elClose.focus();
-                trackStart();
+                trackStart(source);
             }
 
             function close() {
@@ -4669,7 +5029,10 @@
                 var trigger = e.target.closest ? e.target.closest('[data-booking]') : null;
                 if (!trigger) return;
                 e.preventDefault();
-                open(trigger.getAttribute('data-booking'));
+                open(
+                    trigger.getAttribute('data-booking'),
+                    trigger.getAttribute('data-track-source') || 'pricing_card'
+                );
             });
 
             if (elClose) elClose.addEventListener('click', close);
@@ -4716,6 +5079,120 @@
                 }
                 __track('Lead', params, true, state.name.trim() ? { first_name: state.name.trim() } : {});
                 setTimeout(close, 200);
+            });
+        })();
+
+        // ============================================================
+        // Modal de info rápida (botón flotante de WhatsApp)
+        // Muestra dónde / horarios / planes antes de ir a WhatsApp.
+        // ============================================================
+        (function() {
+            var modal = document.getElementById('infoModal');
+            var opener = document.getElementById('infoOpen');
+            if (!modal || !opener) return;
+
+            var closeBtn = document.getElementById('infoClose');
+            var reserveLink = document.getElementById('infoReserve');
+            var lastFocus = null;
+
+            function open() {
+                lastFocus = document.activeElement;
+                modal.classList.add('is-open');
+                modal.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('booking-open');
+                if (closeBtn) closeBtn.focus();
+            }
+
+            function close() {
+                modal.classList.remove('is-open');
+                modal.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('booking-open');
+                if (lastFocus && lastFocus.focus) lastFocus.focus();
+            }
+
+            opener.addEventListener('click', open);
+            if (closeBtn) closeBtn.addEventListener('click', close);
+            modal.addEventListener('click', function(e) { if (e.target === modal) close(); });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.classList.contains('is-open')) close();
+            });
+            if (reserveLink) reserveLink.addEventListener('click', close);
+        })();
+
+        // ============================================================
+        // Modal de ubicación: el punto de encuentro se ve sin salir
+        // de la página (iframe de Google Maps + link por si lo necesita)
+        // ============================================================
+        (function() {
+            var LOCS = {
+                batlle: {
+                    name: 'Parque Batlle',
+                    spot: 'Plaza de la Amistad',
+                    addr: 'Av. Dr. Américo Ricaldoni 1732, Montevideo',
+                    q: 'Plaza de la Amistad, Av. Dr. Américo Ricaldoni 1732, Montevideo',
+                    link: 'https://maps.app.goo.gl/Zjszup3poPPemQju8?g_st=awb'
+                },
+                prado: {
+                    name: 'Prado',
+                    spot: 'Monumento a los Últimos Charrúas',
+                    addr: 'Av. Delmira Agustini, Montevideo',
+                    q: 'Monumento a los Últimos Charrúas, Avenida Delmira Agustini, Montevideo',
+                    link: 'https://maps.app.goo.gl/9MTPYG9T7uTxguMw6?g_st=awb'
+                },
+                rodo: {
+                    name: 'Parque Rodó',
+                    spot: 'Casa de Andalucía',
+                    addr: 'Parque Rodó, Montevideo',
+                    q: 'Casa De Andalucia, Parque Rodó, Montevideo',
+                    link: 'https://maps.app.goo.gl/pLAr8dVKn6K2eaBu5?g_st=awb'
+                }
+            };
+
+            var modal = document.getElementById('locModal');
+            if (!modal) return;
+
+            var frame = document.getElementById('locFrame');
+            var elTitle = document.getElementById('locTitle');
+            var elSub = document.getElementById('locSub');
+            var elAddr = document.getElementById('locAddr');
+            var elOpen = document.getElementById('locOpen');
+            var closeBtn = document.getElementById('locClose');
+            var lastFocus = null;
+
+            function open(id, trigger) {
+                var loc = LOCS[id];
+                if (!loc) return;
+                lastFocus = trigger || document.activeElement;
+                elTitle.textContent = loc.name;
+                elSub.textContent = loc.spot;
+                elAddr.textContent = loc.addr;
+                elOpen.href = loc.link;
+                frame.src = 'https://maps.google.com/maps?q=' + encodeURIComponent(loc.q) + '&z=17&hl=es&output=embed';
+                modal.classList.add('is-open');
+                modal.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('booking-open');
+                if (closeBtn) closeBtn.focus();
+            }
+
+            function close() {
+                modal.classList.remove('is-open');
+                modal.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('booking-open');
+                frame.src = 'about:blank';
+                if (lastFocus && lastFocus.focus) lastFocus.focus();
+            }
+
+            document.addEventListener('click', function(e) {
+                var trigger = e.target.closest ? e.target.closest('[data-loc]') : null;
+                if (!trigger) return;
+                e.preventDefault();
+                open(trigger.getAttribute('data-loc'), trigger);
+            });
+
+            if (closeBtn) closeBtn.addEventListener('click', close);
+            modal.addEventListener('click', function(e) { if (e.target === modal) close(); });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.classList.contains('is-open')) close();
             });
         })();
 

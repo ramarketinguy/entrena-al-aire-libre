@@ -97,6 +97,22 @@ Parque Batlle y Prado, tarde habilita Parque Rodó.
 El mensaje de WhatsApp **no lleva UTMs**: la atribución vive en el Pixel y en
 CAPI (`custom_data`), no en el texto que lee Álvaro.
 
+## Botón flotante y dudas
+
+El botón flotante verde **no abre WhatsApp**: abre `#infoModal`, un popup con
+dónde son las clases, horarios y planes. Adentro hay dos salidas:
+
+- "Reservar mi clase gratis" → abre el formulario de reserva con el plan
+  "Clase de prueba" ya elegido (no manda a `#pricing`)
+- "Me quedan dudas: escribile a Álvaro" → `wa.me` con el mensaje
+  "Hola Álvaro, tengo algunas dudas sobre los entrenamientos al aire libre."
+
+Así el que escribe por WhatsApp ya vio lo básico. Cada lugar de las tarjetas de
+horario tiene un botón "Ver ubicación" que abre un popup con el mapa embebido
+(Google Maps en iframe, sin API key), el punto de encuentro y un botón de
+respaldo para abrirlo en Google Maps. Puntos: Plaza de la Amistad (Batlle),
+Monumento a los Últimos Charrúas (Prado), Casa de Andalucía (Rodó).
+
 ## Videos
 
 - `videos/testimonios-optimizados/` — los videos que se sirven. Los testimonios
